@@ -1,0 +1,1112 @@
+﻿/* 基础样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Microsoft YaHei", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 顶部导航 - 天健龙维风格 */
+.header {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.header .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 20px;
+    position: relative;
+    height: 80px;
+}
+
+.logo {
+    position: absolute;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #005d73;
+}
+
+.logo-icon {
+    font-size: 32px;
+}
+
+.nav {
+    display: flex;
+    gap: 0;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: all 0.3s;
+    padding: 0 25px;
+    height: 80px;
+    line-height: 80px;
+    display: block;
+    border-bottom: 3px solid transparent;
+    font-size: 16px;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #005d73;
+    border-bottom-color: #005d73;
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+}
+
+/* Banner 轮播区域 */
+.banner {
+    margin-top: 80px;
+    position: relative;
+    overflow: hidden;
+}
+
+.banner-slider {
+    position: relative;
+    height: 600px;
+}
+
+.banner-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner-slide.active {
+    opacity: 1;
+}
+
+.banner-slide-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0a1929 0%, #0d2137 30%, #0f2944 60%, #0d2137 100%);
+    overflow: hidden;
+}
+
+/* 电机背景图形 */
+.banner-motor-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+/* 齿轮图形 */
+.motor-gear {
+    position: absolute;
+    border: 3px solid rgba(0, 168, 255, 0.15);
+    border-radius: 50%;
+}
+
+.motor-gear::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px dashed rgba(0, 168, 255, 0.1);
+    border-radius: 50%;
+}
+
+.gear-1 {
+    width: 400px;
+    height: 400px;
+    top: -100px;
+    right: -100px;
+    animation: rotate 30s linear infinite;
+}
+
+.gear-1::before {
+    width: 300px;
+    height: 300px;
+}
+
+.gear-2 {
+    width: 300px;
+    height: 300px;
+    bottom: -50px;
+    left: -50px;
+    animation: rotate 25s linear infinite reverse;
+}
+
+.gear-2::before {
+    width: 220px;
+    height: 220px;
+}
+
+.gear-3 {
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    right: 15%;
+    animation: rotate 20s linear infinite;
+}
+
+.gear-3::before {
+    width: 140px;
+    height: 140px;
+}
+
+/* 电机线圈 */
+.motor-coil {
+    position: absolute;
+    width: 350px;
+    height: 350px;
+    top: 50%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    border: 4px solid rgba(0, 168, 255, 0.1);
+    border-radius: 50%;
+}
+
+.motor-coil::before,
+.motor-coil::after {
+    content: '';
+    position: absolute;
+    border: 3px solid rgba(0, 168, 255, 0.08);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.motor-coil::before {
+    width: 280px;
+    height: 280px;
+}
+
+.motor-coil::after {
+    width: 210px;
+    height: 210px;
+    border: 2px solid rgba(0, 168, 255, 0.06);
+}
+
+/* 电路线条 */
+.circuit-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.circuit-lines span {
+    position: absolute;
+    background: linear-gradient(90deg, transparent, rgba(0, 168, 255, 0.1), transparent);
+    height: 1px;
+}
+
+.circuit-lines span:nth-child(1) {
+    width: 300px;
+    top: 20%;
+    left: 10%;
+    transform: rotate(-15deg);
+}
+
+.circuit-lines span:nth-child(2) {
+    width: 250px;
+    top: 40%;
+    right: 20%;
+    transform: rotate(10deg);
+}
+
+.circuit-lines span:nth-child(3) {
+    width: 200px;
+    bottom: 30%;
+    left: 20%;
+    transform: rotate(5deg);
+}
+
+.circuit-lines span:nth-child(4) {
+    width: 280px;
+    bottom: 20%;
+    right: 15%;
+    transform: rotate(-8deg);
+}
+
+/* 转子 */
+.motor-rotor {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 3px solid rgba(0, 200, 255, 0.12);
+    border-radius: 50%;
+    animation: pulse-rotate 8s ease-in-out infinite;
+}
+
+.motor-rotor::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, rgba(0, 200, 255, 0.2) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+/* 定子 */
+.motor-stator {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px dashed rgba(0, 168, 255, 0.08);
+    border-radius: 50%;
+    animation: rotate 40s linear infinite reverse;
+}
+
+/* 磁场线 */
+.magnetic-field span {
+    position: absolute;
+    border: 1px solid rgba(0, 200, 255, 0.1);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.magnetic-field span:nth-child(1) {
+    width: 500px;
+    height: 500px;
+}
+
+.magnetic-field span:nth-child(2) {
+    width: 600px;
+    height: 600px;
+}
+
+.magnetic-field span:nth-child(3) {
+    width: 700px;
+    height: 700px;
+}
+
+/* 脉冲效果 */
+.motor-pulse {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(0, 168, 255, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: pulse 3s ease-in-out infinite;
+}
+
+/* 能量波 */
+.energy-waves span {
+    position: absolute;
+    border: 2px solid rgba(0, 200, 255, 0.1);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: wave 4s ease-out infinite;
+}
+
+.energy-waves span:nth-child(1) { animation-delay: 0s; }
+.energy-waves span:nth-child(2) { animation-delay: 1s; }
+.energy-waves span:nth-child(3) { animation-delay: 2s; }
+.energy-waves span:nth-child(4) { animation-delay: 3s; }
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-rotate {
+    0%, 100% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+    50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.05); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+}
+
+@keyframes wave {
+    0% { width: 100px; height: 100px; opacity: 0.5; }
+    100% { width: 500px; height: 500px; opacity: 0; }
+}
+
+.banner-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #fff;
+    max-width: 900px;
+    padding: 0 20px;
+}
+
+.banner-title {
+    font-size: 56px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.banner-subtitle {
+    font-size: 28px;
+    font-weight: 400;
+    opacity: 0.95;
+    margin-bottom: 40px;
+}
+
+.banner-btn {
+    display: inline-block;
+    background: #fff;
+    color: #005d73;
+    padding: 15px 40px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s;
+    border: 2px solid #fff;
+}
+
+.banner-btn:hover {
+    background: transparent;
+    color: #fff;
+}
+
+/* 轮播控制 */
+.banner-dots {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+}
+
+.banner-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+}
+
+.banner-dot.active {
+    background: #fff;
+    transform: scale(1.2);
+}
+
+.banner-dot:hover {
+    background: rgba(255,255,255,0.8);
+}
+
+.banner-arrows {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 30px;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.banner-arrow {
+    width: 50px;
+    height: 50px;
+    background: rgba(255,255,255,0.2);
+    border: 2px solid rgba(255,255,255,0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    pointer-events: auto;
+    color: #fff;
+    font-size: 20px;
+}
+
+.banner-arrow:hover {
+    background: rgba(255,255,255,0.4);
+    border-color: #fff;
+}
+
+/* 统计区域 */
+.stats-section {
+    background: #005d73;
+    padding: 60px 0;
+    color: #fff;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    text-align: center;
+}
+
+.stat-item {
+    padding: 20px;
+}
+
+.stat-number {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+/* 通用区域标题 */
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-title {
+    font-size: 36px;
+    color: #005d73;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.section-subtitle {
+    font-size: 16px;
+    color: #666;
+}
+
+/* 关于我们 */
+.about-section {
+    padding: 80px 0;
+    background: #f8f9fa;
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.about-text h3 {
+    font-size: 28px;
+    color: #005d73;
+    margin-bottom: 20px;
+}
+
+.about-text p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+.about-image {
+    position: relative;
+}
+
+.about-image img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+
+/* 产品区域 */
+.products-section {
+    padding: 80px 0;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.product-card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: all 0.3s;
+    border: 1px solid #eee;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+}
+
+.product-image {
+    height: 200px;
+    background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+}
+
+.product-info {
+    padding: 25px;
+}
+
+.product-info h3 {
+    font-size: 20px;
+    color: #005d73;
+    margin-bottom: 10px;
+}
+
+.product-info p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+}
+
+/* 新闻资讯 */
+.news-section {
+    padding: 80px 0;
+    background: #f8f9fa;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.news-featured {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.news-featured img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.news-featured-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 30px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    color: #fff;
+}
+
+.news-featured-content h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.news-featured-content .date {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.news-item {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    transition: all 0.3s;
+    text-decoration: none;
+    color: inherit;
+}
+
+.news-item:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.news-item-image {
+    width: 120px;
+    height: 80px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.news-item-content {
+    flex: 1;
+}
+
+.news-item-content h4 {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.news-item-content .date {
+    font-size: 13px;
+    color: #999;
+}
+
+.news-item-content .summary {
+    font-size: 14px;
+    color: #666;
+    margin-top: 8px;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* 客户区域 */
+.clients-section {
+    padding: 60px 0;
+}
+
+.clients-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+    flex-wrap: wrap;
+}
+
+.client-logo {
+    width: 120px;
+    height: 60px;
+    background: #f0f4f8;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.client-logo:hover {
+    background: #e2e8f0;
+}
+
+/* 联系区域 */
+.contact-section {
+    padding: 80px 0;
+    background: #005d73;
+    color: #fff;
+}
+
+.contact-section .section-title {
+    color: #fff;
+}
+
+.contact-section .section-subtitle {
+    color: rgba(255,255,255,0.8);
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+}
+
+.contact-info h3 {
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.contact-item-icon {
+    width: 50px;
+    height: 50px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.contact-item-content h4 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.contact-item-content p {
+    font-size: 14px;
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+.contact-form {
+    background: #fff;
+    padding: 40px;
+    border-radius: 8px;
+}
+
+.contact-form h3 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #005d73;
+}
+
+.form-group textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: #005d73;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.submit-btn:hover {
+    background: #004a5c;
+}
+
+/* 页脚 */
+.footer {
+    background: #1a1a1a;
+    color: #fff;
+    padding: 60px 0 30px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-brand h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.footer-brand p {
+    font-size: 14px;
+    color: #999;
+    line-height: 1.8;
+}
+
+.footer-column h4 {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+.footer-column ul {
+    list-style: none;
+}
+
+.footer-column li {
+    margin-bottom: 10px;
+}
+
+.footer-column a {
+    color: #999;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.footer-column a:hover {
+    color: #fff;
+}
+
+.footer-bottom {
+    border-top: 1px solid #333;
+    padding-top: 30px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+}
+
+/* 悬浮按钮 */
+.float-buttons {
+    position: fixed;
+    right: 30px;
+    bottom: 100px;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.float-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.float-btn:hover {
+    transform: scale(1.1);
+}
+
+.float-btn.phone {
+    background: #005d73;
+}
+
+.float-btn.wechat {
+    background: #22c55e;
+}
+
+/* 微信弹窗 */
+.wechat-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1001;
+    align-items: center;
+    justify-content: center;
+}
+
+.wechat-modal.active {
+    display: flex;
+}
+
+.wechat-modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 300px;
+}
+
+.wechat-modal-content h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.wechat-qr {
+    width: 200px;
+    height: 200px;
+    background: #f0f4f8;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    border-radius: 8px;
+}
+
+.close-modal {
+    background: #005d73;
+    color: #fff;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+
+    .nav.active {
+        display: flex;
+    }
+
+    .nav-link {
+        height: auto;
+        line-height: 1.5;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .banner-slider {
+        height: 400px;
+    }
+
+    .banner-title {
+        font-size: 32px;
+    }
+
+    .banner-subtitle {
+        font-size: 18px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stat-number {
+        font-size: 32px;
+    }
+
+    .about-content,
+    .news-grid,
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .section-title {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .banner-arrows {
+        display: none;
+    }
+}
