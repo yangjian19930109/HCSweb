@@ -6,7 +6,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>华创生电机 - 专业电机解决方案提供商</title>
+    <title>v202604191751 华创生电机 - 专业电机解决方案提供商</title>
     <meta name="description" content="华创生电机是德昌电机(JOHNSON ELECTRIC)授权代理商，专注自动化与智能化驱动领域20年，提供直流电机、交流电机、步进电机、驱动系统等产品。">
     <style>
         /* 基础样式重置 */
@@ -397,32 +397,9 @@
         }
 
         /* 竖直圆柱形磁铁 - Slide 2 */
-        .cylinder-magnet {
-            position: absolute;
-            width: 100px;
-            height: 200px;
-            top: 50%;
-            left: 60%;
-            transform: translate(-50%, -50%);
-            border-radius: 50px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 0 40px rgba(0, 100, 200, 0.4), 0 0 80px rgba(255, 50, 100, 0.2), inset 0 0 30px rgba(255, 255, 255, 0.1);
-            z-index: 10;
-        }
+        
 
-        .cylinder-n, .cylinder-s {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: "Orbitron", monospace;
-            font-size: 32px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            position: relative;
-        }
+        
 
         .cylinder-n {
             background: linear-gradient(180deg, #ff4444 0%, #cc2222 50%, #aa1111 100%);
@@ -431,63 +408,24 @@
             border-bottom: 2px solid rgba(255, 255, 255, 0.2);
         }
 
-        .cylinder-s {
-            background: linear-gradient(180deg, #0066cc 0%, #004499 50%, #003377 100%);
-            color: #fff;
-            text-shadow: 0 0 20px rgba(100, 180, 255, 0.8);
-        }
+        
 
-        .cylinder-magnet::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 20%;
-            width: 30%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
-            border-radius: 50px;
-            z-index: 1;
-        }
+        
 
-        .magnetic-field-lines {
-            position: absolute;
-            width: 600px;
-            height: 500px;
-            top: 50%;
-            left: 60%;
-            transform: translate(-50%, -50%);
-            z-index: 5;
-            pointer-events: none;
-        }
+        
 
-        .magnetic-field-lines svg {
-            width: 100%;
-            height: 100%;
-        }
+        
 
-        .field-path {
-            fill: none;
-            stroke: rgba(100, 150, 255, 0.5);
-            stroke-width: 1.5;
-            stroke-linecap: round;
-        }
+        
 
-        .field-path-animated {
-            fill: none;
-            stroke: rgba(100, 180, 255, 0.7);
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-dasharray: 10 5 2 5;
-            animation: field-flow-out 3s linear infinite;
-        }
+        
 
         .field-path-animated:nth-child(odd) {
             animation-duration: 2.5s;
             animation-delay: 0.5s;
         }
 
-        @keyframes field-flow-out {
-            0% { stroke-dashoffset: 22; }
+        
             100% { stroke-dashoffset: 0; }
         }
 
@@ -1795,6 +1733,71 @@
     }
 }
 
+
+        /* ======== 3D 磁铁磁感线 CSS ======== */
+        
+        
+        /* 静态磁感线 */
+        
+        /* 动画磁感线 */
+        
+        .fpa:nth-child(odd) {
+            animation-duration: 3.2s;
+            animation-delay: 0.6s;
+        }
+        .fpa:nth-child(3n) {
+            animation-duration: 3.8s;
+            animation-delay: 1.2s;
+        }
+        
+            100% { stroke-dashoffset: 0; }
+        }
+        /* 圆柱磁铁 */
+        
+
+        /* ======== 3D磁感线 CSS ======== */
+                .magnetic-field-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 15;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .magnetic-field-lines svg {
+            width: 100%;
+            height: 100%;
+        }
+        .fp {
+            fill: none;
+            stroke-linecap: round;
+        }
+        .fpa {
+            fill: none;
+            stroke-linecap: round;
+            stroke-dashoffset: 80;
+            animation: field-flow 4s linear infinite;
+        }
+        .fpa:nth-child(odd) {
+            animation-duration: 3.2s;
+            animation-delay: 0.6s;
+        }
+        .fpa:nth-child(3n) {
+            animation-duration: 3.6s;
+            animation-delay: 1.2s;
+        }
+        @keyframes field-flow {
+            0% { stroke-dashoffset: 80; }
+            100% { stroke-dashoffset: 0; }
+        }
+        /* 隐藏旧的圆柱磁铁div */
+        
+
+        .cylinder-magnet { display: none !important; }
 </style>
     <div class="version-tag">v2026-04-19 12:07</div>
 </head>
@@ -1863,41 +1866,65 @@
                 <div class="banner-slide-bg">
                     <div class="banner-dark-bg">
                         <div class="banner-motor-bg">
-                            <div class="cylinder-magnet">
-                                <div class="cylinder-n">N</div>
-                                <div class="cylinder-s">S</div>
-                            </div>
+                            
                             <div class="magnetic-field-lines">
-                                <svg viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg">
-                                    <defs>
-                                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
-                                            <polygon points="0 0, 10 3.5, 0 7" fill="rgba(100,180,255,0.8)"/>
-                                        </marker>
-                                    </defs>
-                                    <path class="field-path-animated" d="M 270 150 Q 150 150, 80 100" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path-animated" d="M 270 140 Q 120 120, 50 60" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path-animated" d="M 270 130 Q 100 80, 40 20" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path-animated" d="M 270 160 Q 180 180, 100 200" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path-animated" d="M 270 170 Q 150 220, 80 280" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path-animated" d="M 270 180 Q 120 260, 60 350" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path-animated" d="M 330 150 Q 450 150, 520 100" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path-animated" d="M 330 140 Q 480 120, 550 60" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path-animated" d="M 330 130 Q 500 80, 560 20" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path-animated" d="M 330 160 Q 420 180, 500 200" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path-animated" d="M 330 170 Q 450 220, 520 280" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path-animated" d="M 330 180 Q 480 260, 540 350" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path-animated" d="M 80 400 Q 150 350, 270 320" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path-animated" d="M 50 440 Q 120 380, 270 340" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path-animated" d="M 30 480 Q 100 420, 270 360" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path-animated" d="M 520 400 Q 450 350, 330 320" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path-animated" d="M 550 440 Q 480 380, 330 340" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path-animated" d="M 570 480 Q 500 420, 330 360" marker-end="url(#arrowhead)"/>
-                                    <path class="field-path" d="M 270 120 Q 200 80, 150 50"/>
-                                    <path class="field-path" d="M 330 120 Q 400 80, 450 50"/>
-                                    <path class="field-path" d="M 270 380 Q 200 420, 150 450"/>
-                                    <path class="field-path" d="M 330 380 Q 400 420, 450 450"/>
-                                </svg>
-                            </div>
+                            <svg viewBox="0 84 600 633" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                                <defs>
+                                    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                                        <feGaussianBlur stdDeviation="3" result="blur"/>
+                                        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                                    </filter>
+                                    <filter id="glow2" x="-100%" y="-100%" width="300%" height="300%">
+                                        <feGaussianBlur stdDeviation="8" result="blur"/>
+                                        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                                    </filter>
+                                    <marker id="arr" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+                                        <polygon points="0,0 5,2.5 0,5" fill="rgba(120,210,255,0.8)"/>
+                                    </marker>
+                                </defs><g>
+                                <path class="fp" d="M 300 430 C 315 350 315 250 300 170" fill="none" stroke="rgba(160,220,255,0.2)" stroke-width="1.0" stroke-dasharray="4 6" stroke-linecap="round"/>
+                                <path class="fp" d="M 300 430 C 300 350 300 250 300 170" fill="none" stroke="rgba(160,220,255,0.2)" stroke-width="1.0" stroke-dasharray="4 6" stroke-linecap="round"/>
+                                <path class="fp" d="M 300 430 C 285 350 285 250 300 170" fill="none" stroke="rgba(160,220,255,0.2)" stroke-width="1.0" stroke-dasharray="4 6" stroke-linecap="round"/>
+                                <path class="fpa" d="M 300 430 C 380 520 480 340 480 260 Q 480 80 300 170" fill="none" stroke="rgba(80,180,255,0.4)" stroke-width="1.8" stroke-dasharray="8 6" stroke-linecap="round"/>
+                                <path class="fpa" d="M 300 430 C 220 520 120 340 120 260 Q 120 80 300 170" fill="none" stroke="rgba(80,180,255,0.4)" stroke-width="1.8" stroke-dasharray="8 6" stroke-linecap="round"/>
+                                <path class="fpa" d="M 300 430 C 420 570 540 300 540 220 Q 540 40 300 170" fill="none" stroke="rgba(80,180,255,0.3)" stroke-width="1.5" stroke-dasharray="8 6" stroke-linecap="round"/>
+                                <path class="fpa" d="M 300 430 C 180 570 60 300 60 220 Q 60 40 300 170" fill="none" stroke="rgba(80,180,255,0.3)" stroke-width="1.5" stroke-dasharray="8 6" stroke-linecap="round"/>
+                                <path class="fpa" d="M 300 170 C 440 0 560 250 560 330 Q 560 510 300 430" fill="none" stroke="rgba(100,200,255,0.25)" stroke-width="1.2" stroke-dasharray="10 5" stroke-linecap="round"/>
+                                <path class="fpa" d="M 300 170 C 160 0 40 250 40 330 Q 40 510 300 430" fill="none" stroke="rgba(100,200,255,0.25)" stroke-width="1.2" stroke-dasharray="10 5" stroke-linecap="round"/>
+                                <path class="fpa" d="M 300 170 C 380 80 480 260 480 340 Q 480 520 300 430" fill="none" stroke="rgba(100,200,255,0.55)" stroke-width="2.2" stroke-dasharray="10 5" stroke-linecap="round" filter="url(#glow)"/>
+                                <path class="fpa" d="M 300 170 C 220 80 120 260 120 340 Q 120 520 300 430" fill="none" stroke="rgba(100,200,255,0.55)" stroke-width="2.2" stroke-dasharray="10 5" stroke-linecap="round" filter="url(#glow)"/>
+                                <path class="fpa" d="M 300 170 C 480 -20 580 280 580 360 Q 580 540 300 430" fill="none" stroke="rgba(100,200,255,0.3)" stroke-width="1.5" stroke-dasharray="10 5" stroke-linecap="round"/>
+                                <path class="fpa" d="M 300 170 C 120 -20 20 280 20 360 Q 20 540 300 430" fill="none" stroke="rgba(100,200,255,0.3)" stroke-width="1.5" stroke-dasharray="10 5" stroke-linecap="round"/>
+                                <path class="fpa" d="M 300 170 C 420 30 540 300 540 380 Q 540 560 300 430" fill="none" stroke="rgba(100,200,255,0.45)" stroke-width="2.0" stroke-dasharray="10 5" stroke-linecap="round" filter="url(#glow)"/>
+                                <path class="fpa" d="M 300 170 C 180 30 60 300 60 380 Q 60 560 300 430" fill="none" stroke="rgba(100,200,255,0.45)" stroke-width="2.0" stroke-dasharray="10 5" stroke-linecap="round" filter="url(#glow)"/>
+                                <path class="fp" d="M 300 170 C 585 162 585 438 300 430" fill="none" stroke="rgba(120,210,255,0.12)" stroke-width="1.0" stroke-dasharray="8 8" stroke-linecap="round"/>
+                                <path class="fp" d="M 300 170 C 15 162 15 438 300 430" fill="none" stroke="rgba(120,210,255,0.12)" stroke-width="1.0" stroke-dasharray="8 8" stroke-linecap="round"/>
+                                <path class="fp" d="M 300 170 C 585 178 585 422 300 430" fill="none" stroke="rgba(120,210,255,0.12)" stroke-width="1.0" stroke-dasharray="8 8" stroke-linecap="round"/>
+                                <path class="fp" d="M 300 170 C 15 178 15 422 300 430" fill="none" stroke="rgba(120,210,255,0.12)" stroke-width="1.0" stroke-dasharray="8 8" stroke-linecap="round"/>
+                                <path class="fp" d="M 300 170 C 530 162 530 438 300 430" fill="none" stroke="rgba(120,210,255,0.22)" stroke-width="1.4" stroke-dasharray="10 7" stroke-linecap="round"/>
+                                <path class="fp" d="M 300 170 C 70 162 70 438 300 430" fill="none" stroke="rgba(120,210,255,0.22)" stroke-width="1.4" stroke-dasharray="10 7" stroke-linecap="round"/>
+                                <path class="fp" d="M 300 170 C 530 178 530 422 300 430" fill="none" stroke="rgba(120,210,255,0.22)" stroke-width="1.4" stroke-dasharray="10 7" stroke-linecap="round"/>
+                                <path class="fp" d="M 300 170 C 70 178 70 422 300 430" fill="none" stroke="rgba(120,210,255,0.22)" stroke-width="1.4" stroke-dasharray="10 7" stroke-linecap="round"/>
+                                <path class="fpa" d="M 300 170 C 475 162 475 438 300 430" fill="none" stroke="rgba(120,210,255,0.38)" stroke-width="1.8" stroke-dasharray="12 6" stroke-linecap="round"/>
+                                <path class="fpa" d="M 300 170 C 125 162 125 438 300 430" fill="none" stroke="rgba(120,210,255,0.38)" stroke-width="1.8" stroke-dasharray="12 6" stroke-linecap="round"/>
+                                <path class="fpa" d="M 300 170 C 475 178 475 422 300 430" fill="none" stroke="rgba(120,210,255,0.38)" stroke-width="1.8" stroke-dasharray="12 6" stroke-linecap="round"/>
+                                <path class="fpa" d="M 300 170 C 125 178 125 422 300 430" fill="none" stroke="rgba(120,210,255,0.38)" stroke-width="1.8" stroke-dasharray="12 6" stroke-linecap="round"/>
+                                <path class="fpa" d="M 300 170 C 420 162 420 438 300 430" fill="none" stroke="rgba(120,210,255,0.55)" stroke-width="2.2" stroke-dasharray="14 5" stroke-linecap="round" filter="url(#glow)"/>
+                                <path class="fpa" d="M 300 170 C 180 162 180 438 300 430" fill="none" stroke="rgba(120,210,255,0.55)" stroke-width="2.2" stroke-dasharray="14 5" stroke-linecap="round" filter="url(#glow)"/>
+                                <path class="fpa" d="M 300 170 C 420 178 420 422 300 430" fill="none" stroke="rgba(120,210,255,0.55)" stroke-width="2.2" stroke-dasharray="14 5" stroke-linecap="round" filter="url(#glow)"/>
+                                <path class="fpa" d="M 300 170 C 180 178 180 422 300 430" fill="none" stroke="rgba(120,210,255,0.55)" stroke-width="2.2" stroke-dasharray="14 5" stroke-linecap="round" filter="url(#glow)"/>
+                                <path class="fpa" d="M 300 170 C 370 162 370 438 300 430" fill="none" stroke="rgba(120,210,255,0.75)" stroke-width="2.8" stroke-dasharray="16 4" stroke-linecap="round" filter="url(#glow)"/>
+                                <path class="fpa" d="M 300 170 C 230 162 230 438 300 430" fill="none" stroke="rgba(120,210,255,0.75)" stroke-width="2.8" stroke-dasharray="16 4" stroke-linecap="round" filter="url(#glow)"/>
+                                <path class="fpa" d="M 300 170 C 370 178 370 422 300 430" fill="none" stroke="rgba(120,210,255,0.75)" stroke-width="2.8" stroke-dasharray="16 4" stroke-linecap="round" filter="url(#glow)"/>
+                                <path class="fpa" d="M 300 170 C 230 178 230 422 300 430" fill="none" stroke="rgba(120,210,255,0.75)" stroke-width="2.8" stroke-dasharray="16 4" stroke-linecap="round" filter="url(#glow)"/>
+                                <!-- N极汇聚点 -->
+                                <ellipse cx="300" cy="170" rx="20" ry="8" fill="rgba(120,210,255,0.15)" filter="url(#glow2)"/>
+                                <ellipse cx="300" cy="170" rx="8" ry="4" fill="rgba(180,230,255,0.3)" filter="url(#glow)"/>
+                                <!-- S极汇聚点 -->
+                                <ellipse cx="300" cy="430" rx="20" ry="8" fill="rgba(80,160,255,0.12)" filter="url(#glow2)"/>
+                                <ellipse cx="300" cy="430" rx="8" ry="4" fill="rgba(140,200,255,0.25)" filter="url(#glow)"/>
+                            </svg></g>
+                        </div>
                         </div>
                         <div class="banner-content">
                             <h1 class="banner-title">专注自动化驱动20年</h1>
