@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>华创生 · 管理后台</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft YaHei',sans-serif;background:#1a1a2e;color:#e0e0e0;min-height:100vh}
+.topbar{background:#0f0f23;border-bottom:2px solid #005d73;padding:0 30px;display:flex;align-items:center;height:60px;gap:30px}
+.topbar h1{color:#00f5ff;font-size:20px;font-weight:700;flex:1}
+.topbar .badge{background:#005d73;color:#00f5ff;padding:4px 12px;border-radius:4px;font-size:13px}
+.main{padding:24px 30px}
+.section-title{color:#f5a623;font-size:15px;font-weight:700;margin-bottom:12px;border-left:3px solid #f5a623;padding-left:10px}
+.form-card{background:#16213e;border-radius:12px;border:1px solid #005d73;padding:20px 24px;margin-bottom:24px}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:12px}
+.form-full{grid-column:1/-1}
+.form-card label{display:block;font-size:12px;color:#888;margin-bottom:4px}
+.form-card input,.form-card select,.form-card textarea{width:100%;padding:8px 12px;background:#1a1a2e;border:1px solid #333;border-radius:6px;color:#e0e0e0;font-size:14px;font-family:inherit}
+.form-card input:focus,.form-card select:focus,.form-card textarea:focus{outline:none;border-color:#00f5ff;box-shadow:0 0 8px rgba(0,245,255,0.15)}
+.form-card textarea{resize:vertical;min-height:60px}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap}
+.btn{padding:8px 20px;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-family:inherit;font-weight:600;transition:all .2s}
+.btn-primary{background:#005d73;color:#fff}.btn-primary:hover{background:#007a99}
+.btn-success{background:#1a6b4a;color:#fff}.btn-success:hover{background:#22865a}
+.btn-danger{background:#8b1a1a;color:#fff}.btn-danger:hover{background:#b02020}
+.btn-secondary{background:#333;color:#ccc}.btn-secondary:hover{background:#444}
+.btn-sm{padding:5px 12px;font-size:12px}
+.table-wrap{background:#16213e;border-radius:12px;border:1px solid #005d73;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+thead tr{background:#0f3460}
+thead th{text-align:left;padding:12px 16px;font-size:12px;color:#00f5ff;font-weight:600;border-bottom:2px solid #005d73}
+tbody tr{border-bottom:1px solid #1f2a45}
+tbody tr:hover{background:#1f2a45}
+tbody td{padding:10px 16px;font-size:13px;color:#ccc;vertical-align:middle}
+.cat-badge{display:inline-block;padding:2px 8px;background:#005d73;color:#00f5ff;border-radius:3px;font-size:11px}
+.featured-star{color:#f5a623;font-size:14px}
+.model-tag{font-family:monospace;background:#1a1a2e;padding:2px 6px;border-radius:3px;color:#00f5ff;font-size:12px}
+.action-btns{display:flex;gap:6px}
+.toast{position:fixed;bottom:30px;right:30px;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;z-index:1000;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast-success{background:#1a6b4a;color:#fff}.toast-error{background:#8b1a1a;color:#fff}
+.toast.show{opacity:1}
+.loading{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:999;display:none}
+.loading.show{display:flex}.loading span{color:#00f5ff;font-size:18px;font-weight:700}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1>华创生 · 管理后台</h1>
+  <span class="badge">电机产品管理</span>
+</div>
+<div class="main">
+  <div class="section-title">新增 / 编辑产品</div>
+  <div class="form-card">
+    <input type="hidden" id="editId">
+    <div class="form-grid">
+      <div><label>产品型号 *</label><input id="fModel" placeholder="如：YH-132M-4"></div>
+      <div><label>产品名称 *</label><input id="fName" placeholder="如：YH系列三相异步电机"></div>
+      <div><label>分类</label><select id="fCategory"><option value="">-- 选择分类 --</option></select></div>
+      <div><label>排序</label><input id="fSort" type="number" value="0"></div>
+      <div><label>精选</label><select id="fFeatured"><option value="0">否</option><option value="1">是</option></select></div>
+    </div>
+    <div class="form-grid">
+      <div class="form-full"><label>产品描述</label><input id="fDesc" placeholder="简短描述"></div>
+      <div class="form-full"><label>技术参数</label><textarea id="fSpecs" placeholder="如：功率 7.5kW / 转速 1440r/min / 电压 380V"></textarea></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-success" onclick="saveProduct()">保存产品</button>
+      <button class="btn btn-secondary" onclick="clearForm()">清空表单</button>
+    </div>
+  </div>
+  <div class="section-title">产品列表</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ID</th><th>型号</th><th>名称</th><th>分类</th><th>规格</th><th>精选</th><th>排序</th><th>操作</th></tr></thead>
+      <tbody id="productList"></tbody>
+    </table>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="loading" id="loading"><span>加载中...</span></div>
+<script>
+const API = 'http://localhost:8000/api';
+let categories = [];
+let products = [];
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast toast-' + (type||'success') + ' show';
+  setTimeout(function(){ t.classList.remove('show'); }, 2500);
+}
+function showLoading(show) {
+  document.getElementById('loading').className = show ? 'loading show' : 'loading';
+}
+async function api(method, url, body) {
+  var opts = {method: method, headers: {}};
+  if (body) { opts.body = JSON.stringify(body); opts.headers['Content-Type'] = 'application/json'; }
+  var r = await fetch(API + url, opts);
+  if (!r.ok) { var e = await r.json(); throw new Error(e.detail || r.status); }
+  return r.json();
+}
+async function loadCategories() {
+  try { categories = await api('GET', '/categories'); } catch(e) { categories = []; }
+  var sel = document.getElementById('fCategory');
+  sel.innerHTML = '<option value="">-- 选择分类 --</option>';
+  categories.forEach(function(c){ sel.innerHTML += '<option value="'+c.id+'">'+c.name+'</option>'; });
+}
+async function loadProducts() {
+  showLoading(true);
+  try { products = await api('GET', '/products'); }
+  catch(e) { showToast('加载失败: '+e.message, 'error'); products = []; }
+  showLoading(false);
+  renderTable();
+}
+function renderTable() {
+  var tb = document.getElementById('productList');
+  if (!products.length) { tb.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:30px;color:#666">暂无产品</td></tr>'; return; }
+  var html = '';
+  products.forEach(function(p) {
+    var cat = categories.find(function(c){ return c.id == p.category_id; });
+    html += '<tr>'+
+      '<td>'+p.id+'</td>'+
+      '<td><span class="model-tag">'+esc(p.model||'')+'</span></td>'+
+      '<td style="color:#e0e0e0">'+esc(p.name||'')+'</td>'+
+      '<td>'+(cat?'<span class="cat-badge">'+esc(cat.name)+'</span>':'<span style="color:#666">-</span>')+'</td>'+
+      '<td style="color:#888;font-size:12px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+esc(p.specs||'')+'">'+esc(p.specs||'')+'</td>'+
+      '<td>'+(p.featured==1?'<span class="featured-star">★</span>':'<span style="color:#444">-</span>')+'</td>'+
+      '<td>'+(p.sort_order||0)+'</td>'+
+      '<td><div class="action-btns"><button class="btn btn-primary btn-sm" onclick="editProduct('+p.id+')">编辑</button><button class="btn btn-danger btn-sm" onclick="delProduct('+p.id+')">删除</button></div></td>'+
+    '</tr>';
+  });
+  tb.innerHTML = html;
+}
+function esc(s) { if(s==null||s==undefined) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function clearForm() {
+  document.getElementById('editId').value = '';
+  ['fModel','fName','fDesc','fSpecs'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('fCategory').value = '';
+  document.getElementById('fSort').value = '0';
+  document.getElementById('fFeatured').value = '0';
+}
+async function saveProduct() {
+  var id = document.getElementById('editId').value;
+  var model = document.getElementById('fModel').value.trim();
+  var name = document.getElementById('fName').value.trim();
+  if (!model || !name) { showToast('型号和名称必填', 'error'); return; }
+  var body = {
+    category_id: document.getElementById('fCategory').value || null,
+    model: model,
+    name: name,
+    description: document.getElementById('fDesc').value.trim() || null,
+    specs: document.getElementById('fSpecs').value.trim() || null,
+    sort_order: parseInt(document.getElementById('fSort').value)||0,
+    featured: document.getElementById('fFeatured').value === '1',
+  };
+  try {
+    if (id) { await api('PUT', '/products/'+id, body); showToast('更新成功'); }
+    else { await api('POST', '/products', body); showToast('新增成功'); }
+    clearForm();
+    loadProducts();
+  } catch(e) { showToast('保存失败: '+e.message, 'error'); }
+}
+function editProduct(id) {
+  var p = products.find(function(x){ return x.id == id; });
+  if (!p) return;
+  document.getElementById('editId').value = id;
+  document.getElementById('fModel').value = p.model||'';
+  document.getElementById('fName').value = p.name||'';
+  document.getElementById('fCategory').value = p.category_id||'';
+  document.getElementById('fDesc').value = p.description||'';
+  document.getElementById('fSpecs').value = p.specs||'';
+  document.getElementById('fSort').value = p.sort_order||0;
+  document.getElementById('fFeatured').value = p.featured?'1':'0';
+  document.querySelector('.form-card').scrollIntoView({behavior:'smooth'});
+}
+async function delProduct(id) {
+  if (!confirm('确认删除产品 #'+id+'？')) return;
+  try { await api('DELETE', '/products/'+id); showToast('已删除'); loadProducts(); }
+  catch(e) { showToast('删除失败: '+e.message, 'error'); }
+}
+(function(){
+  loadCategories();
+  loadProducts();
+})();
+</script>
+</body>
+</html>
