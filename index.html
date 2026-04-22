@@ -214,7 +214,7 @@
 
             position: absolute;
 
-            right: 20px;
+            right: 10px;
 
         }
 
@@ -307,6 +307,8 @@
             height: 100%;
 
             opacity: 0;
+
+            overflow: hidden !important;
 
             transition: opacity 0.8s ease;
 
@@ -3281,30 +3283,25 @@
 
 /* ========== 导航栏搜索框 ========== */
 .nav-search {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    padding: 8px 16px;
-    background: linear-gradient(135deg, rgba(0, 40, 80, 0.9), rgba(0, 20, 40, 0.95));
-    border: 2px solid #00f5ff;
-    border-radius: 24px;
-    box-shadow: 0 0 15px rgba(0, 245, 255, 0.5), inset 0 0 10px rgba(0, 245, 255, 0.1);
-    transition: all 0.3s ease;
-}
+            position: fixed;
+            right: 30px;
+            top: 22px;
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, rgba(0, 40, 80, 0.9), rgba(0, 20, 40, 0.95));
+            border: 2px solid #00f5ff;
+            border-radius: 24px;
+            box-shadow: 0 0 15px rgba(0, 245, 255, 0.5), inset 0 0 10px rgba(0, 245, 255, 0.1);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
         .nav-search:hover {
-            border-color: #00f5ff;
-            box-shadow: 0 0 25px rgba(0, 245, 255, 0.8), inset 0 0 15px rgba(0, 245, 255, 0.2);
-            transform: translateY(-50%) scale(1.05);
+            transform: scale(1.12);
         }
 .nav-search:hover,
-.nav-search:focus-within {
-    background: rgba(0, 30, 60, 0.8);
-    border-color: rgba(0, 245, 255, 0.5);
-    box-shadow: 0 0 15px rgba(0, 245, 255, 0.2);
-}
+    .nav-search:focus-within {
+    }
 .nav-search .search-icon {
     color: rgba(0, 245, 255, 0.6);
     margin-left: 8px;
@@ -3882,7 +3879,7 @@
 
                             <div class="magnetic-field-lines">
 
-                            <svg viewBox="0 84 600 633" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                            <svg viewBox="-75 75 750 791" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
 
                                 <defs>
 
@@ -3910,11 +3907,11 @@
 
                                 </defs><g>
 
-                                <path class="fp" d="M 300 430 C 315 350 315 250 300 170" fill="none" stroke="rgba(160,220,255,0.2)" stroke-width="1.0" stroke-dasharray="4 6" stroke-linecap="round"/>
+                                
 
-                                <path class="fp" d="M 300 430 C 300 350 300 250 300 170" fill="none" stroke="rgba(160,220,255,0.2)" stroke-width="1.0" stroke-dasharray="4 6" stroke-linecap="round"/>
+                                
 
-                                <path class="fp" d="M 300 430 C 285 350 285 250 300 170" fill="none" stroke="rgba(160,220,255,0.2)" stroke-width="1.0" stroke-dasharray="4 6" stroke-linecap="round"/>
+                                
 
                                 <path class="fpa" d="M 300 430 C 380 520 480 340 480 260 Q 480 80 300 170" fill="none" stroke="rgba(80,180,255,0.4)" stroke-width="1.8" stroke-dasharray="8 6" stroke-linecap="round"/>
 
@@ -3940,21 +3937,21 @@
 
                                 <path class="fpa" d="M 300 170 C 180 30 60 300 60 380 Q 60 560 300 430" fill="none" stroke="rgba(100,200,255,0.45)" stroke-width="2.0" stroke-dasharray="10 5" stroke-linecap="round" filter="url(#glow)"/>
 
-                                <path class="fp" d="M 300 170 C 585 162 585 438 300 430" fill="none" stroke="rgba(120,210,255,0.12)" stroke-width="1.0" stroke-dasharray="8 8" stroke-linecap="round"/>
+                                
 
-                                <path class="fp" d="M 300 170 C 15 162 15 438 300 430" fill="none" stroke="rgba(120,210,255,0.12)" stroke-width="1.0" stroke-dasharray="8 8" stroke-linecap="round"/>
+                                
 
-                                <path class="fp" d="M 300 170 C 585 178 585 422 300 430" fill="none" stroke="rgba(120,210,255,0.12)" stroke-width="1.0" stroke-dasharray="8 8" stroke-linecap="round"/>
+                                
 
-                                <path class="fp" d="M 300 170 C 15 178 15 422 300 430" fill="none" stroke="rgba(120,210,255,0.12)" stroke-width="1.0" stroke-dasharray="8 8" stroke-linecap="round"/>
+                                
 
-                                <path class="fp" d="M 300 170 C 530 162 530 438 300 430" fill="none" stroke="rgba(120,210,255,0.22)" stroke-width="1.4" stroke-dasharray="10 7" stroke-linecap="round"/>
+                                
 
-                                <path class="fp" d="M 300 170 C 70 162 70 438 300 430" fill="none" stroke="rgba(120,210,255,0.22)" stroke-width="1.4" stroke-dasharray="10 7" stroke-linecap="round"/>
+                                
 
-                                <path class="fp" d="M 300 170 C 530 178 530 422 300 430" fill="none" stroke="rgba(120,210,255,0.22)" stroke-width="1.4" stroke-dasharray="10 7" stroke-linecap="round"/>
+                                
 
-                                <path class="fp" d="M 300 170 C 70 178 70 422 300 430" fill="none" stroke="rgba(120,210,255,0.22)" stroke-width="1.4" stroke-dasharray="10 7" stroke-linecap="round"/>
+                                
 
                                 <path class="fpa" d="M 300 170 C 475 162 475 438 300 430" fill="none" stroke="rgba(120,210,255,0.38)" stroke-width="1.8" stroke-dasharray="12 6" stroke-linecap="round"/>
 
