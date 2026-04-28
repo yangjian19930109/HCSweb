@@ -6,7 +6,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>核心产品 - 华创生电机</title>
+    <title>产品中心 - 华创生电机</title>
     <style>
 
         /* 基础样式重置 */
@@ -1356,7 +1356,7 @@
             }
         }
     
-/* ========== 核心产品下拉菜单 ========== */
+/* ========== 产品中心下拉菜单 ========== */
 .nav-dropdown {
     position: relative;
 }
@@ -1475,6 +1475,30 @@
                         radial-gradient(circle at 70% 50%, rgba(0,150,255,0.06) 0%, transparent 50%);
         }
         .page-hero-content {
+        .products-glow {
+    text-align: center;
+    font-size: 70px;
+    font-weight: 900;
+    letter-spacing: 12px;
+    color: transparent;
+    -webkit-text-stroke: 2.5px #00ffff;
+    -webkit-text-fill-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-shadow:
+        0 0 10px #00d4ff,
+        0 0 20px #00d4ff,
+        0 0 40px rgba(0, 212, 255, 0.6),
+        0 0 80px rgba(0, 212, 255, 0.3),
+        0 0 120px rgba(0, 212, 255, 0.15),
+        inset 0 0 20px rgba(0, 212, 255, 0.1);
+    animation: glow-pulse 2s ease-in-out infinite;
+}
+        @keyframes glow-pulse {
+            from { text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff; }
+            to { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #00ffff; }
+        }
+
             position: relative;
             z-index: 1;
         }
@@ -1634,7 +1658,7 @@
                 <a href="index.html#home" class="nav-link">首页</a>
                 <a href="index.html#about" class="nav-link">关于我们</a>
                 <div class="nav-dropdown">
-                    <a href="products.html#products" class="nav-link active">核心产品</a>
+                    <a href="products.html#products" class="nav-link active">产品中心</a>
                     <div class="dropdown-menu">
                         <a href="products.html#products-motor">车用马达</a>
                         <a href="products.html#products-power">电动工具及家用马达</a>
@@ -1651,7 +1675,8 @@
     <!-- 产品页 Hero -->
     <section class="page-hero">
         <div class="page-hero-content">
-            <h1>核心产品</h1>
+            <div class="products-glow">PRODUCTS</div>
+            <h1>产品中心</h1>
             <p>德昌电机（JOHNSON ELECTRIC）官方授权代理</p>
             <p>专注汽车零部件 · 电动工具 · 智能家居驱动解决方案</p>
             <div class="page-hero-divider"></div>
@@ -1817,7 +1842,7 @@
                     <ul>
                         <li><a href="index.html#home">首页</a></li>
                         <li><a href="index.html#about">关于我们</a></li>
-                        <li><a href="products.html#products">核心产品</a></li>
+                        <li><a href="products.html#products">产品中心</a></li>
                         <li><a href="index.html#news">新闻中心</a></li>
                     </ul>
                 </div>
@@ -1965,7 +1990,7 @@
                 });
             });
             
-            // 移动端核心产品下拉菜单点击展开
+            // 移动端产品中心下拉菜单点击展开
             const dropdown = document.querySelector('.nav-dropdown');
             const dropdownMenu = document.querySelector('.dropdown-menu');
             if (dropdown && dropdownMenu) {

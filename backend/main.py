@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from fastapi import FastAPI, FileResponse
+from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import os
