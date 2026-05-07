@@ -5197,55 +5197,38 @@
 
             
 
-            // 滚动时更新导航活动状态
-
+            //             // 滚动时更新导航活动状态
             const sections = document.querySelectorAll('section[id]');
 
-            
-
             window.addEventListener('scroll', function() {
-
                 const scrollTop = window.pageYOffset;
-
                 const headerHeight = header.offsetHeight;
 
-                
-
-                sections.forEach(section => {
-
-                    const sectionTop = section.offsetTop - headerHeight - 100;
-
-                    const sectionHeight = section.offsetHeight;
-
-                    const sectionId = section.getAttribute('id');
-
-                    
-
-                    if (scrollTop >= sectionTop && scrollTop < sectionTop + sectionHeight) {
-
-                        navLinks.forEach(link => {
-
-                            link.classList.remove('active');
-
-                            if (link.getAttribute('href') === '#' + sectionId) {
-
-                                link.classList.add('active');
-
-                            }
-
-                        });
-
-                    }
-
+                // 清除所有导航链接的 active
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
                 });
 
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - headerHeight - 100;
+                    const sectionHeight = section.offsetHeight;
+                    const sectionId = section.getAttribute('id');
+
+                    if (scrollTop >= sectionTop && scrollTop < sectionTop + sectionHeight) {
+                        navLinks.forEach(link => {
+                            const href = link.getAttribute('href');
+                            if (href === '#' + sectionId) {
+                                link.classList.add('active');
+                            }
+                            // 特殊处理：滚动到 products section 时，高亮产品中心导航
+                            if (sectionId === 'products' && href.includes('products.html')) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
             });
-
-        });
-
-    
-
-// ========== 搜索数据 ==========
+        });// ========== 搜索数据 ==========
 var SEARCH_DATA = [
     {cat:"产品中心", title:"V4NC 直流电机", desc:"12V/24V直流电机，低噪音长寿命，适用于汽车车窗、座椅调节等"},
     {cat:"产品中心", title:"DC971 无刷电机", desc:"高效无刷直流电机，集成驱动，控制精度高，适合汽车风扇、水泵等"},
