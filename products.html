@@ -2130,10 +2130,14 @@
                     const sectionId = section.getAttribute('id');
                     
                     if (scrollTop >= sectionTop && scrollTop < sectionTop + sectionHeight) {
+                        // 只清除纯锚点链接的 active（产品中心等页面链接不受影响）
                         navLinks.forEach(link => {
-                            link.classList.remove('active');
-                            if (link.getAttribute('href') === '#' + sectionId) {
-                                link.classList.add('active');
+                            const href = link.getAttribute('href');
+                            if (href.startsWith('#')) {
+                                link.classList.remove('active');
+                                if (href === '#' + sectionId) {
+                                    link.classList.add('active');
+                                }
                             }
                         });
                     }
