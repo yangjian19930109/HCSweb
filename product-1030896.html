@@ -481,6 +481,487 @@
         .nav-spacer {
             flex: 1;
         }
+
+
+/* ===== 侧边栏导航 ===== */
+products-sidebar {
+            width: 220px;
+            flex-shrink: 0;
+            background: #fff;
+            padding: 30px 0;
+            box-shadow: 2px 0 16px rgba(0,0,0,0.06);
+            height: fit-content;
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a2e;
+            padding: 0 24px 20px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .sidebar-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 24px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border-left: 3px solid transparent;
+            color: #666;
+            font-size: 15px;
+            font-weight: 500;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .sidebar-nav-item .item-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(0,93,115,0.08);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            transition: all 0.25s ease;
+        }
+
+        .sidebar-nav-item:hover {
+            background: rgba(0,93,115,0.04);
+            color: #005d73;
+        }
+
+        .sidebar-nav-item:hover .item-icon {
+            background: rgba(0,93,115,0.15);
+        }
+
+        .sidebar-nav-item.active {
+            background: rgba(0,93,115,0.06);
+            color: #005d73;
+            border-left-color: #ff2d78;
+            font-weight: 600;
+        }
+
+        .sidebar-nav-item.active .item-icon {
+            background: #005d73;
+            color: #fff;
+        }
+
+        .sidebar-nav-item .item-arrow {
+            position: absolute;
+            right: 20px;
+            opacity: 0;
+            transition: all 0.25s ease;
+            font-size: 12px;
+        }
+
+        .sidebar-nav-item:hover .item-arrow,
+        .sidebar-nav-item.active .item-arrow {
+            opacity: 1;
+            right: 16px;
+        }
+
+        /* 二级导航项 - 右侧展开 */
+        .sidebar-sub-items {
+            position: absolute;
+            left: 100%;
+            top: 0;
+            width: 200px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            padding: 12px 0;
+            display: none;
+            z-index: 1001;
+        }
+
+        .sidebar-nav-item .sidebar-sub-items {
+            display: none;
+        }
+        .sidebar-nav-item:hover > .sidebar-sub-items,
+        .sidebar-nav-item .sidebar-sub-items:hover {
+            display: block;
+        }
+
+        .sidebar-sub-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #666;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-sub-item:hover {
+            background: rgba(0,93,115,0.08);
+            color: #005d73;
+        }
+
+        .sidebar-sub-item.active {
+            background: #005d73;
+            color: #fff;
+        }
+
+        /* 右侧内容区 */
+        .products-content {
+            flex: 1;
+            padding: 0 40px;
+            max-width: calc(100vw - 240px);
+            margin-left: 220px;
+        }
+
+        .product-tab-panel {
+            display: none;
+        }
+
+        .product-tab-panel.active {
+            display: block;
+        }
+
+        .tab-panel-header {
+            margin-bottom: 30px;
+            padding: 24px 30px;
+            border-left: 4px solid #00f5ff;
+            background: linear-gradient(135deg, rgba(0,245,255,0.08) 0%, rgba(255,45,120,0.05) 100%);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-panel-header::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(0,245,255,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .tab-panel-header .category-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #00f5ff 0%, #0099cc 100%);
+            color: #050810;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 18px;
+            border-radius: 2px;
+            margin-bottom: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(0,245,255,0.3), inset 0 0 6px rgba(255,255,255,0.2);
+            font-family: "Orbitron", monospace;
+        }
+
+        .tab-panel-header h2 {
+            font-size: 28px;
+            color: #00f5ff;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px rgba(0,245,255,0.6), 0 0 30px rgba(0,245,255,0.3);
+            font-family: "Orbitron", monospace;
+        }
+
+        .tab-panel-header p {
+            color: rgba(224,224,224,0.85);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .tab-panel-header .category-desc {
+            max-width: 700px;
+            margin-top: 10px;
+            color: rgba(224,224,224,0.85);
+            font-size: 14px;
+            line-height: 1.9;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        /* 侧边栏内的产品卡片 */
+        .product-card-grid-sidebar {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card-link {
+            text-decoration: none;
+            display: block;
+            color: inherit;
+        }
+
+        .product-card-link:hover .product-card {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,93,115,0.15);
+            border-color: rgba(0,93,115,0.2);
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,93,115,0.15);
+            border-color: rgba(0,93,115,0.2);
+        }
+
+        .product-card-img {
+            flex: 1;
+            background: linear-gradient(135deg, #005d73 0%, #007a8a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            color: rgba(255,255,255,0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card-img::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .product-card:hover .product-card-img::after {
+            left: 100%;
+        }
+
+        .product-card-body {
+            padding: 18px;
+        }
+
+        .product-card-body h3 {
+            font-size: 15px;
+            color: #1a1a2e;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .product-card-body p {
+            font-size: 13px;
+            color: #888;
+            line-height: 1.5;
+        }
+
+        .product-card-tag {
+            display: inline-block;
+            background: rgba(0,93,115,0.08);
+            color: #005d73;
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-top: 10px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .products-layout {
+                flex-direction: column;
+                margin: 0;
+                padding: 30px 0 60px;
+            }
+
+            .products-sidebar {
+                width: 100%;
+                position: static;
+                padding: 0;
+                background: transparent;
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            .sidebar-title {
+                display: none;
+            }
+
+            .sidebar-nav {
+                display: flex;
+                gap: 8px;
+                overflow-x: auto;
+                padding: 0 20px 5px;
+            }
+
+            .sidebar-nav-item {
+                flex-shrink: 0;
+                padding: 10px 16px;
+                border-left: none;
+                border-radius: 8px;
+                border: 1px solid #e0e0e0;
+                background: #fff;
+                font-size: 14px;
+                white-space: nowrap;
+            }
+
+            .sidebar-nav-item .item-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 14px;
+            }
+
+            .sidebar-nav-item .item-arrow {
+                display: none;
+            }
+
+            .sidebar-nav-item.active {
+                background: #005d73;
+                color: #fff;
+                border-color: #005d73;
+            }
+
+            .sidebar-nav-item.active .item-icon {
+                background: rgba(255,255,255,0.2);
+                color: #fff;
+            }
+
+            .products-content {
+                padding: 0 20px;
+                max-width: 100%;
+            }
+
+            .product-card-grid-sidebar {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+
+            .product-card-img {
+                height: 130px;
+                font-size: 40px;
+            }
+
+            .tab-panel-header h2 {
+                font-size: 22px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-card-grid-sidebar {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .version-tag {
+            position: fixed;
+            top: 85px;
+            right: 10px;
+            background: rgba(0,93,115,0.9);
+            color: #fff;
+            padding: 4px 10px;
+            font-size: 12px;
+            border-radius: 4px;
+            z-index: 1001;
+            font-family: monospace;
+        }
+        /* 产品页 Hero */
+        .page-hero {
+            margin-top: 80px;
+            background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0f2944 100%);
+            height: 33vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(0,100,200,0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(0,150,255,0.06) 0%, transparent 50%);
+        }
+        .page-hero-content {
+        .products-glow {
+    text-align: center;
+    font-size: 70px;
+    font-weight: 900;
+    letter-spacing: 12px;
+    color: transparent;
+    -webkit-text-stroke: 2.5px #00ffff;
+    -webkit-text-fill-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-shadow:
+        0 0 10px #00d4ff,
+        0 0 20px #00d4ff,
+        0 0 40px rgba(0, 212, 255, 0.6),
+        0 0 80px rgba(0, 212, 255, 0.3),
+        0 0 120px rgba(0, 212, 255, 0.15),
+        inset 0 0 20px rgba(0, 212, 255, 0.1);
+    animation: glow-pulse 2s ease-in-out infinite;
+}
+        @keyframes glow-pulse {
+            from { text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff; }
+            to { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #00ffff; }
+        }
+
+            position: relative;
+            z-index: 1;
+        }
+        .page-hero h1 {
+            color: #fff;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: 4px;
+        }
+        .page-hero p {
+            color: rgba(255,255,255,0.7);
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        .page-hero-divider {
+            width: 60px;
+            height: 3px;
+            background: #d4a84b;
+            margin: 20px auto 0;
+            border-radius: 2px;
+        }
+
+        /* 产品分类通用 - 仅保留标签样式供新布局复用 */
+        .category-tag {
+            display: inline-block;
+            background: #005d73;
+            color: #fff;
+            font-size: 12px;
+            padding: 4px 16px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        .category-desc {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+    
 </style>
 </head>
 <body>
@@ -533,6 +1014,45 @@
 
     <!-- 产品详情 -->
 
+<aside class="products-sidebar">
+                <div class="sidebar-title">📦 产品分类</div>
+                <nav class="sidebar-nav">
+                    <a href="products.html#tab-motor" class="sidebar-nav-item active" style="text-decoration:none;color:inherit;display:block;">
+                        <div class="item-icon">⚡</div>
+                        <div class="item-text">
+                            <div>车用马达</div>
+                            <div style="font-size:11px;font-weight:400;opacity:0.7;">Automotive Motors</div>
+                        </div>
+                        <span class="item-arrow">›</span>
+                    </a>
+                    <div class="sidebar-sub-items" style="padding-left:20px;">
+                        <a href="products.html#tab-motor" class="sidebar-sub-item" style="display:block;padding:8px 16px;color:#555;text-decoration:none;font-size:14px;">节气门马达</a>
+                        <a href="products.html#tab-motor" class="sidebar-sub-item" style="display:block;padding:8px 16px;color:#555;text-decoration:none;font-size:14px;">废气阀马达</a>
+                        <a href="products.html#tab-motor" class="sidebar-sub-item" style="display:block;padding:8px 16px;color:#555;text-decoration:none;font-size:14px;">涡轮增压执行器</a>
+                        <a href="products.html#tab-motor" class="sidebar-sub-item" style="display:block;padding:8px 16px;color:#555;text-decoration:none;font-size:14px;">车门锁马达</a>
+                        <a href="products.html#tab-motor" class="sidebar-sub-item" style="display:block;padding:8px 16px;color:#555;text-decoration:none;font-size:14px;">EPB马达</a>
+                        <a href="other-motor.html" class="sidebar-sub-item" style="display:block;padding:8px 16px;color:#555;text-decoration:none;font-size:14px;">其他车用马达</a>
+                    </div>
+                    <a href="products.html#tab-appliance" class="sidebar-nav-item" style="text-decoration:none;color:inherit;display:block;">
+                        <div class="item-icon">🏠</div>
+                        <div class="item-text">
+                            <div>家用电器及<br>电动工具马达</div>
+                            <div style="font-size:11px;font-weight:400;opacity:0.7;">Power Tools & Home Appliances</div>
+                        </div>
+                        <span class="item-arrow">›</span>
+                    </a>
+                    <a href="products.html#tab-switch" class="sidebar-nav-item" style="text-decoration:none;color:inherit;display:block;">
+                        <div class="item-icon">🔘</div>
+                        <div class="item-text">
+                            <div>微动开关</div>
+                            <div style="font-size:11px;font-weight:400;opacity:0.7;">Micro Switches</div>
+                        </div>
+                        <span class="item-arrow">›</span>
+                    </a>
+                </nav>
+            </aside>
+<!-- 右侧内容区 -->
+            
 <div class="product-detail">
         <div class="container">
 
