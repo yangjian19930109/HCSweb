@@ -787,83 +787,8 @@ products-sidebar {
                 padding: 30px 0 60px;
             }
 
-            .products-sidebar {
-                width: 100%;
-                position: static;
-                padding: 0;
-                background: transparent;
-                box-shadow: none;
-                border-radius: 0;
-            }
+            
 
-            .sidebar-title {
-                display: none;
-            }
-
-            .sidebar-nav {
-                display: flex;
-                gap: 8px;
-                overflow-x: auto;
-                padding: 0 20px 5px;
-            }
-
-            .sidebar-nav-item {
-                flex-shrink: 0;
-                padding: 10px 16px;
-                border-left: none;
-                border-radius: 8px;
-                border: 1px solid #e0e0e0;
-                background: #fff;
-                font-size: 14px;
-                white-space: nowrap;
-            }
-
-            .sidebar-nav-item .item-icon {
-                width: 28px;
-                height: 28px;
-                font-size: 14px;
-            }
-
-            .sidebar-nav-item .item-arrow {
-                display: none;
-            }
-
-            .sidebar-nav-item.active {
-                background: #005d73;
-                color: #fff;
-                border-color: #005d73;
-            }
-
-            .sidebar-nav-item.active .item-icon {
-                background: rgba(255,255,255,0.2);
-                color: #fff;
-            }
-
-            .products-content {
-                padding: 0 20px;
-                max-width: 100%;
-            }
-
-            .product-card-grid-sidebar {
-                grid-template-columns: 1fr 1fr;
-                gap: 16px;
-            }
-
-            .product-card-img {
-                height: 130px;
-                font-size: 40px;
-            }
-
-            .tab-panel-header h2 {
-                font-size: 22px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .product-card-grid-sidebar {
-                grid-template-columns: 1fr;
-            }
-        }
 
         .version-tag {
             position: fixed;
@@ -1017,40 +942,41 @@ products-sidebar {
 <aside class="products-sidebar">
                 <div class="sidebar-title">📦 产品分类</div>
                 <nav class="sidebar-nav">
-                    <a href="products.html#tab-motor" class="sidebar-nav-item active" style="text-decoration:none;color:inherit;display:block;">
+                    <div class="sidebar-nav-item active" data-tab="motor">
                         <div class="item-icon">⚡</div>
                         <div class="item-text">
                             <div>车用马达</div>
                             <div style="font-size:11px;font-weight:400;opacity:0.7;">Automotive Motors</div>
                         </div>
                         <span class="item-arrow">›</span>
-                    </a>
-                    <div class="sidebar-sub-items" style="padding-left:20px;">
-                        <a href="products.html#tab-motor" class="sidebar-sub-item" style="display:block;padding:8px 16px;color:#555;text-decoration:none;font-size:14px;">节气门马达</a>
-                        <a href="products.html#tab-motor" class="sidebar-sub-item" style="display:block;padding:8px 16px;color:#555;text-decoration:none;font-size:14px;">废气阀马达</a>
-                        <a href="products.html#tab-motor" class="sidebar-sub-item" style="display:block;padding:8px 16px;color:#555;text-decoration:none;font-size:14px;">涡轮增压执行器</a>
-                        <a href="products.html#tab-motor" class="sidebar-sub-item" style="display:block;padding:8px 16px;color:#555;text-decoration:none;font-size:14px;">车门锁马达</a>
-                        <a href="products.html#tab-motor" class="sidebar-sub-item" style="display:block;padding:8px 16px;color:#555;text-decoration:none;font-size:14px;">EPB马达</a>
-                        <a href="other-motor.html" class="sidebar-sub-item" style="display:block;padding:8px 16px;color:#555;text-decoration:none;font-size:14px;">其他车用马达</a>
+                        <div class="sidebar-sub-items">
+                            <div class="sidebar-sub-item" data-sub="throttle">节气门马达</div>
+                            <div class="sidebar-sub-item" data-sub="waste-valve">废气阀马达</div>
+                            <div class="sidebar-sub-item" data-sub="turbo">涡轮增压执行器马达</div>
+                            <div class="sidebar-sub-item" data-sub="door-lock">车门锁马达</div>
+                            <div class="sidebar-sub-item" data-sub="epb">EPB马达</div>
+                            <div class="sidebar-sub-item" data-sub="other-motor" onclick="window.location.href='other-motor.html'" style="cursor:pointer">其他车用马达</div>
+                        </div>
                     </div>
-                    <a href="products.html#tab-appliance" class="sidebar-nav-item" style="text-decoration:none;color:inherit;display:block;">
+                    <div class="sidebar-nav-item" data-tab="appliance">
                         <div class="item-icon">🏠</div>
                         <div class="item-text">
                             <div>家用电器及<br>电动工具马达</div>
                             <div style="font-size:11px;font-weight:400;opacity:0.7;">Power Tools & Home Appliances</div>
                         </div>
                         <span class="item-arrow">›</span>
-                    </a>
-                    <a href="products.html#tab-switch" class="sidebar-nav-item" style="text-decoration:none;color:inherit;display:block;">
+                    </div>
+                    <div class="sidebar-nav-item" data-tab="switch">
                         <div class="item-icon">🔘</div>
                         <div class="item-text">
                             <div>微动开关</div>
                             <div style="font-size:11px;font-weight:400;opacity:0.7;">Micro Switches</div>
                         </div>
                         <span class="item-arrow">›</span>
-                    </a>
+                    </div>
                 </nav>
             </aside>
+
 <!-- 右侧内容区 -->
             
 <div class="product-detail">
