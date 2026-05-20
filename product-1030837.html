@@ -590,6 +590,36 @@
     </div>
 
     <script>
+        // 导航 active 状态处理（消除页面跳转闪烁）
+        function updateNavActive() {
+            var hash = window.location.hash;
+            var navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(function(link) {
+                link.classList.remove('active');
+                var href = link.getAttribute('href') || '';
+                if (hash) {
+                    if (href.endsWith(hash) || href === hash) {
+                        link.classList.add('active');
+                    }
+                } else {
+                    // 无 hash：根据当前 URL 判断应高亮哪个导航
+                    var url = window.location.href.split('/').pop().split('?')[0].split('#')[0];
+                    if (url.startsWith('product-') || url.startsWith('other-') || url === 'products.html') {
+                        // 产品详情页：高亮"产品中心"
+                        if (href.includes('products.html')) {
+                            link.classList.add('active');
+                        }
+                    } else if (href === 'index.html' || href === '#home') {
+                        link.classList.add('active');
+                    }
+                }
+            });
+        }
+
+        updateNavActive();
+        window.addEventListener('hashchange', updateNavActive);
+
+
         var mainImg = document.getElementById('mainImg');
         var thumbs = document.querySelectorAll('.thumb');
         var currentIndex = 0;

@@ -3746,7 +3746,7 @@
 </head>
 
 <body>
-<script>window.scrollTo(0,0);</script>
+<script></script>
     <!-- 顶部导航 -->
 
     <header class="header">
@@ -4747,7 +4747,37 @@
 
     <script>
 
-        // 等待 DOM 加载完成
+        
+        // 页面加载时初始化导航 active（基于 URL hash，消除跳转闪烁）
+        (function initActiveOnLoad() {
+            var hash = window.location.hash;
+            var navLinks = document.querySelectorAll('.nav-link');
+            // 如果有 hash，找到对应链接高亮；否则默认"首页"
+            if (hash) {
+                navLinks.forEach(function(link) {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === hash) {
+                        link.classList.add('active');
+                    }
+                });
+                // 如果是锚点（站内 section），立即滚动到位
+                var target = document.querySelector(hash);
+                if (target) {
+                    var headerHeight = document.querySelector('.header').offsetHeight;
+                    window.scrollTo({ top: target.offsetTop - headerHeight, behavior: 'instant' });
+                }
+            } else {
+                // 默认高亮首页
+                navLinks.forEach(function(link) {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#home' || link.getAttribute('href') === '#') {
+                        link.classList.add('active');
+                    }
+                });
+                window.scrollTo(0, 0);
+            }
+        })();
+// 等待 DOM 加载完成
         history.scrollRestoration = 'manual';
 
         document.addEventListener('DOMContentLoaded', function() {
