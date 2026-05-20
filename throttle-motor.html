@@ -7,8 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>节气门马达 - 华创生电机</title>
-    <style>
+<style>
 
+        /* 基础样式重置 */
         * {
             margin: 0;
             padding: 0;
@@ -103,278 +104,1341 @@
             right: 20px;
         }
 
-        /* 搜索栏 */
-
-        /* 产品详情 */
-        .product-detail {
+        /* Banner 轮播区域 */
+        .banner {
             margin-top: 80px;
-            padding: 60px 0;
-        }
-
-        .breadcrumb {
-            font-size: 13px;
-            color: rgba(255,255,255,0.4);
-            margin-bottom: 30px;
-        }
-
-        .breadcrumb a {
-            color: rgba(0, 245, 255, 0.7);
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            color: #00f5ff;
-        }
-
-        .product-hero {
-            display: flex;
-            gap: 60px;
-            align-items: flex-start;
-            margin-bottom: 60px;
-        }
-
-        .product-gallery {
-            flex: 1;
-            max-width: 500px;
-        }
-
-        .product-main-img {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            object-fit: contain;
-            border-radius: 12px;
-            border: 1px solid rgba(0, 245, 255, 0.2);
-            background: rgba(0,93,115,0.1);
-            cursor: pointer;
-            display: block;
-        }
-
-        .thumbnails {
-            display: flex;
-            gap: 10px;
-            margin-top: 12px;
-        }
-
-        .thumb {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            border-radius: 8px;
-            border: 2px solid rgba(0, 245, 255, 0.15);
-            background: rgba(0,93,115,0.1);
-            cursor: pointer;
-            transition: border-color 0.2s;
-            padding: 4px;
-        }
-
-        .thumb:hover,
-        .thumb.active {
-            border-color: #00f5ff;
-            box-shadow: 0 0 8px rgba(0, 245, 255, 0.3);
-        }
-
-        .product-info {
-            flex: 1;
-            max-width: 500px;
-        }
-
-        .product-info h1 {
-            font-size: 32px;
-            color: #00f5ff;
-            font-family: "Orbitron", monospace;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
-        }
-
-        .product-model {
-            font-size: 14px;
-            color: rgba(255,255,255,0.4);
-            margin-bottom: 20px;
-            font-family: "Share Tech Mono", monospace;
-        }
-
-        .product-tag {
-            display: inline-block;
-            background: rgba(0,93,115,0.15);
-            color: #00f5ff;
-            font-size: 12px;
-            padding: 4px 14px;
-            border-radius: 12px;
-            border: 1px solid rgba(0, 245, 255, 0.2);
-            margin-bottom: 20px;
-        }
-
-        .product-desc {
-            font-size: 15px;
-            color: rgba(255,255,255,0.7);
-            line-height: 1.8;
-            margin-bottom: 25px;
-        }
-
-        .product-specs {
-            background: rgba(0,93,115,0.08);
-            border: 1px solid rgba(0, 245, 255, 0.15);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 25px;
-        }
-
-        .product-specs h3 {
-            font-size: 16px;
-            color: #00f5ff;
-            margin-bottom: 15px;
-            font-family: "Orbitron", monospace;
-        }
-
-        .spec-row {
-            display: flex;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            font-size: 14px;
-        }
-
-        .spec-row:last-child {
-            border-bottom: none;
-        }
-
-        .spec-label {
-            color: rgba(255,255,255,0.4);
-            width: 120px;
-            flex-shrink: 0;
-        }
-
-        .spec-value {
-            color: rgba(255,255,255,0.85);
-        }
-
-        /* 曲线图区域 */
-        .product-chart {
-            margin-bottom: 60px;
-        }
-
-        .product-chart h2 {
-            font-size: 22px;
-            color: #00f5ff;
-            font-family: "Orbitron", monospace;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(0, 245, 255, 0.2);
-        }
-
-        .chart-img {
-            width: 100%;
-            border-radius: 12px;
-            border: 1px solid rgba(0, 245, 255, 0.2);
-            background: #fff;
-        }
-
-        .chart-note {
-            font-size: 13px;
-            color: rgba(255,255,255,0.4);
-            margin-top: 10px;
-        }
-
-        .back-link {
-            display: inline-block;
-            color: rgba(0, 245, 255, 0.7);
-            text-decoration: none;
-            font-size: 14px;
-            margin-bottom: 20px;
-            transition: color 0.2s;
-        }
-
-        .back-link:hover {
-            color: #00f5ff;
-        }
-
-        .main-img-wrapper {
             position: relative;
-            width: 100%;
+            overflow: hidden;
+            display: flex;
+            height: 600px;
         }
 
-        .product-main-img {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            object-fit: contain;
-            border-radius: 12px;
-            border: 1px solid rgba(0, 245, 255, 0.2);
-            background: rgba(0,93,115,0.1);
-            cursor: pointer;
-            display: block;
-        }
-
-        .img-nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(5, 8, 20, 0.25);
-            color: rgba(0, 245, 255, 0.6);
-            border: 1px solid rgba(0, 245, 255, 0.2);
-            font-size: 24px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.2s;
+        /* 左侧深色区域 */
+        .banner-left {
+            flex: 1;
+            background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0f2944 100%);
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 10;
-            opacity: 0.6;
         }
 
-        .img-nav-btn:hover {
-            background: rgba(0, 245, 255, 0.25);
-            border-color: #00f5ff;
-            color: #00f5ff;
-            box-shadow: 0 0 15px rgba(0, 245, 255, 0.5);
+        /* 右侧黄色区域 */
+        .banner-right {
+            width: 45%;
+            background: linear-gradient(135deg, #d4a84b 0%, #c49a3d 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .banner-slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+        }
+
+        .banner-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .banner-slide.active {
             opacity: 1;
         }
 
-        .img-prev {
-            left: 10px;
+        .banner-slide-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            /* 布加迪跑车全屏背景图 */
+            background: url('images/banner-bg.jpg') center / cover no-repeat;
         }
 
-        .img-next {
-            right: 10px;
+        /* 左侧深色背景 - 半透明深蓝遮罩，右边缘渐变过渡 */
+        .banner-dark-bg {
+            flex: 1;
+            background: linear-gradient(to right, rgba(10, 22, 40, 0.75) 0%, rgba(10, 22, 40, 0.55) 70%, rgba(10, 22, 40, 0.10) 100%);
+            position: relative;
         }
 
-        @media (max-width: 900px) {
-            .product-hero {
-                flex-direction: column;
-                gap: 30px;
-            }
-            .product-gallery,
-            .product-info {
-                max-width: 100%;
-            }
-            .thumbnails {
-                overflow-x: auto;
-            }
-            
+        .banner-dark-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 100, 200, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(0, 150, 255, 0.08) 0%, transparent 40%);
         }
 
-        /* ========== 产品中心下拉菜单 ========== */
-        .nav-search {
-            position: fixed;
-            right: 30px;
-            top: 22px;
+        /* 右侧黄色背景 - 半透明金色遮罩，左边缘渐变过渡 */
+        .banner-gold-bg {
+            width: 45%;
+            background: linear-gradient(to right, rgba(212, 168, 75, 0.30) 0%, rgba(212, 168, 75, 0.60) 40%, rgba(212, 168, 75, 0.75) 100%);
             display: flex;
             align-items: center;
-            padding: 8px 16px;
-            background: linear-gradient(135deg, rgba(0, 40, 80, 0.9), rgba(0, 20, 40, 0.95));
-            border: 2px solid #00f5ff;
-            border-radius: 24px;
-            box-shadow: 0 0 15px rgba(0, 245, 255, 0.5), inset 0 0 10px rgba(0, 245, 255, 0.1);
+            justify-content: center;
+            padding: 40px;
+        }
+
+        /* 六边形蜂巢网格 - Banner右侧 (7个正六边形：中心1+周围6) */
+        /* 六边形蜂巢 - 7个flat-top环绕排列 (黄金比例放大版×1.25) */
+        /* ============================================================
+           flat-top 六边形蜂巢 - 金色边框 + 均匀缝隙 v3
+           几何: W=183, H=158 (flat-top, clip-path六角形)
+           
+           蜂巢标准排列(严丝合缝gap=0时):
+             上/下邻: dy = H = 158
+             斜邻:    dx = W*3/4 = 137.25, dy = H/2 = 79
+           
+           目标: 所有相邻边之间缝隙 = 8px均匀
+           边框: ::before inset:-4px 金色渐变(双边框共8px=缝隙宽)
+           
+           有gap时的位移增量:
+             垂直: delta_y = H + gap = 166
+             斜向: delta_x = W*3/4 + gap*cos30° = 137.25 + 6.93 = 144.18 ≈ 144
+                    delta_y = H/2   + gap*sin30° = 79 + 4 = 83
+           
+           中心#1位置: 容器中心偏移到六边形中心
+           容器: 470x490
+           ============================================================ */
+        .banner-product-grid {
+            width: 470px;
+            height: 490px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .banner-product-item {
+            width: 183px;
+            height: 158px;
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+            position: absolute;
+            overflow: hidden;
             transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        /* 金色边框: 伪元素撑大4px后裁剪叠加 */
+        .banner-product-item::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            background: linear-gradient(135deg, #d4a84b, #f5d78e, #d4a84b);
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+            z-index: 1;
+        }
+
+        .banner-product-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            z-index: 0;
+        }
+
+        .banner-product-item:hover {
+            transform: translate(var(--tx), var(--ty)) scale(1.15) !important;
+            z-index: 50 !important;
+            filter: brightness(1.1);
+        }
+
+        /* 放大1.15倍完全覆盖8px缝隙，并超出边框 */
+
+        .banner-product-item:hover::before {
+            background: linear-gradient(135deg, #00a8cc, #005d73, #00a8cc) !important;
+        }
+
+        /*
+         * flat-top 蜂巢 - 8px均匀缝隙
+         * 中心六边形左上角 = (143.5, 166)
+         * #2上: y -= 166
+         * #3右上: x += 144, y -= 83
+         * #4右下: x += 144, y += 83
+         * #5下: y += 166
+         * #6左下: x -= 144, y += 83
+         * #7左上: x -= 144, y -= 83
+         */
+        /* #1 中心  */ .banner-product-item:nth-child(1) { --tx: 143.5px; --ty: 166px; transform: translate(143.5px, 166px); z-index: 7; }
+        /* #2 上    */ .banner-product-item:nth-child(2) { --tx: 143.5px; --ty:   0px; transform: translate(143.5px,   0px); z-index: 6; }
+        /* #3 右上  */ .banner-product-item:nth-child(3) { --tx: 287.5px; --ty:  83px; transform: translate(287.5px,  83px); z-index: 6; }
+        /* #4 右下  */ .banner-product-item:nth-child(4) { --tx: 287.5px; --ty: 249px; transform: translate(287.5px, 249px); z-index: 6; }
+        /* #5 下    */ .banner-product-item:nth-child(5) { --tx: 143.5px; --ty: 332px; transform: translate(143.5px, 332px); z-index: 6; }
+        /* #6 左下  */ .banner-product-item:nth-child(6) { --tx:  -0.5px; --ty: 249px; transform: translate( -0.5px, 249px); z-index: 6; }
+        /* #7 左上  */ .banner-product-item:nth-child(7) { --tx:  -0.5px; --ty:  83px; transform: translate( -0.5px,  83px); z-index: 6; }
+
+        /* 电机背景图形 */
+        .banner-motor-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+        }
+
+        /* 齿轮图形 */
+        .motor-gear {
+            position: absolute;
+            border: 3px solid rgba(0, 168, 255, 0.15);
+            border-radius: 50%;
+        }
+
+        .motor-gear::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px dashed rgba(0, 168, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .gear-1 {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            right: -100px;
+            animation: rotate 30s linear infinite;
+        }
+
+        .gear-1::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .gear-2 {
+            width: 300px;
+            height: 300px;
+            bottom: -50px;
+            left: -50px;
+            animation: rotate 25s linear infinite reverse;
+        }
+
+        .gear-2::before {
+            width: 220px;
+            height: 220px;
+        }
+
+        .gear-3 {
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            right: 15%;
+            animation: rotate 20s linear infinite;
+        }
+
+        .gear-3::before {
+            width: 140px;
+            height: 140px;
+        }
+
+        /* 电机线圈 */
+        .motor-coil {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            top: 50%;
+            left: 60%;
+            transform: translate(-50%, -50%);
+            border: 4px solid rgba(0, 168, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .motor-coil::before,
+        .motor-coil::after {
+            content: '';
+            position: absolute;
+            border: 3px solid rgba(0, 168, 255, 0.08);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .motor-coil::before {
+            width: 280px;
+            height: 280px;
+        }
+
+        .motor-coil::after {
+            width: 210px;
+            height: 210px;
+            border: 2px solid rgba(0, 168, 255, 0.06);
+        }
+
+        /* 电路线条 */
+        .circuit-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .circuit-lines span {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(0, 168, 255, 0.1), transparent);
+            height: 1px;
+        }
+
+        .circuit-lines span:nth-child(1) {
+            width: 300px;
+            top: 20%;
+            left: 10%;
+            transform: rotate(-15deg);
+        }
+
+        .circuit-lines span:nth-child(2) {
+            width: 250px;
+            top: 40%;
+            right: 20%;
+            transform: rotate(10deg);
+        }
+
+        .circuit-lines span:nth-child(3) {
+            width: 200px;
+            bottom: 30%;
+            left: 20%;
+            transform: rotate(5deg);
+        }
+
+        .circuit-lines span:nth-child(4) {
+            width: 280px;
+            bottom: 20%;
+            right: 15%;
+            transform: rotate(-8deg);
+        }
+
+        /* 转子 */
+        .motor-rotor {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 3px solid rgba(0, 200, 255, 0.12);
+            border-radius: 50%;
+            animation: pulse-rotate 8s ease-in-out infinite;
+        }
+
+        .motor-rotor::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, rgba(0, 200, 255, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        /* 定子 */
+        .motor-stator {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px dashed rgba(0, 168, 255, 0.08);
+            border-radius: 50%;
+            animation: rotate 40s linear infinite reverse;
+        }
+
+        /* 磁场线 */
+        .magnetic-field span {
+            position: absolute;
+            border: 1px solid rgba(0, 200, 255, 0.1);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .magnetic-field span:nth-child(1) {
+            width: 500px;
+            height: 500px;
+        }
+
+        .magnetic-field span:nth-child(2) {
+            width: 600px;
+            height: 600px;
+        }
+
+        .magnetic-field span:nth-child(3) {
+            width: 700px;
+            height: 700px;
+        }
+
+        /* 脉冲效果 */
+        .motor-pulse {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, rgba(0, 168, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        /* 能量波 */
+        .energy-waves span {
+            position: absolute;
+            border: 2px solid rgba(0, 200, 255, 0.1);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: wave 4s ease-out infinite;
+        }
+
+        .energy-waves span:nth-child(1) { animation-delay: 0s; }
+        .energy-waves span:nth-child(2) { animation-delay: 1s; }
+        .energy-waves span:nth-child(3) { animation-delay: 2s; }
+        .energy-waves span:nth-child(4) { animation-delay: 3s; }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse-rotate {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+            50% { transform: translate(-50%, -50%) rotate(180deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.5; }
+        }
+
+        @keyframes wave {
+            0% { width: 100px; height: 100px; opacity: 0; }
+            100% { width: 500px; height: 500px; opacity: 0; }
+        }
+
+        .banner-content {
+            position: absolute;
+            left: 60px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+            text-align: left;
+            color: #fff;
+            max-width: 500px;
+        }
+
+        .banner-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .banner-subtitle {
+            font-size: 18px;
+            font-weight: 400;
+            color: #f5a623;
+            margin-bottom: 25px;
+        }
+
+        .banner-btn {
+            display: inline-block;
+            background: #f5a623;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s;
+            border: 2px solid #f5a623;
+        }
+
+        .banner-btn:hover {
+            background: transparent;
+            color: #f5a623;
+        }
+
+        /* 轮播控制 */
+        .banner-dots {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .banner-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .banner-dot.active {
+            background: #fff;
+            transform: scale(1.2);
+        }
+
+        .banner-arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 30px;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .banner-arrow {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            pointer-events: auto;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .banner-arrow:hover {
+            background: rgba(255,255,255,0.4);
+            border-color: #fff;
+        }
+
+        /* 统计区域 */
+        .stats-section {
+            background: #005d73;
+            padding: 60px 0;
+            color: #fff;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 20px;
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        /* 通用区域标题 */
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 36px;
+            color: #005d73;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: #666;
+        }
+
+        /* 关于我们 */
+        .about-section {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 28px;
+            color: #005d73;
+            margin-bottom: 20px;
+        }
+
+        .about-text p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        /* 产品区域 - 六边形蜂巢布局 */
+        .products-section {
+            padding: 60px 0 80px;
+            background: #f5f5f5;
+            text-align: center;
+        }
+
+        .products-section .section-title {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .products-section .section-subtitle {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 50px;
+        }
+
+        /* 六边形网格 */
+        .hex-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px 30px;
+        }
+
+        .hex {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hex-inner {
+            width: 160px;
+            height: 184px;
+            position: relative;
+        }
+
+        /* 六边形使用 clip-path 创建 */
+        .hex-content {
+            width: 100%;
+            height: 100%;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            background: #005d73;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+
+        .hex:hover .hex-content {
+            background: #007a8a;
+            transform: scale(1.05);
+        }
+
+        .hex-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hex-label {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        /* 响应式六边形 */
+        @media (max-width: 768px) {
+            .hex-inner {
+                width: 120px;
+                height: 138px;
+            }
+            
+            .hex-grid {
+                gap: 15px 20px;
+            }
+            
+            .hex-label {
+                font-size: 12px;
+                margin-top: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hex-inner {
+                width: 100px;
+                height: 115px;
+            }
+        }
+
+        .clear {
+            clear: both;
+        }
+        }
+
+        /* 新闻资讯 */
+        .news-section {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .news-featured {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .news-featured-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: #fff;
+        }
+
+        .news-featured-content h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .news-featured-content .date {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .news-item {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .news-item:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .news-item-image {
+            width: 120px;
+            height: 80px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+        .news-item-content {
+            flex: 1;
+        }
+
+        .news-item-content h4 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .news-item-content .date {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .news-item-content .summary {
+            font-size: 14px;
+            color: #666;
+            margin-top: 8px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* 客户区域 */
+        .clients-section {
+            padding: 60px 0;
+        }
+
+        .clients-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .client-logo {
+            width: 120px;
+            height: 60px;
+            background: #f0f4f8;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .client-logo:hover {
+            background: #e2e8f0;
+        }
+
+        /* 联系区域 */
+        .contact-section {
+            padding: 80px 0;
+            background: transparent;
+            color: #00f5ff;
+            border: 2px solid #00f5ff;
+            box-shadow: 0 0 10px rgba(0, 245, 255, 0.2);
+        }
+
+        .contact-section .section-title {
+            color: #fff;
+        }
+
+        .contact-section .section-subtitle {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .contact-info h3 {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .contact-item-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .contact-item-content h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .contact-item-content p {
+            font-size: 14px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .contact-form {
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+        }
+
+        .contact-form h3 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #005d73;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: #005d73;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #004a5c;
+        }
+
+        /* 页脚 */
+        .footer {
+            background: #020408;
+            border-top: 1px solid rgba(0, 245, 255, 0.15);
+            color: #fff;
+            padding: 60px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .footer-brand p {
+            font-size: 14px;
+            color: #999;
+            line-height: 1.8;
+        }
+
+        .footer-column h4 {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column a {
+            color: #999;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 30px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* 悬浮按钮 */
+        .float-buttons {
+            position: fixed;
+            right: 30px;
+            bottom: 100px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .float-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .float-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .float-btn.phone {
+            background: #005d73;
+        }
+
+        .float-btn.wechat {
+            background: #22c55e;
+        }
+
+        /* 微信弹窗 */
+        .wechat-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
             z-index: 1001;
+            align-items: center;
+            justify-content: center;
         }
-        .nav-search:hover {
-            transform: scale(1.12);
+
+        .wechat-modal.active {
+            display: flex;
         }
-.nav-search:hover,
-    .nav-search:focus-within {
-    }
+
+        .wechat-modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        .wechat-modal-content h3 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .wechat-qr {
+            width: 200px;
+            height: 200px;
+            background: #f0f4f8;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            border-radius: 8px;
+        }
+
+        .close-modal {
+            background: #005d73;
+            color: #fff;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #fff;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            }
+
+            .nav.active {
+                display: flex;
+            }
+
+            .nav-link {
+                height: auto;
+                line-height: 1.5;
+                padding: 15px 0;
+                border-bottom: 1px solid #eee;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .banner {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .banner-left {
+                min-height: 400px;
+            }
+
+            .banner-right {
+                width: 100%;
+                padding: 30px;
+            }
+
+            .banner-content {
+                left: 30px;
+                right: 30px;
+            }
+
+            .banner-title {
+                font-size: 32px;
+            }
+
+            .banner-subtitle {
+                font-size: 16px;
+            }
+
+            .banner-product-grid {
+                width: 289px;   /* W*2.5 + gap */
+                height: 300px;  /* H*3   + gap */
+            }
+
+            .banner-product-item {
+                width: 113px;
+                height: 98px;
+            }
+
+            /* 响应式: flat-top 蜂巢 W=113 H=98, 缝隙≈4px(双边框) */
+            /* 边框2px: inset:-2px */
+            .banner-product-item::before {
+                inset: -2px;
+            }
+
+            .banner-product-item:hover {
+                transform: translate(var(--tx), var(--ty)) scale(1.15) !important;
+                filter: brightness(1.1);
+            }
+
+            .banner-product-item:nth-child(1) { --tx:  88px; --ty: 101px; transform: translate( 88px, 101px); }
+            .banner-product-item:nth-child(2) { --tx:  88px; --ty:   3px; transform: translate( 88px,   3px); }
+            .banner-product-item:nth-child(3) { --tx: 174px; --ty:  52px; transform: translate(174px,  52px); z-index: 6; }
+            .banner-product-item:nth-child(4) { --tx: 174px; --ty: 150px; transform: translate(174px, 150px); z-index: 6; }
+            .banner-product-item:nth-child(5) { --tx:  88px; --ty: 199px; transform: translate( 88px, 199px); }
+            .banner-product-item:nth-child(6) { --tx:   2px; --ty: 150px; transform: translate(  2px, 150px); z-index: 6; }
+            .banner-product-item:nth-child(7) { --tx:   2px; --ty:  52px; transform: translate(  2px,  52px); z-index: 6; }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stat-number {
+                font-size: 32px;
+            }
+
+            .about-content,
+            .news-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .banner-arrows {
+                display: none;
+            }
+        }
+    
+/* ========== 产品中心下拉菜单 ========== */
+.nav-dropdown {
+    position: relative;
+}
+.nav-dropdown > .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+}
+.nav-dropdown > .nav-link::after {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid currentColor;
+    margin-top: 2px;
+    transition: transform 0.3s ease;
+}
+.nav-dropdown:hover > .nav-link::after {
+    transform: rotate(180deg);
+}
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    min-width: 200px;
+    background: rgba(10, 22, 40, 0.97);
+    backdrop-filter: blur(12px);
+    border-radius: 8px;
+    padding: 8px 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 93, 115, 0.3), 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    border: 1px solid rgba(0, 93, 115, 0.3);
+}
+.nav-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+.dropdown-menu a {
+    display: block;
+    padding: 12px 24px;
+    color: rgba(255,255,255,0.7);
+    font-family: "Share Tech Mono", monospace;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    transition: all 0.25s ease;
+    border-left: 3px solid transparent;
+}
+.dropdown-menu a:hover {
+    color: #00f5ff;
+    background: rgba(0, 245, 255, 0.08);
+    border-left-color: #ff2d78;
+    text-shadow: 0 0 8px rgba(0, 245, 255, 0.8);
+    padding-left: 28px;
+}
+
+/* 搜索栏 */
+.nav-search {
+    position: fixed !important;
+    right: 30px !important;
+    top: 22px !important;
+    display: flex !important;
+    align-items: center;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, rgba(0, 40, 80, 0.9), rgba(0, 20, 40, 0.95)) !important;
+    border: 2px solid #00f5ff !important;
+    border-radius: 24px !important;
+    box-shadow: 0 0 15px rgba(0, 245, 255, 0.5), inset 0 0 10px rgba(0, 245, 255, 0.1) !important;
+    transition: all 0.3s ease;
+    z-index: 1001 !important;
+}
+.nav-search:hover {
+    transform: scale(1.12);
+}
 .nav-search .search-icon {
     color: rgba(0, 245, 255, 0.6);
     margin-left: 8px;
@@ -403,88 +1467,99 @@
     position: absolute;
     top: 100%;
     right: 0;
+    width: 220px;
+    max-height: 300px;
+    overflow-y: auto;
+    background: #0a1a1f;
+    border: 1px solid rgba(0,245,255,0.3);
+    border-radius: 8px;
     margin-top: 8px;
-    width: 320px;
-    max-height: 400px;
-    background: rgba(5, 8, 30, 0.97);
-    border: 1px solid rgba(0, 245, 255, 0.3);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0, 93, 115, 0.4);
-    backdrop-filter: blur(16px);
+    display: none;
     z-index: 1000;
 }
 #nav-search-results.hidden { display: none; }
+#nav-search-results .ns-item {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(0,245,255,0.15);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#nav-search-results .ns-item:last-child { border-bottom: none; }
+#nav-search-results .ns-item:hover {
+    background: rgba(0,245,255,0.1);
+}
+#nav-search-results .ns-title {
+    color: #00f5ff;
+    font-size: 13px;
+    font-weight: 500;
+}
+#nav-search-results .ns-desc {
+    color: rgba(224,244,255,0.6);
+    font-size: 11px;
+    margin-top: 2px;
+}
+#nav-search-results .ns-cat {
+    color: rgba(0, 245, 255, 0.7);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+#nav-search-results .ns-hint,
+#nav-search-results .ns-empty {
+    padding: 20px;
+    text-align: center;
+    color: rgba(224,244,255,0.5);
+    font-size: 13px;
+}
+#nav-search-results::-webkit-scrollbar { width: 4px; }
+#nav-search-results::-webkit-scrollbar-track { background: transparent; }
+#nav-search-results::-webkit-scrollbar-thumb {
+    background: rgba(0, 245, 255, 0.3);
+    border-radius: 2px;
+}
 
-        .nav-dropdown {
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .dropdown-menu {
+        position: static;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        box-shadow: none;
+        border: none;
+        background: transparent;
+        padding: 0 0 0 20px;
+        display: none;
+    }
+    .dropdown-menu.active {
+        display: block;
+    }
+    .dropdown-menu a {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+    .nav-search { display: none; }
+}
+
+
+    </style>
+
+        <style>
+        /* ========== 侧边导航产品页 ========== */
+        .products-layout {
+            display: flex;
+            align-items: flex-start;
+            /* 独立成行，不受container约束 */
+            padding: 100px 0 80px;
+            min-height: 700px;
             position: relative;
         }
-        .nav-dropdown > .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-        }
-        .nav-dropdown > .nav-link::after {
-            content: '';
-            display: inline-block;
-            width: 0;
-            height: 0;
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 6px solid currentColor;
-            margin-top: 2px;
-            transition: transform 0.3s ease;
-        }
-        .nav-dropdown:hover > .nav-link::after {
-            transform: rotate(180deg);
-        }
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%) translateY(10px);
-            display: none;
-            background: rgba(5, 8, 30, 0.98);
-            min-width: 200px;
-            box-shadow: 0 0 20px rgba(0, 245, 255, 0.2), 0 5px 15px rgba(0,0,0,0.5);
-            border: 1px solid rgba(0, 245, 255, 0.3);
-            border-radius: 4px;
-            z-index: 100;
-        }
-        .nav-dropdown:hover .dropdown-menu {
-            display: block;
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
-        .dropdown-menu a {
-            display: block;
-            padding: 12px 24px;
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 400;
-            transition: all 0.25s ease;
-            border-left: 3px solid transparent;
-            font-family: "Share Tech Mono", monospace;
-        }
-        .dropdown-menu a:hover {
-            color: #00f5ff;
-            background: rgba(0, 245, 255, 0.08);
-            border-left-color: #ff2d78;
-            padding-left: 28px;
-            text-shadow: 0 0 8px rgba(0, 245, 255, 0.8);
-        }
 
-        /* ========== 导航栏搜索框（首页一致） ========== */
-        .nav-spacer {
-            flex: 1;
-        }
-
-
-/* ===== 侧边栏导航 ===== */
-.products-sidebar {
+        /* 左侧侧边栏 - 独立定位，贴左边缘 */
+        .products-sidebar {
             width: 220px;
             flex-shrink: 0;
             background: #fff;
@@ -631,63 +1706,40 @@
 
         .tab-panel-header {
             margin-bottom: 30px;
-            padding: 24px 30px;
-            border-left: 4px solid #00f5ff;
-            background: linear-gradient(135deg, rgba(0,245,255,0.08) 0%, rgba(255,45,120,0.05) 100%);
-            border-radius: 8px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .tab-panel-header::before {
-            content: '';
-            position: absolute;
-            top: 0; right: 0;
-            width: 200px; height: 200px;
-            background: radial-gradient(circle, rgba(0,245,255,0.1) 0%, transparent 70%);
-            pointer-events: none;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(0,245,255,0.15);
         }
 
         .tab-panel-header .category-tag {
             display: inline-block;
-            background: linear-gradient(135deg, #00f5ff 0%, #0099cc 100%);
-            color: #050810;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 5px 18px;
-            border-radius: 2px;
-            margin-bottom: 14px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            box-shadow: 0 0 15px rgba(0,245,255,0.3), inset 0 0 6px rgba(255,255,255,0.2);
-            font-family: "Orbitron", monospace;
+            background: #005d73;
+            color: #fff;
+            font-size: 12px;
+            padding: 4px 16px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
         }
 
         .tab-panel-header h2 {
             font-size: 28px;
-            color: #00f5ff;
+            color: #e0e0e0;
             font-weight: 700;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            text-shadow: 0 0 10px rgba(0,245,255,0.6), 0 0 30px rgba(0,245,255,0.3);
-            font-family: "Orbitron", monospace;
+            margin-bottom: 8px;
         }
 
         .tab-panel-header p {
-            color: rgba(224,224,224,0.85);
+            color: rgba(255,255,255,0.7);
             font-size: 15px;
             line-height: 1.7;
         }
 
         .tab-panel-header .category-desc {
-            max-width: 700px;
+            max-width: 600px;
             margin-top: 10px;
-            color: rgba(224,224,224,0.85);
+            color: rgba(255,255,255,0.5);
             font-size: 14px;
-            line-height: 1.9;
-            letter-spacing: 0.5px;
-            white-space: nowrap;
+            line-height: 1.8;
         }
 
         /* 侧边栏内的产品卡片 */
@@ -787,8 +1839,83 @@
                 padding: 30px 0 60px;
             }
 
-            
+            .products-sidebar {
+                width: 100%;
+                position: static;
+                padding: 0;
+                background: transparent;
+                box-shadow: none;
+                border-radius: 0;
+            }
 
+            .sidebar-title {
+                display: none;
+            }
+
+            .sidebar-nav {
+                display: flex;
+                gap: 8px;
+                overflow-x: auto;
+                padding: 0 20px 5px;
+            }
+
+            .sidebar-nav-item {
+                flex-shrink: 0;
+                padding: 10px 16px;
+                border-left: none;
+                border-radius: 8px;
+                border: 1px solid #e0e0e0;
+                background: #fff;
+                font-size: 14px;
+                white-space: nowrap;
+            }
+
+            .sidebar-nav-item .item-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 14px;
+            }
+
+            .sidebar-nav-item .item-arrow {
+                display: none;
+            }
+
+            .sidebar-nav-item.active {
+                background: #005d73;
+                color: #fff;
+                border-color: #005d73;
+            }
+
+            .sidebar-nav-item.active .item-icon {
+                background: rgba(255,255,255,0.2);
+                color: #fff;
+            }
+
+            .products-content {
+                padding: 0 20px;
+                max-width: 100%;
+            }
+
+            .product-card-grid-sidebar {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+
+            .product-card-img {
+                height: 130px;
+                font-size: 40px;
+            }
+
+            .tab-panel-header h2 {
+                font-size: 22px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-card-grid-sidebar {
+                grid-template-columns: 1fr;
+            }
+        }
 
         .version-tag {
             position: fixed;
@@ -806,11 +1933,7 @@
         .page-hero {
             margin-top: 80px;
             background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0f2944 100%);
-            height: 33vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            padding: 80px 0 60px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -882,12 +2005,12 @@
             letter-spacing: 2px;
         }
         .category-desc {
-            color: #555;
+            color: rgba(255,255,255,0.5);
             font-size: 14px;
             line-height: 1.8;
         }
+    </style>
     
-</style>
 </head>
 <body>
 
@@ -899,32 +2022,18 @@
                 <span>华创生电机</span>
             </a>
             <nav class="nav">
-
-                <a href="index.html" class="nav-link">首页</a>
-
+                <a href="index.html#home" class="nav-link">首页</a>
                 <a href="index.html#about" class="nav-link">关于我们</a>
-
                 <div class="nav-dropdown">
-
-                    <a href="products.html?v=v20260419" class="nav-link active">产品中心</a>
-
+                    <a href="products.html#products" class="nav-link active">产品中心</a>
                     <div class="dropdown-menu">
-
-                        <a href="products.html#products-motor">车用马达</a>
-
-                        <a href="products.html#products-power">电动工具及家用马达</a>
-
-                        <a href="products.html#products-switch">微动开关</a>
-
+                        <a href="products.html#tab-motor">车用马达</a>
+                        <a href="products.html#tab-appliance">家用电器及电动工具马达</a>
+                        <a href="products.html#tab-switch">微动开关</a>
                     </div>
-
                 </div>
-
                 <a href="index.html#news" class="nav-link">新闻中心</a>
-
                 <a href="index.html#contact" class="nav-link">联系我们</a>
-
-                            <div class="nav-spacer"></div>
                 <div class="nav-search">
                     <input type="text" id="nav-search-input" placeholder="搜索产品型号..." autocomplete="off" />
                     <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -932,17 +2041,19 @@
                     </svg>
                     <div id="nav-search-results" class="hidden"></div>
                 </div>
-</nav>
+            </nav>
             <button class="mobile-menu-btn">☰</button>
         </div>
     </header>
 
-    <!-- 产品详情 -->
+    
 
-<aside class="products-sidebar">
+            <div class="products-layout">
+            <!-- 左侧侧边栏 -->
+            <aside class="products-sidebar">
                 <div class="sidebar-title">📦 产品分类</div>
                 <nav class="sidebar-nav">
-                    <div class="sidebar-nav-item active" data-tab="motor">
+                    <div class="sidebar-nav-item active" onclick="window.location.href='products.html'" style="cursor:pointer;">
                         <div class="item-icon">⚡</div>
                         <div class="item-text">
                             <div>车用马达</div>
@@ -955,7 +2066,7 @@
                             <div class="sidebar-sub-item" data-sub="turbo">涡轮增压执行器马达</div>
                             <div class="sidebar-sub-item" data-sub="door-lock">车门锁马达</div>
                             <div class="sidebar-sub-item" data-sub="epb">EPB马达</div>
-                            <div class="sidebar-sub-item" data-sub="other-motor" onclick="window.location.href='other-motor.html'" style="cursor:pointer">其他车用马达</div>
+                            <div class="sidebar-sub-item" data-sub="other-motor" onclick="event.stopPropagation();window.location.href='other-motor.html'" style="cursor:pointer">节气门马达</div>
                         </div>
                     </div>
                     <div class="sidebar-nav-item" data-tab="appliance">
@@ -975,228 +2086,42 @@
                         <span class="item-arrow">›</span>
                     </div>
                 </nav>
-            </aside>
+            </aside><!-- 右侧内容区 -->
+            <div class="products-content">
 
-<!-- 右侧内容区 -->
-            
-<div class="product-detail">
-        <div class="container">
+                <!-- 车用马达 -->
+                <div 
+<div id="tab-motor" class="tab-panel active">
 
-            <a href="products.html#tab-motor" class="back-link">← 返回产品中心</a>
+                        <!-- 页面标题 -->
+                        <div style="margin-bottom:30px;padding-bottom:20px;border-bottom:1px solid rgba(0,245,255,0.15)">
+                            <h2 style="font-size:28px;font-weight:600;color:#e0e0e0;font-family:'Orbitron',monospace;margin-bottom:8px">节气门马达</h2>
+                            <p style="font-size:14px;color:rgba(255,255,255,0.5)">节气门马达、产检电机、天窗电机等非主流车用特种电机产品</p>
+                        </div>
 
-            <div class="product-hero">
-                <div class="product-gallery">
-                    <div class="main-img-wrapper">
-                    <img id="mainImg" src="images/products/1030896.png" alt="节气门马达" class="product-main-img">
-                    <button class="img-nav-btn img-prev" onclick="prevImg()">&#10094;</button>
-                    <button class="img-nav-btn img-next" onclick="nextImg()">&#10095;</button>
-                </div>
-                    <div class="thumbnails">
-                        <img src="images/products/1030896.png" alt="节气门马达主图" class="thumb active" onmouseenter="switchMain(this)">
-                        <img src="images/products/1030896-main2.png" alt="节气门马达细节图1" class="thumb" onmouseenter="switchMain(this)">
-                        <img src="images/products/1030896-main3.png" alt="节气门马达细节图2" class="thumb" onmouseenter="switchMain(this)">
+                        <div class="product-card-grid-sidebar">
+                        <a href="product-1030837.html" class="product-card-link" style="text-decoration:none;display:block;">
+                        <div class="product-card">
+                            <div class="product-card-img">
+                                <img src="images/products/1030896.png" alt="1030896节气门电机" style="width:100%;height:100%;object-fit:contain;">
+                            </div>
+                            <div class="product-card-body">
+                                <h3>1030896节气门电机</h3>
+                                <p>12V有刷直流节气门马达</p>
+                                <span class="product-card-tag">节气门马达</span>
+                            </div>
+                        </div>
+                        </a>
+                        </div>
+
                     </div>
-                </div>
-                <div class="product-info">
-                    <span class="product-tag">12V有刷直流</span>
-                    <h1>节气门马达</h1>
-                    <div class="product-model">型号：1030896</div>
-                    <p class="product-desc">
-                        用于奥迪、宝马、大众、路虎等高端品牌节气门总成电机。采用高精度位置反馈设计，响应速度快，控制精准，满足严苛的汽车工况要求。采用高可靠性设计，满足严苛的汽车工况要求，响应速度快，扭矩输出稳定。
-                    </p>
-                    <div class="product-specs">
-                        <h3>规格参数</h3>
-                        <div class="spec-row">
-                            <span class="spec-label">应用领域</span>
-                            <span class="spec-value">奥迪、宝马、大众、路虎等高端品牌</span>
-                        </div>
-                        <div class="spec-row">
-                            <span class="spec-label">安装位置</span>
-                            <span class="spec-value">节气门总成</span>
-                        </div>
-                        <div class="spec-row">
-                            <span class="spec-label">产品类型</span>
-                            <span class="spec-value">12V有刷直流</span>
-                        </div>
-                        <div class="spec-row">
-                            <span class="spec-label">品质标准</span>
-                            <span class="spec-value">原厂配套品质</span>
-                        </div>
-                    </div>
-                </div>
+
             </div>
 
-            <!-- 商品详情 -->
-            <div class="product-chart">
-                <h2>商品详情</h2>
-                <img src="images/products/1030896-chart.png" alt="节气门马达特性曲线图" class="chart-img">
-                <div class="chart-note">以上曲线图及外形尺寸仅供参考，具体参数以实物为准。</div>
-            </div>
-
-        </div>
+    <div class="float-buttons">
+        <a href="tel:0755-12345678" class="float-btn phone" title="电话咨询">📞</a>
+        <div class="float-btn wechat" id="wechatBtn" title="微信咨询">💬</div>
     </div>
 
-    <script>
-        // 导航 active 状态处理（消除页面跳转闪烁）
-        function updateNavActive() {
-            var hash = window.location.hash;
-            var navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(function(link) {
-                link.classList.remove('active');
-                var href = link.getAttribute('href') || '';
-                if (hash) {
-                    if (href.endsWith(hash) || href === hash) {
-                        link.classList.add('active');
-                    }
-                } else {
-                    // 无 hash：根据当前 URL 判断应高亮哪个导航
-                    var url = window.location.href.split('/').pop().split('?')[0].split('#')[0];
-                    if (url.startsWith('product-') || url.startsWith('other-') || url === 'products.html') {
-                        // 产品详情页：高亮"产品中心"
-                        if (href.includes('products.html')) {
-                            link.classList.add('active');
-                        }
-                    } else if (href === 'index.html' || href === '#home') {
-                        link.classList.add('active');
-                    }
-                }
-            });
-        }
-
-        updateNavActive();
-        window.addEventListener('hashchange', updateNavActive);
-
-
-        var mainImg = document.getElementById('mainImg');
-        var thumbs = document.querySelectorAll('.thumb');
-        var currentIndex = 0;
-
-        function switchMain(thumb) {
-            mainImg.src = thumb.src;
-            thumbs.forEach(function(el) {
-                el.classList.remove('active');
-            });
-            thumb.classList.add('active');
-            thumbs.forEach(function(el, idx) {
-                if (el === thumb) currentIndex = idx;
-            });
-        }
-
-        function prevImg() {
-            currentIndex = (currentIndex - 1 + thumbs.length) % thumbs.length;
-            mainImg.src = thumbs[currentIndex].src;
-            thumbs.forEach(function(el, idx) {
-                el.classList.toggle('active', idx === currentIndex);
-            });
-        }
-
-        function nextImg() {
-            currentIndex = (currentIndex + 1) % thumbs.length;
-            mainImg.src = thumbs[currentIndex].src;
-            thumbs.forEach(function(el, idx) {
-                el.classList.toggle('active', idx === currentIndex);
-            });
-        }
-
-        // 搜索功能
-        var SEARCH_DATA = [
-            {cat:"车用马达", title:"节气门马达", desc:"用于Jeep自由光，大指挥官分动箱PTU执行器电机", url:"product-1030896.html"},
-            {cat:"车用马达", title:"V4NC 直流电机", desc:"EPB系统专用，体积小、扭矩大、寿命超10万次循环", url:"products.html#tab-motor"},
-            {cat:"车用马达", title:"DC971 无刷电机", desc:"无刷设计、低功耗、高效率，适合新能源汽车应用", url:"products.html#tab-motor"},
-            {cat:"车用马达", title:"X4 齿轮电机", desc:"集成齿轮减速结构，高输出扭矩，适用汽车座椅调节", url:"products.html#tab-motor"},
-            {cat:"车用马达", title:"节气门马达", desc:"电子节气门控制，高精度位置反馈，响应快速", url:"products.html#tab-motor"},
-            {cat:"车用马达", title:"废气阀马达", desc:"废气再循环系统用，耐用高温环境，精确控制", url:"products.html#tab-motor"},
-            {cat:"车用马达", title:"涡轮增压执行器", desc:"可变几何涡轮增压器用，双向动作，55mm行程", url:"products.html#tab-motor"},
-            {cat:"车用马达", title:"车门锁马达", desc:"汽车中央门锁执行器，低功耗静音", url:"products.html#tab-motor"},
-            {cat:"车用马达", title:"EPB马达", desc:"电子驻车制动系统专用，高可靠性", url:"products.html#tab-motor"},
-            {cat:"家用电器", title:"家用电器马达系列", desc:"洗衣机、冰箱、空调等家电用马达", url:"products.html#tab-appliance"},
-            {cat:"家用电器", title:"电动工具马达", desc:"电钻、锯、抛光机等电动工具用高性能马达", url:"products.html#tab-appliance"},
-            {cat:"微动开关", title:"微动开关系列", desc:"精密微动开关，寿命长，触点可靠", url:"products.html#tab-switch"}
-        ];
-
-        function fuzzyMatch(str, query) {
-            if (!str) return -1;
-            str = str.toLowerCase();
-            query = query.toLowerCase();
-            if (str === query) return 100;
-            if (str.startsWith(query)) return 90;
-            if (str.includes(query)) return 80;
-            return -1;
-        }
-
-        function doSearch(query) {
-            if (!query || query.length < 1) return [];
-            var q = query.trim();
-            return SEARCH_DATA.map(function(item) {
-                var s1 = fuzzyMatch(item.title, q);
-                var s2 = fuzzyMatch(item.cat, q);
-                var s3 = fuzzyMatch(item.desc, q);
-                var score = Math.max(s1, Math.max(s2, s3));
-                if (score > 0) {
-                    return Object.assign({}, item, { score: score });
-                }
-                return null;
-            }).filter(function(item) { return item !== null; })
-                .sort(function(a, b) { return b.score - a.score; })
-                .slice(0, 10);
-        }
-
-        function initNavSearch() {
-            var input = document.getElementById('nav-search-input');
-            var results = document.getElementById('nav-search-results');
-            if (!input || !results) return;
-
-            input.addEventListener('input', function() {
-                var q = input.value.trim();
-                if (!q) {
-                    results.innerHTML = '<div class="ns-hint">输入关键词搜索...</div>';
-                    results.classList.add('visible');
-                    return;
-                }
-                var hits = doSearch(q);
-                if (hits.length === 0) {
-                    results.innerHTML = '<div class="ns-hint">未找到相关产品</div>';
-                    results.classList.add('visible');
-                    return;
-                }
-                results.innerHTML = hits.map(function(h) {
-                    return '<div class="ns-item" data-url="' + h.url + '">' +
-                        '<div class="ns-item-title">' + h.title + '</div>' +
-                        '<div class="ns-item-desc">' + h.desc + '</div>' +
-                        '<div class="ns-item-cat">' + h.cat + '</div>' +
-                    '</div>';
-                }).join('');
-                results.classList.add('visible');
-
-                results.querySelectorAll('.ns-item').forEach(function(el) {
-                    el.addEventListener('click', function() {
-                        window.location.href = this.getAttribute('data-url');
-                    });
-                });
-            });
-
-            input.addEventListener('focus', function() {
-                if (!this.value.trim()) {
-                    results.innerHTML = '<div class="ns-hint">输入关键词搜索...</div>';
-                }
-                results.classList.add('visible');
-            });
-
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.nav-search')) {
-                    results.classList.remove('visible');
-                }
-            });
-
-            input.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    results.classList.remove('visible');
-                    input.blur();
-                }
-            });
-        }
-
-        initNavSearch();
-    </script>
 </body>
 </html>
