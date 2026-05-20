@@ -110,7 +110,7 @@
             position: relative;
             overflow: hidden;
             display: flex;
-            height: 600px;
+            height: 20vh !important;
         }
 
         /* 左侧深色区域 */
@@ -1659,7 +1659,11 @@
             z-index: 1001;
         }
 
-        .sidebar-nav-item.active:not(.not-expanded) + .sidebar-sub-items {
+        .sidebar-nav-item .sidebar-sub-items {
+            display: none;
+        }
+        .sidebar-nav-item:hover > .sidebar-sub-items,
+        .sidebar-nav-item .sidebar-sub-items:hover {
             display: block;
         }
 
@@ -1701,40 +1705,63 @@
 
         .tab-panel-header {
             margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #eee;
+            padding: 24px 30px;
+            border-left: 4px solid #00f5ff;
+            background: linear-gradient(135deg, rgba(0,245,255,0.08) 0%, rgba(255,45,120,0.05) 100%);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-panel-header::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(0,245,255,0.1) 0%, transparent 70%);
+            pointer-events: none;
         }
 
         .tab-panel-header .category-tag {
             display: inline-block;
-            background: #005d73;
-            color: #fff;
-            font-size: 12px;
-            padding: 4px 16px;
-            border-radius: 20px;
-            margin-bottom: 10px;
-            letter-spacing: 2px;
+            background: linear-gradient(135deg, #00f5ff 0%, #0099cc 100%);
+            color: #050810;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 18px;
+            border-radius: 2px;
+            margin-bottom: 14px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(0,245,255,0.3), inset 0 0 6px rgba(255,255,255,0.2);
+            font-family: "Orbitron", monospace;
         }
 
         .tab-panel-header h2 {
             font-size: 28px;
-            color: #1a1a2e;
+            color: #00f5ff;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 10px rgba(0,245,255,0.6), 0 0 30px rgba(0,245,255,0.3);
+            font-family: "Orbitron", monospace;
         }
 
         .tab-panel-header p {
-            color: #666;
+            color: rgba(224,224,224,0.85);
             font-size: 15px;
             line-height: 1.7;
         }
 
         .tab-panel-header .category-desc {
-            max-width: 600px;
+            max-width: 700px;
             margin-top: 10px;
-            color: #555;
+            color: rgba(224,224,224,0.85);
             font-size: 14px;
-            line-height: 1.8;
+            line-height: 1.9;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
         /* 侧边栏内的产品卡片 */
@@ -1754,6 +1781,18 @@
             aspect-ratio: 1 / 1;
             display: flex;
             flex-direction: column;
+        }
+
+        .product-card-link {
+            text-decoration: none;
+            display: block;
+            color: inherit;
+        }
+
+        .product-card-link:hover .product-card {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,93,115,0.15);
+            border-color: rgba(0,93,115,0.2);
         }
 
         .product-card:hover {
@@ -1916,7 +1955,11 @@
         .page-hero {
             margin-top: 80px;
             background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0f2944 100%);
-            padding: 80px 0 60px;
+            height: 33vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -1995,7 +2038,7 @@
     </style>
 </head>
 <body>
-    <div class="version-tag">v2026-04-19 12:07</div>
+    <div class="version-tag">v2026-05-18 22:41</div>
 
     <header class="header">
         <div class="container">
@@ -2004,7 +2047,7 @@
                 <span>华创生</span>
             </a>
             <nav class="nav">
-                <a href="index.html#home" class="nav-link">首页</a>
+                <a href="index.html" class="nav-link">首页</a>
                 <a href="index.html#about" class="nav-link">关于我们</a>
                 <div class="nav-dropdown">
                     <a href="products.html#products" class="nav-link active">产品中心</a>
@@ -2046,21 +2089,21 @@
             <aside class="products-sidebar">
                 <div class="sidebar-title">📦 产品分类</div>
                 <nav class="sidebar-nav">
-                    <div class="sidebar-nav-item active not-expanded" data-tab="motor">
+                    <div class="sidebar-nav-item active" data-tab="motor">
                         <div class="item-icon">⚡</div>
                         <div class="item-text">
                             <div>车用马达</div>
                             <div style="font-size:11px;font-weight:400;opacity:0.7;">Automotive Motors</div>
                         </div>
                         <span class="item-arrow">›</span>
-                    </div>
-                    <div class="sidebar-sub-items">
-                        <div class="sidebar-sub-item" data-sub="throttle">节气门马达</div>
-                        <div class="sidebar-sub-item" data-sub="waste-valve">废气阀马达</div>
-                        <div class="sidebar-sub-item" data-sub="turbo">涡轮增压执行器马达</div>
-                        <div class="sidebar-sub-item" data-sub="door-lock">车门锁马达</div>
-                        <div class="sidebar-sub-item" data-sub="epb">EPB马达</div>
-                        <div class="sidebar-sub-item" data-sub="other-motor">其他车用马达</div>
+                        <div class="sidebar-sub-items">
+                            <div class="sidebar-sub-item" data-sub="throttle">节气门马达</div>
+                            <div class="sidebar-sub-item" data-sub="waste-valve">废气阀马达</div>
+                            <div class="sidebar-sub-item" data-sub="turbo">涡轮增压执行器马达</div>
+                            <div class="sidebar-sub-item" data-sub="door-lock">车门锁马达</div>
+                            <div class="sidebar-sub-item" data-sub="epb">EPB马达</div>
+                            <div class="sidebar-sub-item" data-sub="other-motor" onclick="window.location.href='other-motor.html'" style="cursor:pointer">其他车用马达</div>
+                        </div>
                     </div>
                     <div class="sidebar-nav-item" data-tab="appliance">
                         <div class="item-icon">🏠</div>
@@ -2087,9 +2130,29 @@
                     <div class="tab-panel-header">
                         <span class="category-tag">CATEGORY 01</span>
                         <h2>车用马达</h2>
-                        <p class="category-desc">专为汽车电子驻车制动系统（EPB）及车身控制模块设计的高可靠性直流电机，满足严苛的车规级性能要求。</p>
+                        <p class="category-desc">面向汽车全场景应用的高可靠直流马达，全面符合车规级严苛标准，适配车身控制、动力辅助等多类车用模块。</p>
                     </div>
                     <div class="product-card-grid-sidebar">
+                        <a href="product-1030837.html" class="product-card-link" style="text-decoration:none;display:block;">
+                        <div class="product-card">
+                            <div class="product-card-img"><img src="images/products/1030837.png" alt="1030837分动箱电机" style="width:100%;height:100%;object-fit:contain;"></div>
+                            <div class="product-card-body">
+                                <h3>1030837分动箱电机</h3>
+                                <p>用于Jeep自由光，大指挥官分动箱PTU执行器电机</p>
+                                <span class="product-card-tag">分动箱电机</span>
+                            </div>
+                        </div>
+                        </a>
+<a href="product-1030896.html" class="product-card-link" data-sub="throttle" style="text-decoration:none;display:block;">
+                            <div class="product-card">
+                                <div class="product-card-img"><img src="images/products/1030896.png" alt="1030896节气门电机" style="width:100%;height:100%;object-fit:contain;"></div>
+                                <div class="product-card-body">
+                                    <h3>1030896节气门电机</h3>
+                                    <p>用于奥迪、大众、路虎等高端品牌节气门总成电机</p>
+                                    <span class="product-card-tag">节气门电机</span>
+                                </div>
+                            </div>
+                        </a>
                         <div class="product-card">
                             <div class="product-card-img">⚡</div>
                             <div class="product-card-body">
@@ -2122,6 +2185,8 @@
                                 <span class="product-card-tag">智能驱动</span>
                             </div>
                         </div>
+                        
+
                     </div>
                 </div>
 
@@ -2267,6 +2332,8 @@
 
     <div class="float-buttons">
         <a href="tel:0755-12345678" class="float-btn phone" title="电话咨询">📞</a>
+                
+
         <div class="float-btn wechat" id="wechatBtn" title="微信咨询">💬</div>
     </div>
 
@@ -2322,18 +2389,6 @@
                         sidebarNavItems.forEach(i => i.classList.remove('active'));
                         this.classList.add('active');
 
-                        // 点击车用马达时切换二级目录展开/折叠
-                        if (tabId === 'motor') {
-                            this.classList.toggle('not-expanded');
-                        } else {
-                            // 点击其他标签时，确保车用马达是折叠的
-                            sidebarNavItems.forEach(i => {
-                                if (i.getAttribute('data-tab') === 'motor') {
-                                    i.classList.add('not-expanded');
-                                }
-                            });
-                        }
-
                         // 切换内容面板
                         tabPanels.forEach(panel => {
                             panel.classList.remove('active');
@@ -2345,21 +2400,6 @@
                         // 可选：切换 URL hash
                         history.replaceState(null, '', '#' + tabId);
                     });
-                });
-
-                // 点击页面空白区域时，折叠二级目录
-                document.addEventListener('click', function(e) {
-                    const isClickOnSidebar = e.target.closest('.sidebar-nav-item');
-                    const isClickOnSubItem = e.target.closest('.sidebar-sub-item');
-                    
-                    if (!isClickOnSidebar && !isClickOnSubItem) {
-                        // 点击空白区域，折叠所有二级目录
-                        sidebarNavItems.forEach(item => {
-                            if (item.getAttribute('data-tab') === 'motor') {
-                                item.classList.add('not-expanded');
-                            }
-                        });
-                    }
                 });
 
                 // 页面加载时检查 URL hash，激活对应 tab（不触发点击，避免展开二级目录）
