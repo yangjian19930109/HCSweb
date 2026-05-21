@@ -15,6 +15,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>v202604191751 华创生电机 - 专业电机解决方案提供商</title>
+    <!-- 强制刷新时回到顶部 -->
+    <script>
+    (function() {
+        var isRefresh = window.performance && window.performance.navigation && window.performance.navigation.type === 1;
+        if (isRefresh && window.location.hash) {
+            history.replaceState(null, null, window.location.pathname);
+            window.scrollTo(0, 0);
+        }
+    })();
+    </script>
 
     <meta name="description" content="华创生电机是德昌电机(JOHNSON ELECTRIC)授权代理商，专注自动化与智能化驱动领域20年，提供直流电机、交流电机、步进电机、驱动系统等产品。">
 
@@ -3768,7 +3778,7 @@
 
             <nav class="nav">
 
-                <a href="#home" class="nav-link active">首页</a>
+                <a href="index.html" class="nav-link active">首页</a>
 
                 <a href="#about" class="nav-link">关于我们</a>
 
@@ -4654,7 +4664,7 @@
 
                     <ul>
 
-                        <li><a href="#home">首页</a></li>
+                        <li><a href="index.html">首页</a></li>
 
                         <li><a href="#about">关于我们</a></li>
 
