@@ -5272,40 +5272,13 @@
                     }
                 });
             });
-        });// ========== 搜索数据 ==========
-var SEARCH_DATA = [
-    {cat:"产品中心", title:"V4NC 直流电机", desc:"12V/24V直流电机，低噪音长寿命，适用于汽车车窗、座椅调节等"},
-    {cat:"产品中心", title:"DC971 无刷电机", desc:"高效无刷直流电机，集成驱动，控制精度高，适合汽车风扇、水泵等"},
-    {cat:"产品中心", title:"X4 齿轮电机", desc:"精密行星齿轮箱，低转速大力矩，汽车门锁、电动座椅专用"},
-    {cat:"产品中心", title:"NS246G 驱动系统", desc:"智能集成驱动系统，支持CAN总线通信，适合新能源汽车"},
-    {cat:"产品中心", title:"V4N 交流电机", desc:"交流感应电机，结构紧凑，可靠性高，适用电动工具、园林工具"},
-    {cat:"产品中心", title:"X3 步进电机", desc:"两相步进电机，低振动低噪音，适合打印机、自动化设备"},
-    {cat:"产品中心", title:"KC330FXLMG-120", desc:"大功率无刷直流电机，120W连续功率，适用电动工具、家用电器"},
-    {cat:"产品中心", title:"BTA_2EV_1 风机", desc:"汽车电子冷却风机，低功耗高风量，支持PWM调速"},
-    {cat:"产品中心", title:"MS-101 微动开关", desc:"标准型微动开关，寿命10万次，适用家用电器、工业控制"},
-    {cat:"产品中心", title:"MS-202 防水开关", desc:"IP67防水微动开关，适用卫浴设备、汽车门控"},
-    {cat:"产品中心", title:"MS-303 精密开关", desc:"高精度微动开关，触感清晰，寿命20万次，适用仪器仪表"},
-    {cat:"产品中心", title:"MS-404 工业开关", desc:"大电流工业微动开关，15A触点容量，适用工业设备"},
-    {cat:"关于我们", title:"德昌电机授权代理商", desc:"华创生电机是德昌电机（JOHNSON ELECTRIC）在中国地区的授权代理商，专业电机解决方案提供商"},
-    {cat:"关于我们", title:"专注自动化驱动20年", desc:"经过20年的发展，服务超过500家企业客户，产品广泛应用于汽车配件、家用电器、电动工具、工业自动化、医疗设备等领域"},
-    {cat:"新闻中心", title:"德昌电机发布新一代高效节能电机产品", desc:"德昌电机近日发布了新一代高效节能电机产品，采用全新设计，效率提升15%"},
-    {cat:"新闻中心", title:"华创生荣获2025年度优秀代理商", desc:"凭借出色的销售业绩和优质的客户服务，公司荣获德昌电机2025年度优秀代理商荣誉称号"},
-    {cat:"新闻中心", title:"新能源汽车行业快速发展", desc:"随着新能源汽车行业的快速发展，汽车电机市场需求持续增长，预计未来几年将保持高速增长态势"},
-    {cat:"联系我们", title:"联系方式", desc:"地址：深圳市南山区科技园，电话：400-XXX-XXXX，邮箱：info@huachuangsheng.com"},
-];
-
-function doSearch(query) {
-    if (!query || query.length < 1) return [];
-    var q = query.trim().toLowerCase();
-    return SEARCH_DATA
-        .filter(function(item) {
-            return item.title.toLowerCase().indexOf(q) >= 0 ||
-                   item.cat.toLowerCase().indexOf(q) >= 0 ||
-                   item.desc.toLowerCase().indexOf(q) >= 0;
-        })
-        .slice(0, 8);
-}
-
+        });
+</script>
+<!-- 搜索：Fuse.js + 外部数据 -->
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+<script src="data/products.js"></script>
+<script>
+// 使用 products.js 中的 doSearch
 function initNavSearch() {
     var input = document.getElementById('nav-search-input');
     var results = document.getElementById('nav-search-results');
@@ -5325,8 +5298,8 @@ function initNavSearch() {
             return;
         }
         var html = res.map(function(item) {
-            return '<a href="#products" class="ns-item">' +
-                '<span class="ns-cat">' + item.cat + '</span>' +
+            return '<a href="' + item.url + '" class="ns-item">' +
+                '<span class="ns-cat">' + item.subCat + '</span>' +
                 '<span class="ns-title">' + item.title + '</span>' +
                 '<span class="ns-desc">' + item.desc + '</span></a>';
         }).join('');
