@@ -5294,42 +5294,15 @@ var SEARCH_DATA = [
     {cat:"联系我们", title:"联系方式", desc:"地址：深圳市南山区科技园，电话：400-XXX-XXXX，邮箱：info@huachuangsheng.com"},
 ];
 
-function fuzzyMatch(str, query) {
-    if (!str) return -1;
-    str = str.toLowerCase();
-    query = query.toLowerCase();
-    if (str.indexOf(query) >= 0) return 1;
-    var qi = 0, score = 0, lastIdx = -1;
-    for (var i = 0; i < str.length && qi < query.length; i++) {
-        if (str[i] === query[qi]) {
-            if (i === lastIdx + 1) score += 2;
-            if (i === 0 || /[\s\-]/.test(str[i-1])) score += 3;
-            if (i <= 3) score += 5;
-            lastIdx = i;
-            qi++;
-        }
-    }
-    return qi === query.length ? score : 0;
-}
-
 function doSearch(query) {
     if (!query || query.length < 1) return [];
+    var q = query.trim().toLowerCase();
     return SEARCH_DATA
-        .map(function(item) {
-            var q = query.trim();
-            var s1 = fuzzyMatch(item.title, q);
-            var s2 = fuzzyMatch(item.cat, q);
-            var s3 = fuzzyMatch(item.desc, q);
-            var score = Math.max(s1, Math.max(s2, s3));
-            var matchField = 'title';
-            if (s2 >= s1 && s2 >= s3) matchField = 'cat';
-            else if (s3 >= s1) matchField = 'desc';
-            if (score <= 0) return null;
-            if (item.title.toLowerCase().indexOf(q) === 0) score += 50;
-            return { cat: item.cat, title: item.title, desc: item.desc, score: score, matchField: matchField };
+        .filter(function(item) {
+            return item.title.toLowerCase().indexOf(q) >= 0 ||
+                   item.cat.toLowerCase().indexOf(q) >= 0 ||
+                   item.desc.toLowerCase().indexOf(q) >= 0;
         })
-        .filter(Boolean)
-        .sort(function(a, b) { return b.score - a.score; })
         .slice(0, 8);
 }
 
@@ -5352,7 +5325,7 @@ function initNavSearch() {
             return;
         }
         var html = res.map(function(item) {
-            return '<a href="#products-motor" class="ns-item">' +
+            return '<a href="#products" class="ns-item">' +
                 '<span class="ns-cat">' + item.cat + '</span>' +
                 '<span class="ns-title">' + item.title + '</span>' +
                 '<span class="ns-desc">' + item.desc + '</span></a>';

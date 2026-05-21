@@ -1115,31 +1115,14 @@
             {cat:"微动开关", title:"微动开关系列", desc:"精密微动开关，寿命长，触点可靠", url:"products.html#tab-switch"}
         ];
 
-        function fuzzyMatch(str, query) {
-            if (!str) return -1;
-            str = str.toLowerCase();
-            query = query.toLowerCase();
-            if (str === query) return 100;
-            if (str.startsWith(query)) return 90;
-            if (str.includes(query)) return 80;
-            return -1;
-        }
-
         function doSearch(query) {
             if (!query || query.length < 1) return [];
-            var q = query.trim();
-            return SEARCH_DATA.map(function(item) {
-                var s1 = fuzzyMatch(item.title, q);
-                var s2 = fuzzyMatch(item.cat, q);
-                var s3 = fuzzyMatch(item.desc, q);
-                var score = Math.max(s1, Math.max(s2, s3));
-                if (score > 0) {
-                    return Object.assign({}, item, { score: score });
-                }
-                return null;
-            }).filter(function(item) { return item !== null; })
-                .sort(function(a, b) { return b.score - a.score; })
-                .slice(0, 10);
+            var q = query.trim().toLowerCase();
+            return SEARCH_DATA.filter(function(item) {
+                return item.title.toLowerCase().indexOf(q) >= 0 ||
+                       item.cat.toLowerCase().indexOf(q) >= 0 ||
+                       item.desc.toLowerCase().indexOf(q) >= 0;
+            }).slice(0, 10);
         }
 
         function initNavSearch() {
