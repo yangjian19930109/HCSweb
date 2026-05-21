@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
@@ -547,60 +547,6 @@
             text-align: left;
             color: #fff;
             max-width: 500px;
-        }
-
-        /* 页面标题 Banner（全宽深色风格，对齐 index.html） */
-        .page-banner {
-            position: relative;
-            width: calc(100% + 60px);
-            margin-left: -30px;
-            margin-right: -30px;
-            margin-bottom: 35px;
-            padding: 55px 40px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0f2944 100%);
-            border-bottom: 2px solid rgba(0,245,255,0.25);
-        }
-        .page-banner::before {
-            content: '';
-            position: absolute;
-            top: -80px;
-            right: -5%;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(0,245,255,0.08) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .page-banner::after {
-            content: '';
-            position: absolute;
-            bottom: -60px;
-            left: 10%;
-            width: 250px;
-            height: 250px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(212,168,75,0.06) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .page-banner-content {
-            position: relative;
-            z-index: 1;
-        }
-        .page-banner-title {
-            font-size: 36px;
-            font-weight: 700;
-            color: #fff;
-            font-family: 'Orbitron', 'Share Tech Mono', monospace;
-            margin-bottom: 12px;
-            letter-spacing: 3px;
-            text-shadow: 0 0 30px rgba(0,245,255,0.4), 0 2px 15px rgba(0,0,0,0.5);
-        }
-        .page-banner-subtitle {
-            font-size: 16px;
-            color: rgba(255,255,255,0.6);
-            margin: 0;
-            letter-spacing: 1px;
         }
 
         .banner-title {
@@ -2072,6 +2018,8 @@
     <header class="header">
         <div class="container">
             <a href="index.html" class="logo">
+                <span class="logo-icon">⚡</span>
+                <span>华创生电机</span>
             </a>
             <nav class="nav">
                 <a href="index.html#home" class="nav-link">首页</a>
@@ -2145,12 +2093,10 @@
                 <div 
 <div id="tab-motor" class="tab-panel active">
 
-                        <!-- 页面标题 Banner -->
-                        <div class="page-banner">
-                            <div class="page-banner-content">
-                                <h2 class="page-banner-title">其他车用马达</h2>
-                                <p class="page-banner-subtitle">分动箱电机、产检电机、天窗电机等非主流车用特种电机产品</p>
-                            </div>
+                        <!-- 页面标题 -->
+                        <div style="margin-bottom:30px;padding-bottom:20px;border-bottom:1px solid rgba(0,245,255,0.15)">
+                            <h2 style="font-size:28px;font-weight:600;color:#e0e0e0;font-family:'Orbitron',monospace;margin-bottom:8px">其他车用马达</h2>
+                            <p style="font-size:14px;color:rgba(255,255,255,0.5)">分动箱电机、产检电机、天窗电机等非主流车用特种电机产品</p>
                         </div>
 
                         <div class="product-card-grid-sidebar">
@@ -2177,31 +2123,5 @@
         <div class="float-btn wechat" id="wechatBtn" title="微信咨询">💬</div>
     </div>
 
-    <script>
-        function updateNavActive() {
-            var hash = window.location.hash;
-            var navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(function(link) {
-                link.classList.remove('active');
-                var href = link.getAttribute('href') || '';
-                if (hash) {
-                    if (href.endsWith(hash) || href === hash) {
-                        link.classList.add('active');
-                    }
-                } else {
-                    var url = window.location.href.split('/').pop().split('?')[0].split('#')[0];
-                    if (url.startsWith('product-') || url.startsWith('other-') || url.startsWith('throttle-') || url === 'products.html') {
-                        if (href.includes('products.html')) {
-                            link.classList.add('active');
-                        }
-                    } else if (href === 'index.html' || href === '#home') {
-                        link.classList.add('active');
-                    }
-                }
-            });
-        }
-        updateNavActive();
-        window.addEventListener('hashchange', updateNavActive);
-    </script>
 </body>
 </html>
