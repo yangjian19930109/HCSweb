@@ -202,7 +202,7 @@
 
             color: #00f5ff;
 
-            border-bottom-color: #ff2d78;
+            border-bottom: 2px solid #ff2d78;
 
             text-shadow: 0 0 8px rgba(0, 245, 255, 0.8);
 
@@ -4785,7 +4785,8 @@
                 // 默认高亮首页
                 navLinks.forEach(function(link) {
                     link.classList.remove('active');
-                    if (link.getAttribute('href') === '#home' || link.getAttribute('href') === '#') {
+                    var href = link.getAttribute('href');
+                    if (href === '#home' || href === '#' || href === 'index.html' || href === '') {
                         link.classList.add('active');
                     }
                 });
