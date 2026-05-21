@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html lang="zh-CN">
 
@@ -42,8 +42,6 @@
 
         }
 
-
-
         body {
 
             font-family: "Share Tech Mono", "Orbitron", "Microsoft YaHei", monospace;
@@ -56,8 +54,6 @@
 
         }
 
-
-
         .container {
 
             max-width: 1200px;
@@ -69,8 +65,6 @@
             position: relative;
 
         }
-
-
 
         /* 顶部导航 */
 
@@ -94,8 +88,6 @@
 
         }
 
-
-
         .header .container {
 
             display: flex;
@@ -108,11 +100,10 @@
 
             position: relative;
 
-            height: 80px;
+            min-height: 80px;
+            box-sizing: border-box;
 
         }
-
-
 
         .logo {
 
@@ -140,15 +131,11 @@
 
         }
 
-
-
         .logo-icon {
 
             font-size: 32px;
 
         }
-
-
 
         .nav {
 
@@ -162,9 +149,6 @@
         .nav-spacer {
             flex: 1;
         }
-
-
-
 
         .nav-link {
 
@@ -196,23 +180,19 @@
 
         }
 
-
-
         .nav-link:hover,
-
         .nav-link.active {
+            position: relative;
 
             color: #00f5ff;
 
-            border-bottom: 3px solid #ff2d78;
+            border-bottom: 3px solid #00f5ff;
 
             text-shadow: 0 0 12px rgba(0, 245, 255, 1), 0 0 24px rgba(0, 245, 255, 0.5);
 
             letter-spacing: 3px;
 
         }
-
-
 
         .mobile-menu-btn {
 
@@ -231,8 +211,6 @@
             right: 10px;
 
         }
-
-
 
         /* Banner 轮播区域 */
 
@@ -256,8 +234,6 @@
 
         }
 
-
-
         /* 左侧深色区域 */
 
         .banner-left {
@@ -275,8 +251,6 @@
             justify-content: center;
 
         }
-
-
 
         /* 右侧黄色区域 */
 
@@ -296,8 +270,6 @@
 
         }
 
-
-
         .banner-slider {
 
             position: relative;
@@ -309,8 +281,6 @@
             display: flex;
 
         }
-
-
 
         .banner-slide {
 
@@ -338,15 +308,11 @@
 
         }
 
-
-
         .banner-slide.active {
 
             opacity: 1;
 
         }
-
-
 
         .banner-slide-bg {
 
@@ -368,8 +334,6 @@
 
         }
 
-
-
         /* 左侧深色背景 - 半透明深蓝遮罩，右边缘渐变过渡 */
 
         .banner-dark-bg {
@@ -381,8 +345,6 @@
             position: relative;
 
         }
-
-
 
         .banner-dark-bg::before {
 
@@ -406,8 +368,6 @@
 
         }
 
-
-
         /* 右侧黄色背景 - 半透明金色遮罩，左边缘渐变过渡 */
 
         .banner-gold-bg {
@@ -426,8 +386,6 @@
 
         }
 
-
-
         /* 六边形蜂巢网格 - Banner右侧 (7个正六边形：中心1+周围6) */
 
         /* 六边形蜂巢 - 7个flat-top环绕排列 (黄金比例放大版×1.25) */
@@ -438,21 +396,15 @@
 
            几何: W=183, H=158 (flat-top, clip-path六角形)
 
-           
-
            蜂巢标准排列(严丝合缝gap=0时):
 
              上/下邻: dy = H = 158
 
              斜邻:    dx = W*3/4 = 137.25, dy = H/2 = 79
 
-           
-
            目标: 所有相邻边之间缝隙 = 8px均匀
 
            边框: ::before inset:-4px 金色渐变(双边框共8px=缝隙宽)
-
-           
 
            有gap时的位移增量:
 
@@ -461,8 +413,6 @@
              斜向: delta_x = W*3/4 + gap*cos30° = 137.25 + 6.93 = 144.18 ≈ 144
 
                     delta_y = H/2   + gap*sin30° = 79 + 4 = 83
-
-           
 
            中心#1位置: 容器中心偏移到六边形中心
 
@@ -482,8 +432,6 @@
 
         }
 
-
-
         .banner-product-item {
 
             width: 183px;
@@ -501,8 +449,6 @@
             cursor: pointer;
 
         }
-
-
 
         /* 金色边框: 伪元素撑大4px后裁剪叠加 */
 
@@ -522,8 +468,6 @@
 
         }
 
-
-
         .banner-product-item img {
 
             width: 100%;
@@ -538,8 +482,6 @@
 
         }
 
-
-
         .banner-product-item:hover {
 
             transform: translate(var(--tx), var(--ty)) scale(1.15) !important;
@@ -550,19 +492,13 @@
 
         }
 
-
-
         /* 放大1.15倍完全覆盖8px缝隙，并超出边框 */
-
-
 
         .banner-product-item:hover::before {
 
             background: linear-gradient(135deg, #00a8cc, #005d73, #00a8cc) !important;
 
         }
-
-
 
         /*
 
@@ -598,8 +534,6 @@
 
         /* #7 左上  */ .banner-product-item:nth-child(7) { --tx:  -0.5px; --ty:  83px; transform: translate( -0.5px,  83px); z-index: 6; }
 
-
-
         /* 电机背景图形 */
 
         .banner-motor-bg {
@@ -618,8 +552,6 @@
 
         }
 
-
-
         /* 齿轮图形 */
 
         .motor-gear {
@@ -633,8 +565,6 @@
             box-shadow: 0 0 20px rgba(0, 245, 255, 0.15), inset 0 0 15px rgba(0, 245, 255, 0.08);
 
         }
-
-
 
         .motor-gear::before {
 
@@ -654,8 +584,6 @@
 
         }
 
-
-
         .gear-1 {
 
             width: 400px;
@@ -670,8 +598,6 @@
 
         }
 
-
-
         .gear-1::before {
 
             width: 300px;
@@ -679,8 +605,6 @@
             height: 300px;
 
         }
-
-
 
         .gear-2 {
 
@@ -696,8 +620,6 @@
 
         }
 
-
-
         .gear-2::before {
 
             width: 220px;
@@ -705,8 +627,6 @@
             height: 220px;
 
         }
-
-
 
         .gear-3 {
 
@@ -722,8 +642,6 @@
 
         }
 
-
-
         .gear-3::before {
 
             width: 140px;
@@ -731,8 +649,6 @@
             height: 140px;
 
         }
-
-
 
         /* 电机线圈 */
 
@@ -758,8 +674,6 @@
 
         }
 
-
-
         .motor-coil::before,
 
         .motor-coil::after {
@@ -780,8 +694,6 @@
 
         }
 
-
-
         .motor-coil::before {
 
             width: 280px;
@@ -789,8 +701,6 @@
             height: 280px;
 
         }
-
-
 
         .motor-coil::after {
 
@@ -801,8 +711,6 @@
             border: 2px solid rgba(0, 168, 255, 0.06);
 
         }
-
-
 
         /* 电路线条 */
 
@@ -820,17 +728,7 @@
 
         }
 
-
-
         /* 竖直圆柱形磁铁 - Slide 2 */
-
-        
-
-
-
-        
-
-
 
         .cylinder-n {
 
@@ -844,32 +742,6 @@
 
         }
 
-
-
-        
-
-
-
-        
-
-
-
-        
-
-
-
-        
-
-
-
-        
-
-
-
-        
-
-
-
         .field-path-animated:nth-child(odd) {
 
             animation-duration: 2.5s;
@@ -878,27 +750,15 @@
 
         }
 
-
-
-        
-
             100% { stroke-dashoffset: 0; }
 
         }
-
-
 
         .field-arrow {
 
             fill: rgba(100, 180, 255, 0.8);
 
         }
-
-
-
-
-
-
 
         .circuit-lines span {
 
@@ -912,8 +772,6 @@
 
         }
 
-
-
         .circuit-lines span:nth-child(1) {
 
             width: 300px;
@@ -925,8 +783,6 @@
             transform: rotate(-15deg);
 
         }
-
-
 
         .circuit-lines span:nth-child(2) {
 
@@ -940,8 +796,6 @@
 
         }
 
-
-
         .circuit-lines span:nth-child(3) {
 
             width: 200px;
@@ -953,8 +807,6 @@
             transform: rotate(5deg);
 
         }
-
-
 
         .circuit-lines span:nth-child(4) {
 
@@ -969,8 +821,6 @@
         }
 
         /* 定子 */
-
-
 
         /* 转子 */
 
@@ -996,8 +846,6 @@
 
         }
 
-
-
         .motor-rotor::before {
 
             content: '';
@@ -1019,8 +867,6 @@
             border-radius: 50%;
 
         }
-
-
 
         .motor-stator {
 
@@ -1044,8 +890,6 @@
 
         }
 
-
-
         /* 磁场线 */
 
         .magnetic-field span {
@@ -1066,8 +910,6 @@
 
         }
 
-
-
         .magnetic-field span:nth-child(1) {
 
             width: 500px;
@@ -1077,8 +919,6 @@
             animation-delay: 0s;
 
         }
-
-
 
         .magnetic-field span:nth-child(2) {
 
@@ -1090,8 +930,6 @@
 
         }
 
-
-
         .magnetic-field span:nth-child(3) {
 
             width: 700px;
@@ -1101,8 +939,6 @@
             animation-delay: 2.6s;
 
         }
-
-
 
         /* 脉冲效果 */
 
@@ -1128,8 +964,6 @@
 
         }
 
-
-
         /* 能量波 */
 
         .energy-waves span {
@@ -1152,8 +986,6 @@
 
         }
 
-
-
         .energy-waves span:nth-child(1) { animation-delay: 0s; }
 
         .energy-waves span:nth-child(2) { animation-delay: 0.75s; }
@@ -1161,8 +993,6 @@
         .energy-waves span:nth-child(3) { animation-delay: 1.5s; }
 
         .energy-waves span:nth-child(4) { animation-delay: 2.25s; }
-
-
 
         @keyframes rotate {
 
@@ -1172,8 +1002,6 @@
 
         }
 
-
-
         @keyframes btn-in {
 
             0%   { opacity: 0; transform: translateY(15px); }
@@ -1181,8 +1009,6 @@
             100% { opacity: 1; transform: translateY(0); }
 
         }
-
-
 
         @keyframes pulse-rotate {
 
@@ -1192,8 +1018,6 @@
 
         }
 
-
-
         @keyframes pulse {
 
             0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
@@ -1201,8 +1025,6 @@
             50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.5; }
 
         }
-
-
 
         @keyframes energy-wave {
 
@@ -1216,8 +1038,6 @@
 
         }
 
-
-
         @keyframes magnetic-pulse {
 
             0%   { opacity: 0;    transform: translate(-50%, -50%) scale(0.8); border-color: rgba(0, 245, 255, 0.8); }
@@ -1229,8 +1049,6 @@
             100% { opacity: 0;   transform: translate(-50%, -50%) scale(1.2); }
 
         }
-
-
 
         .banner-content {
 
@@ -1251,8 +1069,6 @@
             max-width: 500px;
 
         }
-
-
 
         .banner-title {
 
@@ -1276,8 +1092,6 @@
 
         }
 
-
-
         @keyframes title-glow {
 
             0%   { opacity: 0; transform: translateY(30px) scale(0.95); }
@@ -1287,8 +1101,6 @@
             100% { opacity: 1; transform: translateY(0) scale(1); text-shadow: 0 0 20px rgba(0,245,255,0.8), 0 0 40px rgba(0,245,255,0.4), 0 0 60px rgba(0,245,255,0.2); }
 
         }
-
-
 
         .banner-subtitle {
 
@@ -1308,8 +1120,6 @@
 
         }
 
-
-
         @keyframes subtitle-in {
 
             0%   { opacity: 0; transform: translateY(20px); }
@@ -1317,8 +1127,6 @@
             100% { opacity: 0.85; transform: translateY(0); }
 
         }
-
-
 
         .banner-btn {
 
@@ -1356,8 +1164,6 @@
 
         }
 
-
-
         .banner-btn:hover {
 
             background: rgba(0, 245, 255, 0.15);
@@ -1369,8 +1175,6 @@
             text-shadow: 0 0 10px rgba(0, 245, 255, 1);
 
         }
-
-
 
         /* 轮播控制 */
 
@@ -1392,8 +1196,6 @@
 
         }
 
-
-
         .banner-dot {
 
             width: 12px;
@@ -1414,8 +1216,6 @@
 
         }
 
-
-
         .banner-dot.active {
 
             background: #00f5ff;
@@ -1425,8 +1225,6 @@
             box-shadow: 0 0 10px rgba(0, 245, 255, 0.8), 0 0 20px rgba(0, 245, 255, 0.4);
 
         }
-
-
 
         .banner-arrows {
 
@@ -1449,8 +1247,6 @@
             z-index: 10;
 
         }
-
-
 
         .banner-arrow {
 
@@ -1484,8 +1280,6 @@
 
         }
 
-
-
         .banner-arrow:hover {
 
             background: rgba(0, 245, 255, 0.2);
@@ -1495,8 +1289,6 @@
             box-shadow: 0 0 20px rgba(0, 245, 255, 0.5);
 
         }
-
-
 
         /* 统计区域 */
 
@@ -1515,8 +1307,6 @@
             position: relative;
 
         }
-
-
 
         .stats-section::before {
 
@@ -1546,8 +1336,6 @@
 
         }
 
-
-
         .stats-grid {
 
             display: grid;
@@ -1560,15 +1348,11 @@
 
         }
 
-
-
         .stat-item {
 
             padding: 20px;
 
         }
-
-
 
         .stat-number {
 
@@ -1586,8 +1370,6 @@
 
         }
 
-
-
         .stat-label {
 
             font-size: 16px;
@@ -1595,8 +1377,6 @@
             opacity: 0.9;
 
         }
-
-
 
         /* 通用区域标题 */
 
@@ -1607,8 +1387,6 @@
             margin-bottom: 50px;
 
         }
-
-
 
         .section-title {
 
@@ -1628,8 +1406,6 @@
 
         }
 
-
-
         .section-subtitle {
 
             font-size: 16px;
@@ -1637,8 +1413,6 @@
             color: rgba(255,255,255,0.5);
 
         }
-
-
 
         /* 关于我们 */
 
@@ -1649,8 +1423,6 @@
             background: #050810;
 
         }
-
-
 
         .about-content {
 
@@ -1663,8 +1435,6 @@
             align-items: center;
 
         }
-
-
 
         .about-text h3 {
 
@@ -1680,8 +1450,6 @@
 
         }
 
-
-
         .about-text p {
 
             font-size: 16px;
@@ -1694,15 +1462,11 @@
 
         }
 
-
-
         .about-image {
 
             position: relative;
 
         }
-
-
 
         /* 产品区域 - 六边形蜂巢布局 */
 
@@ -1717,8 +1481,6 @@
             position: relative;
 
         }
-
-
 
         .products-section::before {
 
@@ -1736,8 +1498,6 @@
 
         }
 
-
-
         .products-section .section-title {
 
             color: #ff2d78;
@@ -1750,8 +1510,6 @@
 
         }
 
-
-
         .products-section .section-subtitle {
 
             color: rgba(255,255,255,0.5);
@@ -1761,8 +1519,6 @@
             margin-bottom: 50px;
 
         }
-
-
 
         /* 六边形网格 */
 
@@ -1784,8 +1540,6 @@
 
         }
 
-
-
         .hex {
 
             display: flex;
@@ -1796,8 +1550,6 @@
 
         }
 
-
-
         .hex-inner {
 
             width: 160px;
@@ -1807,8 +1559,6 @@
             position: relative;
 
         }
-
-
 
         /* 六边形使用 clip-path 创建 */
 
@@ -1834,8 +1584,6 @@
 
         }
 
-
-
         .hex:hover .hex-content {
 
             background: linear-gradient(135deg, #ff2d78, #8b5cf6, #00f5ff);
@@ -1846,8 +1594,6 @@
 
         }
 
-
-
         .hex-content img {
 
             width: 100%;
@@ -1857,8 +1603,6 @@
             object-fit: cover;
 
         }
-
-
 
         .hex-label {
 
@@ -1876,8 +1620,6 @@
 
         }
 
-
-
         /* 响应式六边形 */
 
         @media (max-width: 768px) {
@@ -1890,15 +1632,11 @@
 
             }
 
-            
-
             .hex-grid {
 
                 gap: 15px 20px;
 
             }
-
-            
 
             .hex-label {
 
@@ -1909,8 +1647,6 @@
             }
 
         }
-
-
 
         @media (max-width: 480px) {
 
@@ -1924,15 +1660,11 @@
 
         }
 
-
-
         .clear {
 
             clear: both;
 
         }
-
-
 
         /* 新闻资讯 */
 
@@ -1944,8 +1676,6 @@
 
         }
 
-
-
         .news-grid {
 
             display: grid;
@@ -1955,8 +1685,6 @@
             gap: 40px;
 
         }
-
-
 
         .news-featured {
 
@@ -1969,8 +1697,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 
         }
-
-
 
         .news-featured-content {
 
@@ -1990,8 +1716,6 @@
 
         }
 
-
-
         .news-featured-content h3 {
 
             font-size: 20px;
@@ -2000,8 +1724,6 @@
 
         }
 
-
-
         .news-featured-content .date {
 
             font-size: 14px;
@@ -2009,8 +1731,6 @@
             opacity: 0.8;
 
         }
-
-
 
         .news-list {
 
@@ -2021,8 +1741,6 @@
             gap: 20px;
 
         }
-
-
 
         .news-item {
 
@@ -2048,8 +1766,6 @@
 
         }
 
-
-
         .news-item:hover {
 
             box-shadow: 0 4px 20px rgba(0, 245, 255, 0.2), 0 0 30px rgba(0, 245, 255, 0.1);
@@ -2059,8 +1775,6 @@
             transform: translateY(-2px);
 
         }
-
-
 
         .news-item-image {
 
@@ -2084,15 +1798,11 @@
 
         }
 
-
-
         .news-item-content {
 
             flex: 1;
 
         }
-
-
 
         .news-item-content h4 {
 
@@ -2108,8 +1818,6 @@
 
         }
 
-
-
         .news-item-content .date {
 
             font-size: 13px;
@@ -2117,8 +1825,6 @@
             color: #999;
 
         }
-
-
 
         .news-item-content .summary {
 
@@ -2140,8 +1846,6 @@
 
         }
 
-
-
         /* 客户区域 */
 
         .clients-section {
@@ -2156,8 +1860,6 @@
 
         }
 
-
-
         .clients-grid {
 
             display: flex;
@@ -2171,8 +1873,6 @@
             flex-wrap: wrap;
 
         }
-
-
 
         .client-logo {
 
@@ -2200,8 +1900,6 @@
 
         }
 
-
-
         .client-logo:hover {
 
             background: rgba(0, 245, 255, 0.1);
@@ -2213,8 +1911,6 @@
             box-shadow: 0 0 15px rgba(0, 245, 255, 0.2);
 
         }
-
-
 
         /* 联系区域 */
 
@@ -2231,8 +1927,6 @@
             position: relative;
 
         }
-
-
 
         .contact-section::before {
 
@@ -2252,23 +1946,17 @@
 
         }
 
-
-
         .contact-section .section-title {
 
             color: #fff;
 
         }
 
-
-
         .contact-section .section-subtitle {
 
             color: rgba(255,255,255,0.8);
 
         }
-
-
 
         .contact-grid {
 
@@ -2280,8 +1968,6 @@
 
         }
 
-
-
         .contact-info h3 {
 
             font-size: 24px;
@@ -2289,8 +1975,6 @@
             margin-bottom: 30px;
 
         }
-
-
 
         .contact-item {
 
@@ -2303,8 +1987,6 @@
             margin-bottom: 25px;
 
         }
-
-
 
         .contact-item-icon {
 
@@ -2328,8 +2010,6 @@
 
         }
 
-
-
         .contact-item-content h4 {
 
             font-size: 16px;
@@ -2340,8 +2020,6 @@
 
         }
 
-
-
         .contact-item-content p {
 
             font-size: 14px;
@@ -2351,8 +2029,6 @@
             line-height: 1.6;
 
         }
-
-
 
         .contact-form {
 
@@ -2368,8 +2044,6 @@
 
         }
 
-
-
         .contact-form h3 {
 
             color: #00f5ff;
@@ -2384,15 +2058,11 @@
 
         }
 
-
-
         .form-group {
 
             margin-bottom: 20px;
 
         }
-
-
 
         .form-group label {
 
@@ -2407,8 +2077,6 @@
             font-family: "Share Tech Mono", monospace;
 
         }
-
-
 
         .form-group input,
 
@@ -2432,8 +2100,6 @@
 
         }
 
-
-
         .form-group input:focus,
 
         .form-group textarea:focus {
@@ -2446,8 +2112,6 @@
 
         }
 
-
-
         .form-group textarea {
 
             min-height: 120px;
@@ -2455,8 +2119,6 @@
             resize: vertical;
 
         }
-
-
 
         .submit-btn {
 
@@ -2488,8 +2150,6 @@
 
         }
 
-
-
         .submit-btn:hover {
 
             background: rgba(0, 245, 255, 0.15);
@@ -2499,8 +2159,6 @@
             text-shadow: 0 0 10px rgba(0, 245, 255, 1);
 
         }
-
-
 
         /* 页脚 */
 
@@ -2516,8 +2174,6 @@
 
         }
 
-
-
         .footer-grid {
 
             display: grid;
@@ -2529,8 +2185,6 @@
             margin-bottom: 40px;
 
         }
-
-
 
         .footer-brand h3 {
 
@@ -2546,8 +2200,6 @@
 
         }
 
-
-
         .footer-brand p {
 
             font-size: 14px;
@@ -2557,8 +2209,6 @@
             line-height: 1.8;
 
         }
-
-
 
         .footer-column h4 {
 
@@ -2570,23 +2220,17 @@
 
         }
 
-
-
         .footer-column ul {
 
             list-style: none;
 
         }
 
-
-
         .footer-column li {
 
             margin-bottom: 10px;
 
         }
-
-
 
         .footer-column a {
 
@@ -2600,8 +2244,6 @@
 
         }
 
-
-
         .footer-column a:hover {
 
             color: #00f5ff;
@@ -2609,8 +2251,6 @@
             text-shadow: 0 0 8px rgba(0, 245, 255, 0.8);
 
         }
-
-
 
         .footer-bottom {
 
@@ -2625,8 +2265,6 @@
             font-size: 14px;
 
         }
-
-
 
         /* 悬浮按钮 */
 
@@ -2647,8 +2285,6 @@
             gap: 15px;
 
         }
-
-
 
         .float-btn {
 
@@ -2678,15 +2314,11 @@
 
         }
 
-
-
         .float-btn:hover {
 
             transform: scale(1.1);
 
         }
-
-
 
         .float-btn.phone {
 
@@ -2700,15 +2332,11 @@
 
         }
 
-
-
         .float-btn.wechat {
 
             background: #22c55e;
 
         }
-
-
 
         /* 微信弹窗 */
 
@@ -2736,15 +2364,11 @@
 
         }
 
-
-
         .wechat-modal.active {
 
             display: flex;
 
         }
-
-
 
         .wechat-modal-content {
 
@@ -2764,8 +2388,6 @@
 
         }
 
-
-
         .wechat-modal-content h3 {
 
             margin-bottom: 20px;
@@ -2775,8 +2397,6 @@
             font-family: "Orbitron", monospace;
 
         }
-
-
 
         .wechat-qr {
 
@@ -2800,8 +2420,6 @@
 
         }
 
-
-
         .close-modal {
 
             background: transparent;
@@ -2822,8 +2440,6 @@
 
         }
 
-
-
         .close-modal:hover {
 
             background: rgba(0, 245, 255, 0.15);
@@ -2831,8 +2447,6 @@
             box-shadow: 0 0 15px rgba(0, 245, 255, 0.4);
 
         }
-
-
 
         /* 响应式设计 */
 
@@ -2844,8 +2458,6 @@
 
             }
 
-            
-
             .stats-grid {
 
                 grid-template-columns: repeat(2, 1fr);
@@ -2853,8 +2465,6 @@
             }
 
         }
-
-
 
         @media (max-width: 768px) {
 
@@ -2880,15 +2490,11 @@
 
             }
 
-
-
             .nav.active {
 
                 display: flex;
 
             }
-
-
 
             .nav-link {
 
@@ -2902,15 +2508,11 @@
 
             }
 
-
-
             .mobile-menu-btn {
 
                 display: block;
 
             }
-
-
 
             .banner {
 
@@ -2920,15 +2522,11 @@
 
             }
 
-
-
             .banner-left {
 
                 min-height: 400px;
 
             }
-
-
 
             .banner-right {
 
@@ -2938,8 +2536,6 @@
 
             }
 
-
-
             .banner-content {
 
                 left: 30px;
@@ -2948,23 +2544,17 @@
 
             }
 
-
-
             .banner-title {
 
                 font-size: 32px;
 
             }
 
-
-
             .banner-subtitle {
 
                 font-size: 16px;
 
             }
-
-
 
             .banner-product-grid {
 
@@ -2974,8 +2564,6 @@
 
             }
 
-
-
             .banner-product-item {
 
                 width: 113px;
@@ -2983,8 +2571,6 @@
                 height: 98px;
 
             }
-
-
 
             /* 响应式: flat-top 蜂巢 W=113 H=98, 缝隙≈4px(双边框) */
 
@@ -2996,8 +2582,6 @@
 
             }
 
-
-
             .banner-product-item:hover {
 
                 transform: translate(var(--tx), var(--ty)) scale(1.15) !important;
@@ -3005,8 +2589,6 @@
                 filter: brightness(1.1);
 
             }
-
-
 
             .banner-product-item:nth-child(1) { --tx:  88px; --ty: 101px; transform: translate( 88px, 101px); }
 
@@ -3022,23 +2604,17 @@
 
             .banner-product-item:nth-child(7) { --tx:   2px; --ty:  52px; transform: translate(  2px,  52px); z-index: 6; }
 
-
-
             .stats-grid {
 
                 grid-template-columns: repeat(2, 1fr);
 
             }
 
-
-
             .stat-number {
 
                 font-size: 32px;
 
             }
-
-
 
             .about-content,
 
@@ -3050,23 +2626,17 @@
 
             }
 
-
-
             .products-grid {
 
                 grid-template-columns: 1fr;
 
             }
 
-
-
             .footer-grid {
 
                 grid-template-columns: 1fr 1fr;
 
             }
-
-
 
             .section-title {
 
@@ -3076,8 +2646,6 @@
 
         }
 
-
-
         @media (max-width: 480px) {
 
             .stats-grid {
@@ -3086,15 +2654,11 @@
 
             }
 
-
-
             .footer-grid {
 
                 grid-template-columns: 1fr;
 
             }
-
-
 
             .banner-arrows {
 
@@ -3103,8 +2667,6 @@
             }
 
         }
-
-    
 
 /* ========== 产品中心下拉菜单 ========== */
 
@@ -3252,8 +2814,6 @@
 
 }
 
-
-
 /* Mobile responsive */
 
 @media (max-width: 768px) {
@@ -3295,9 +2855,6 @@
     }
 
 }
-
-
-
 
 /* ========== 导航栏搜索框 ========== */
 .nav-search {
@@ -3445,8 +3002,6 @@
 
         }
 
-    
-
 /* ========== 产品中心下拉菜单 ========== */
 
 .nav-dropdown {
@@ -3573,8 +3128,6 @@
 
 }
 
-
-
 /* Mobile responsive */
 
 @media (max-width: 768px) {
@@ -3617,23 +3170,11 @@
 
 }
 
-
-
-
-
         /* ======== 3D 磁铁磁感线 CSS ======== */
-
-        
-
-        
 
         /* 静态磁感线 */
 
-        
-
         /* 动画磁感线 */
-
-        
 
         .fpa:nth-child(odd) {
 
@@ -3651,17 +3192,11 @@
 
         }
 
-        
-
             100% { stroke-dashoffset: 0; }
 
         }
 
         /* 圆柱磁铁 */
-
-        
-
-
 
         /* ======== 3D磁感线 CSS ======== */
 
@@ -3747,12 +3282,7 @@
 
         /* 隐藏旧的圆柱磁铁div */
 
-        
-
-
-
         .cylinder-magnet { display: none !important; }
-
 
 /* 锚点跳转偏移，防止被导航栏遮挡 */
 #about, #contact {
@@ -3815,8 +3345,6 @@
         </div>
 
     </header>
-
-
 
     <!-- Banner 轮播 -->
 
@@ -3896,8 +3424,6 @@
 
                         <div class="banner-motor-bg">
 
-                            
-
                             <div class="magnetic-field-lines">
 
                             <svg viewBox="-26.085 50 652.17 687.83" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
@@ -3928,12 +3454,6 @@
 
                                 </defs><g>
 
-                                
-
-                                
-
-                                
-
                                 <path class="fpa" d="M 300 430 C 380 520 480 340 480 260 Q 480 80 300 170" fill="none" stroke="rgba(80,180,255,0.4)" stroke-width="1.8" stroke-dasharray="8 6" stroke-linecap="round"/>
 
                                 <path class="fpa" d="M 300 430 C 220 520 120 340 120 260 Q 120 80 300 170" fill="none" stroke="rgba(80,180,255,0.4)" stroke-width="1.8" stroke-dasharray="8 6" stroke-linecap="round"/>
@@ -3958,22 +3478,6 @@
 
                                 <path class="fpa" d="M 300 170 C 180 30 60 300 60 380 Q 60 560 300 430" fill="none" stroke="rgba(100,200,255,0.45)" stroke-width="2.0" stroke-dasharray="10 5" stroke-linecap="round" filter="url(#glow)"/>
 
-                                
-
-                                
-
-                                
-
-                                
-
-                                
-
-                                
-
-                                
-
-                                
-
                                 <path class="fpa" d="M 300 170 C 475 162 475 438 300 430" fill="none" stroke="rgba(120,210,255,0.38)" stroke-width="1.8" stroke-dasharray="12 6" stroke-linecap="round"/>
 
                                 <path class="fpa" d="M 300 170 C 125 162 125 438 300 430" fill="none" stroke="rgba(120,210,255,0.38)" stroke-width="1.8" stroke-dasharray="12 6" stroke-linecap="round"/>
@@ -3982,17 +3486,9 @@
 
                                 <path class="fpa" d="M 300 170 C 125 178 125 422 300 430" fill="none" stroke="rgba(120,210,255,0.38)" stroke-width="1.8" stroke-dasharray="12 6" stroke-linecap="round"/>
 
-                                
-
-                                
-
                                 <path class="fpa" d="M 300 170 C 420 178 420 422 300 430" fill="none" stroke="rgba(120,210,255,0.55)" stroke-width="2.2" stroke-dasharray="14 5" stroke-linecap="round" filter="url(#glow)"/>
 
                                 <path class="fpa" d="M 300 170 C 180 178 180 422 300 430" fill="none" stroke="rgba(120,210,255,0.55)" stroke-width="2.2" stroke-dasharray="14 5" stroke-linecap="round" filter="url(#glow)"/>
-
-                                
-
-                                
 
                                 <path class="fpa" d="M 300 170 C 370 178 370 422 300 430" fill="none" stroke="rgba(120,210,255,0.75)" stroke-width="2.8" stroke-dasharray="16 4" stroke-linecap="round" filter="url(#glow)"/>
 
@@ -4114,8 +3610,6 @@
 
         </div>
 
-        
-
         <!-- 轮播控制 -->
 
         <div class="banner-dots">
@@ -4128,8 +3622,6 @@
 
         </div>
 
-        
-
         <div class="banner-arrows">
 
             <div class="banner-arrow banner-prev">‹</div>
@@ -4139,8 +3631,6 @@
         </div>
 
     </section>
-
-
 
     <!-- 统计数据 -->
 
@@ -4188,8 +3678,6 @@
 
     </section>
 
-
-
     <!-- 关于我们 -->
 
     <section id="about" class="about-section">
@@ -4233,8 +3721,6 @@
         </div>
 
     </section>
-
-
 
     <!-- 产品展示 - 六边形蜂巢布局 -->
 
@@ -4380,8 +3866,6 @@
 
     </section>
 
-
-
     <!-- 新闻资讯 -->
 
     <section id="news" class="news-section">
@@ -4474,8 +3958,6 @@
 
     </section>
 
-
-
     <!-- 合作客户 -->
 
     <section class="clients-section">
@@ -4507,8 +3989,6 @@
         </div>
 
     </section>
-
-
 
     <!-- 联系我们 -->
 
@@ -4638,8 +4118,6 @@
 
     </section>
 
-
-
     <!-- 页脚 -->
 
     <footer class="footer">
@@ -4722,8 +4200,6 @@
 
     </footer>
 
-
-
     <!-- 悬浮按钮 -->
 
     <div class="float-buttons">
@@ -4733,8 +4209,6 @@
         <div class="float-btn wechat" id="wechatBtn" title="微信咨询">💬</div>
 
     </div>
-
-
 
     <!-- 微信二维码弹窗 -->
 
@@ -4756,38 +4230,28 @@
 
     </div>
 
-
-
     <script>
 
-        
-        // 页面加载时初始化导航 active（基于 URL hash，消除跳转闪烁）
+        // 页面加载时初始化导航 active（首页默认高亮，hash 仅用于滚动定位）
         (function initActiveOnLoad() {
-            var hash = window.location.hash;
             var navLinks = document.querySelectorAll('.nav-link');
-            // 如果有 hash，找到对应链接高亮；否则默认"首页"
+            // 默认高亮首页
+            navLinks.forEach(function(link) {
+                link.classList.remove('active');
+                var href = link.getAttribute('href');
+                if (href === '#home' || href === '#' || href === 'index.html' || href === '') {
+                    link.classList.add('active');
+                }
+            });
+            // 如果有 hash，滚动到对应锚点（但不改变首页高亮）
+            var hash = window.location.hash;
             if (hash) {
-                navLinks.forEach(function(link) {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href') === hash) {
-                        link.classList.add('active');
-                    }
-                });
-                // 如果是锚点（站内 section），立即滚动到位
                 var target = document.querySelector(hash);
                 if (target) {
                     var headerHeight = document.querySelector('.header').offsetHeight;
                     window.scrollTo({ top: target.offsetTop - headerHeight, behavior: 'instant' });
                 }
             } else {
-                // 默认高亮首页
-                navLinks.forEach(function(link) {
-                    link.classList.remove('active');
-                    var href = link.getAttribute('href');
-                    if (href === '#home' || href === '#' || href === 'index.html' || href === '') {
-                        link.classList.add('active');
-                    }
-                });
                 window.scrollTo(0, 0);
             }
         })();
@@ -4802,8 +4266,6 @@
 
             const nav = document.querySelector('.nav');
 
-            
-
             if (mobileMenuBtn) {
 
                 mobileMenuBtn.addEventListener('click', function() {
@@ -4815,8 +4277,6 @@
                 });
 
             }
-
-            
 
             // 导航链接点击后关闭移动端菜单
 
@@ -4834,8 +4294,6 @@
 
                     }
 
-                    
-
                     // 更新活动状态
 
                     navLinks.forEach(l => l.classList.remove('active'));
@@ -4845,8 +4303,6 @@
                 });
 
             });
-
-            
 
             // Banner 轮播功能
 
@@ -4862,8 +4318,6 @@
 
             let slideInterval;
 
-            
-
             function showSlide(index) {
 
                 slides.forEach((slide, i) => {
@@ -4874,8 +4328,6 @@
 
                 });
 
-                
-
                 slides[index].classList.add('active');
 
                 dots[index].classList.add('active');
@@ -4883,8 +4335,6 @@
                 currentSlide = index;
 
             }
-
-            
 
             function nextSlide() {
 
@@ -4894,8 +4344,6 @@
 
             }
 
-            
-
             function prevSlide() {
 
                 const prev = (currentSlide - 1 + slides.length) % slides.length;
@@ -4903,8 +4351,6 @@
                 showSlide(prev);
 
             }
-
-            
 
             // 自动轮播
 
@@ -4914,15 +4360,11 @@
 
             }
 
-            
-
             function stopSlideShow() {
 
                 clearInterval(slideInterval);
 
             }
-
-            
 
             // 事件绑定
 
@@ -4940,8 +4382,6 @@
 
             }
 
-            
-
             if (nextBtn) {
 
                 nextBtn.addEventListener('click', function() {
@@ -4955,8 +4395,6 @@
                 });
 
             }
-
-            
 
             // 鼠标悬停暂停轮播（整个banner区域统一控制）
 
@@ -4978,8 +4416,6 @@
 
             }
 
-
-
             // 圆点悬停切换（不单独控制定时器，由bannerSlider统一管理）
 
             dots.forEach((dot, index) => {
@@ -4993,8 +4429,6 @@
                 });
 
             });
-
-            
 
             // 移动端产品中心下拉菜单点击展开
 
@@ -5024,13 +4458,9 @@
 
             }
 
-
-
         // 启动自动轮播
 
             startSlideShow();
-
-            
 
             // 数字增长动画
 
@@ -5038,19 +4468,13 @@
 
             let animated = false;
 
-            
-
             function animateNumbers() {
 
                 if (animated) return;
 
-                
-
                 const statsSection = document.querySelector('.stats-section');
 
                 if (!statsSection) return;
-
-                
 
                 const sectionTop = statsSection.offsetTop;
 
@@ -5058,13 +4482,9 @@
 
                 const scrollTop = window.pageYOffset;
 
-                
-
                 if (scrollTop + windowHeight > sectionTop + 100) {
 
                     animated = true;
-
-                    
 
                     statNumbers.forEach(num => {
 
@@ -5075,8 +4495,6 @@
                         const step = target / (duration / 16);
 
                         let current = 0;
-
-                        
 
                         const timer = setInterval(() => {
 
@@ -5100,8 +4518,6 @@
 
             }
 
-            
-
             // 滚动时触发数字动画
 
             window.addEventListener('scroll', animateNumbers);
@@ -5109,8 +4525,6 @@
             // 页面加载时也检查一次
 
             animateNumbers();
-
-            
 
             // 平滑滚动
 
@@ -5128,8 +4542,6 @@
 
                         const targetPosition = target.offsetTop - headerHeight;
 
-                        
-
                         window.scrollTo({
 
                             top: targetPosition,
@@ -5144,8 +4556,6 @@
 
             });
 
-            
-
             // 微信弹窗
 
             const wechatBtn = document.getElementById('wechatBtn');
@@ -5153,8 +4563,6 @@
             const wechatModal = document.getElementById('wechatModal');
 
             const closeModal = document.getElementById('closeModal');
-
-            
 
             if (wechatBtn && wechatModal) {
 
@@ -5166,8 +4574,6 @@
 
             }
 
-            
-
             if (closeModal && wechatModal) {
 
                 closeModal.addEventListener('click', function() {
@@ -5177,8 +4583,6 @@
                 });
 
             }
-
-            
 
             // 点击弹窗外部关闭
 
@@ -5195,8 +4599,6 @@
                 });
 
             }
-
-            
 
             // 表单提交
 
@@ -5216,21 +4618,15 @@
 
             }
 
-            
-
             // 滚动时导航栏效果
 
             let lastScrollTop = 0;
 
             const header = document.querySelector('.header');
 
-            
-
             window.addEventListener('scroll', function() {
 
                 const scrollTop = window.pageYOffset;
-
-                
 
                 if (scrollTop > 100) {
 
@@ -5242,13 +4638,9 @@
 
                 }
 
-                
-
                 lastScrollTop = scrollTop;
 
             });
-
-            
 
             //             // 滚动时更新导航活动状态
             const sections = document.querySelectorAll('section[id]');
@@ -5339,6 +4731,8 @@ function initNavSearch() {
 
 document.addEventListener('DOMContentLoaded', initNavSearch);
 </script>
+
+
 
 </body>
 
