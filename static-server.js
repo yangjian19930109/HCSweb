@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const root = path.resolve('C:/Users/11193/www');
+const root = path.resolve('C:/Users/11193/Desktop/www');
 const PORT = 8080;
 
 const MIME = {
