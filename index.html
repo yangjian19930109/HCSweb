@@ -186,7 +186,7 @@
 
             color: #00f5ff;
 
-            border-bottom: 3px solid #00f5ff;
+            border-bottom: 3px solid #ff2d78;
 
             text-shadow: 0 0 12px rgba(0, 245, 255, 1), 0 0 24px rgba(0, 245, 255, 0.5);
 
@@ -4654,6 +4654,18 @@
                     link.classList.remove('active');
                 });
 
+
+                // 如果接近页面顶部，高亮首页
+                if (scrollTop < 100) {
+                    navLinks.forEach(link => {
+                        const href = link.getAttribute('href');
+                        if (href === '#home' || href === '#' || href === 'index.html' || href === '') {
+                            link.classList.add('active');
+                        }
+                    });
+                    return;
+                }
+
                 sections.forEach(section => {
                     const sectionTop = section.offsetTop - headerHeight - 100;
                     const sectionHeight = section.offsetHeight;
@@ -4672,6 +4684,8 @@
                         });
                     }
                 });
+                // 如果没有任何 section 匹配（比如在首页顶部），高亮首页
+
             });
         });
 </script>
