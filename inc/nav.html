@@ -1,0 +1,78 @@
+<style>
+    /* ========== 统一 Logo 样式（所有页面共享）========== */
+    .logo {
+        position: relative !important;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-right: 20px;
+        text-decoration: none;
+        font-family: "Orbitron", monospace;
+        transform: translateX(-400px) !important;
+        transform-origin: left center;
+    }
+    .logo-img {
+        height: 60px !important;
+        width: auto !important;
+        vertical-align: middle !important;
+        margin-right: 10px !important;
+        filter: drop-shadow(0 0 4px #00f5ff) drop-shadow(0 0 8px rgba(0,245,255,0.4)) !important;
+    }
+    .logo-text {
+        font-size: 36px !important;
+        font-weight: 900 !important;
+        color: #ffffff !important;
+        text-shadow: 0 0 8px #00f5ff, 0 0 16px #00f5ff, 0 0 32px #00f5ff, 0 0 64px #00f5ff, 0 0 96px rgba(0,245,255,0.5) !important;
+        font-family: "Orbitron", monospace;
+    }
+</style>
+<header class="header">
+
+        <div class="container">
+
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" class="logo-img" alt="华创生电机">
+                <span class="logo-text">华创生</span>
+            </a>
+
+            <nav class="nav">
+
+                <a href="index.html" class="nav-link active">首页</a>
+
+                <a href="#about" class="nav-link">关于我们</a>
+
+                <div class="nav-dropdown">
+
+                    <a href="products.html?v=v20260419" class="nav-link">产品中心</a>
+
+                    <div class="dropdown-menu">
+
+                        <a href="products.html#products-motor">车用马达</a>
+
+                        <a href="products.html#products-power">电动工具及家用马达</a>
+
+                        <a href="products.html#products-switch">微动开关</a>
+
+                    </div>
+
+                </div>
+
+                <a href="#news" class="nav-link">新闻中心</a>
+
+                <a href="#contact" class="nav-link">联系我们</a>
+
+                            <div class="nav-spacer"></div>
+                <div class="nav-search">
+                    <input type="text" id="nav-search-input" placeholder="搜索产品型号..." autocomplete="off" />
+                    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                    </svg>
+                    <div id="nav-search-results" class="hidden"></div>
+                </div>
+</nav>
+
+            <button class="mobile-menu-btn">☰</button>
+
+        </div>
+
+    </header>
