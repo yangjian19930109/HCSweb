@@ -143,6 +143,44 @@
             .section-title { font-size: 28px; }
         }
         @media (max-width: 480px) { .stats-grid { grid-template-columns: 1fr; } .banner-arrows { display: none; } }
+        .motor-coil::before,
+        .motor-coil::after { content: ''; position: absolute; border: 3px solid rgba(0, 245, 255, 0.2); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+        .motor-coil::before { width: 280px; height: 280px; }
+        .motor-coil::after { width: 210px; height: 210px; border: 2px solid rgba(0, 168, 255, 0.06); }
+        .circuit-lines { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+        .circuit-lines span { position: absolute; background: linear-gradient(90deg, transparent, rgba(0, 245, 255, 0.4), transparent); height: 1px; box-shadow: 0 0 8px rgba(0, 245, 255, 0.4); }
+        .circuit-lines span:nth-child(1) { width: 300px; top: 20%; left: 10%; transform: rotate(-15deg); }
+        .circuit-lines span:nth-child(2) { width: 250px; top: 40%; right: 20%; transform: rotate(10deg); }
+        .circuit-lines span:nth-child(3) { width: 200px; bottom: 30%; left: 20%; transform: rotate(5deg); }
+        .circuit-lines span:nth-child(4) { width: 280px; bottom: 20%; right: 15%; transform: rotate(-8deg); }
+        .motor-rotor::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: radial-gradient(circle, rgba(0, 200, 255, 0.2) 0%, transparent 70%); border-radius: 50%; }
+        .magnetic-field { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 0; height: 0; z-index: 1; }
+        .magnetic-field span { position: absolute; border: 1px solid rgba(0, 245, 255, 0.3); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: magnetic-pulse 4s ease-in-out infinite; }
+        .magnetic-field span:nth-child(1) { width: 500px; height: 500px; animation-delay: 0s; }
+        .magnetic-field span:nth-child(2) { width: 600px; height: 600px; animation-delay: 1.3s; }
+        .magnetic-field span:nth-child(3) { width: 700px; height: 700px; animation-delay: 2.6s; }
+        .motor-pulse { position: absolute; width: 200px; height: 200px; top: 50%; left: 50%; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(0, 168, 255, 0.15) 0%, transparent 70%); border-radius: 50%; animation: pulse 3s ease-in-out infinite; }
+        .energy-waves span { position: absolute; border: 2px solid rgba(0, 245, 255, 0.6); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: energy-wave 3s ease-out infinite; box-shadow: 0 0 15px rgba(0, 245, 255, 0.3), inset 0 0 10px rgba(0, 245, 255, 0.1); }
+        .energy-waves span:nth-child(1) { animation-delay: 0s; }
+        .energy-waves span:nth-child(2) { animation-delay: 0.75s; }
+        .energy-waves span:nth-child(3) { animation-delay: 1.5s; }
+        .energy-waves span:nth-child(4) { animation-delay: 2.25s; }
+        .magnetic-field-lines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 15; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .magnetic-field-lines svg { width: 75%; height: 75%; display: block; margin: 0 auto; }
+        .fpa { fill: none; stroke-linecap: round; stroke-dashoffset: 80; animation: field-flow 4s linear infinite; }
+        .fpa:nth-child(odd) { animation-duration: 3.2s; animation-delay: 0.6s; }
+        .fpa:nth-child(3n) { animation-duration: 3.6s; animation-delay: 1.2s; }
+        @keyframes field-flow { 0% { stroke-dashoffset: 80; } 100% { stroke-dashoffset: 0; } }
+        @keyframes energy-wave { 0% { width: 50px; height: 50px; opacity: 0; border-width: 3px; } 15% { opacity: 0.9; } 60% { opacity: 0.6; } 100% { width: 600px; height: 600px; opacity: 0; border-width: 1px; } }
+        @keyframes magnetic-pulse { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); border-color: rgba(0, 245, 255, 0.8); } 20% { opacity: 1; transform: translate(-50%, -50%) scale(1); border-color: rgba(0, 245, 255, 0.5); box-shadow: 0 0 30px rgba(0, 245, 255, 0.4); } 80% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.1); border-color: rgba(0, 245, 255, 0.2); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.2); } }
+        @keyframes pulse-rotate {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+            50% { transform: translate(-50%, -50%) rotate(180deg); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.5; }
+        }
     </style>
 </head>
 <body>
@@ -152,53 +190,118 @@
         <div class="banner-slider">
             <div class="banner-slide active">
                 <div class="banner-slide-bg">
-                    <div class="banner-dark-bg"></div>
+                    <div class="banner-dark-bg">
+                        <div class="banner-motor-bg">
+                            <div class="circuit-lines">
+                                <span></span><span></span><span></span><span></span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="banner-gold-bg">
                         <div class="banner-product-grid">
-                            <div class="banner-product-item"><img src="images/products/1030837.png" alt="分动箱电机"></div>
-                            <div class="banner-product-item"><img src="images/products/1030896.png" alt="节气门电机"></div>
-                            <div class="banner-product-item"><img src="images/products/1030837.png" alt="产品3"></div>
-                            <div class="banner-product-item"><img src="images/products/1030896.png" alt="产品4"></div>
-                            <div class="banner-product-item"><img src="images/products/1030837.png" alt="产品5"></div>
-                            <div class="banner-product-item"><img src="images/products/1030896.png" alt="产品6"></div>
-                            <div class="banner-product-item"><img src="images/products/1030837.png" alt="产品7"></div>
+                            <div class="banner-product-item"><img src="images/motor-1.jpg" alt=""></div>
+                            <div class="banner-product-item"><img src="images/motor-2.jpg" alt=""></div>
+                            <div class="banner-product-item"><img src="images/motor-3.jpg" alt=""></div>
+                            <div class="banner-product-item"><img src="images/motor-4.jpg" alt=""></div>
+                            <div class="banner-product-item"><img src="images/motor-5.jpg" alt=""></div>
+                            <div class="banner-product-item"><img src="images/motor-6.jpg" alt=""></div>
+                            <div class="banner-product-item"><img src="images/motor-7.jpg" alt=""></div>
                         </div>
                     </div>
                 </div>
                 <div class="banner-content">
-                    <h1 class="banner-title">华创生电机</h1>
-                    <p class="banner-subtitle">德昌电机(JOHNSON ELECTRIC)授权代理商</p>
-                    <a href="products.html" class="banner-btn">探索产品</a>
+                    <h1 class="banner-title">德昌电机授权代理商 · 专业电机解决方案提供商</h1>
+                    <p class="banner-subtitle"></p>
+                    <a href="#products" class="banner-btn">了解产品</a>
                 </div>
             </div>
             <div class="banner-slide">
                 <div class="banner-slide-bg">
                     <div class="banner-dark-bg">
                         <div class="banner-motor-bg">
-                            <div class="motor-gear gear-1"></div>
-                            <div class="motor-gear gear-2"></div>
-                            <div class="motor-gear gear-3"></div>
-                            <div class="motor-coil"></div>
-                            <div class="motor-rotor"></div>
-                            <div class="motor-stator"></div>
+                            <div class="magnetic-field">
+                                <span></span><span></span><span></span>
+                                <div class="magnetic-field-lines">
+                                    <svg viewBox="-26.085 50 652.17 687.83" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+                                        <defs>
+                                            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                                            <filter id="glow2" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                                        </defs>
+                                        <g>
+                                            <path class="fpa" d="M 300 430 C 380 520 480 340 480 260 Q 480 80 300 170" fill="none" stroke="rgba(80,180,255,0.4)" stroke-width="1.8" stroke-dasharray="8 6" stroke-linecap="round"/>
+                                            <path class="fpa" d="M 300 430 C 220 520 120 340 120 260 Q 120 80 300 170" fill="none" stroke="rgba(80,180,255,0.4)" stroke-width="1.8" stroke-dasharray="8 6" stroke-linecap="round"/>
+                                            <path class="fpa" d="M 300 430 C 420 570 540 300 540 220 Q 540 40 300 170" fill="none" stroke="rgba(80,180,255,0.3)" stroke-width="1.5" stroke-dasharray="8 6" stroke-linecap="round"/>
+                                            <path class="fpa" d="M 300 430 C 180 570 60 300 60 220 Q 60 40 300 170" fill="none" stroke="rgba(80,180,255,0.3)" stroke-width="1.5" stroke-dasharray="8 6" stroke-linecap="round"/>
+                                            <path class="fpa" d="M 300 170 C 440 0 560 250 560 330 Q 560 510 300 430" fill="none" stroke="rgba(100,200,255,0.25)" stroke-width="1.2" stroke-dasharray="10 5" stroke-linecap="round"/>
+                                            <path class="fpa" d="M 300 170 C 160 0 40 250 40 330 Q 40 510 300 430" fill="none" stroke="rgba(100,200,255,0.25)" stroke-width="1.2" stroke-dasharray="10 5" stroke-linecap="round"/>
+                                            <path class="fpa" d="M 300 170 C 380 80 480 260 480 340 Q 480 520 300 430" fill="none" stroke="rgba(100,200,255,0.55)" stroke-width="2.2" stroke-dasharray="10 5" stroke-linecap="round" filter="url(#glow)"/>
+                                            <path class="fpa" d="M 300 170 C 220 80 120 260 120 340 Q 120 520 300 430" fill="none" stroke="rgba(100,200,255,0.55)" stroke-width="2.2" stroke-dasharray="10 5" stroke-linecap="round" filter="url(#glow)"/>
+                                            <path class="fpa" d="M 300 170 C 480 -20 580 280 580 360 Q 580 540 300 430" fill="none" stroke="rgba(100,200,255,0.3)" stroke-width="1.5" stroke-dasharray="10 5" stroke-linecap="round"/>
+                                            <path class="fpa" d="M 300 170 C 120 -20 20 280 20 360 Q 20 540 300 430" fill="none" stroke="rgba(100,200,255,0.3)" stroke-width="1.5" stroke-dasharray="10 5" stroke-linecap="round"/>
+                                            <path class="fpa" d="M 300 170 C 420 30 540 300 540 380 Q 540 560 300 430" fill="none" stroke="rgba(100,200,255,0.45)" stroke-width="2.0" stroke-dasharray="10 5" stroke-linecap="round" filter="url(#glow)"/>
+                                            <path class="fpa" d="M 300 170 C 180 30 60 300 60 380 Q 60 560 300 430" fill="none" stroke="rgba(100,200,255,0.45)" stroke-width="2.0" stroke-dasharray="10 5" stroke-linecap="round" filter="url(#glow)"/>
+                                            <path class="fpa" d="M 300 170 C 475 162 475 438 300 430" fill="none" stroke="rgba(120,210,255,0.38)" stroke-width="1.8" stroke-dasharray="12 6" stroke-linecap="round"/>
+                                            <path class="fpa" d="M 300 170 C 125 162 125 438 300 430" fill="none" stroke="rgba(120,210,255,0.38)" stroke-width="1.8" stroke-dasharray="12 6" stroke-linecap="round"/>
+                                            <path class="fpa" d="M 300 170 C 475 178 475 422 300 430" fill="none" stroke="rgba(120,210,255,0.38)" stroke-width="1.8" stroke-dasharray="12 6" stroke-linecap="round"/>
+                                            <path class="fpa" d="M 300 170 C 125 178 125 422 300 430" fill="none" stroke="rgba(120,210,255,0.38)" stroke-width="1.8" stroke-dasharray="12 6" stroke-linecap="round"/>
+                                            <path class="fpa" d="M 300 170 C 420 178 420 422 300 430" fill="none" stroke="rgba(120,210,255,0.55)" stroke-width="2.2" stroke-dasharray="14 5" stroke-linecap="round" filter="url(#glow)"/>
+                                            <path class="fpa" d="M 300 170 C 180 178 180 422 300 430" fill="none" stroke="rgba(120,210,255,0.55)" stroke-width="2.2" stroke-dasharray="14 5" stroke-linecap="round" filter="url(#glow)"/>
+                                            <path class="fpa" d="M 300 170 C 370 178 370 422 300 430" fill="none" stroke="rgba(120,210,255,0.75)" stroke-width="2.8" stroke-dasharray="16 4" stroke-linecap="round" filter="url(#glow)"/>
+                                            <path class="fpa" d="M 300 170 C 230 178 230 422 300 430" fill="none" stroke="rgba(120,210,255,0.75)" stroke-width="2.8" stroke-dasharray="16 4" stroke-linecap="round" filter="url(#glow)"/>
+                                            <ellipse cx="300" cy="170" rx="20" ry="8" fill="rgba(120,210,255,0.15)" filter="url(#glow2)"/>
+                                            <ellipse cx="300" cy="170" rx="8" ry="4" fill="rgba(180,230,255,0.3)" filter="url(#glow)"/>
+                                            <ellipse cx="300" cy="430" rx="20" ry="8" fill="rgba(80,160,255,0.12)" filter="url(#glow2)"/>
+                                            <ellipse cx="300" cy="430" rx="8" ry="4" fill="rgba(140,200,255,0.25)" filter="url(#glow)"/>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="banner-gold-bg">
-                        <div class="banner-product-grid">
-                            <div class="banner-product-item"><img src="images/products/1030837.png" alt="产品1"></div>
-                            <div class="banner-product-item"><img src="images/products/1030896.png" alt="产品2"></div>
-                            <div class="banner-product-item"><img src="images/products/1030837.png" alt="产品3"></div>
-                            <div class="banner-product-item"><img src="images/products/1030896.png" alt="产品4"></div>
-                            <div class="banner-product-item"><img src="images/products/1030837.png" alt="产品5"></div>
-                            <div class="banner-product-item"><img src="images/products/1030896.png" alt="产品6"></div>
-                            <div class="banner-product-item"><img src="images/products/1030837.png" alt="产品7"></div>
-                        </div>
+                    <div class="banner-content">
+                        <h1 class="banner-title">专注自动化驱动20年</h1>
+                        <p class="banner-subtitle">服务500+企业客户 · 1000+产品型号</p>
+                        <a href="#about" class="banner-btn">关于我们</a>
                     </div>
                 </div>
-                <div class="banner-content">
-                    <h1 class="banner-title">精密驱动</h1>
-                    <p class="banner-subtitle">20年专注自动化与智能化驱动领域</p>
-                    <a href="products.html" class="banner-btn">了解更多</a>
+                <div class="banner-gold-bg">
+                    <div class="banner-product-grid">
+                        <div class="banner-product-item"><img src="images/motor-1.jpg" alt=""></div>
+                        <div class="banner-product-item"><img src="images/motor-2.jpg" alt=""></div>
+                        <div class="banner-product-item"><img src="images/motor-3.jpg" alt=""></div>
+                        <div class="banner-product-item"><img src="images/motor-4.jpg" alt=""></div>
+                        <div class="banner-product-item"><img src="images/motor-5.jpg" alt=""></div>
+                        <div class="banner-product-item"><img src="images/motor-6.jpg" alt=""></div>
+                        <div class="banner-product-item"><img src="images/motor-7.jpg" alt=""></div>
+                    </div>
+                </div>
+            </div>
+            <div class="banner-slide">
+                <div class="banner-slide-bg">
+                    <div class="banner-dark-bg">
+                        <div class="banner-motor-bg">
+                            <div class="motor-pulse"></div>
+                            <div class="energy-waves">
+                                <span></span><span></span><span></span><span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="banner-content">
+                        <h1 class="banner-title">品质源于专业</h1>
+                        <p class="banner-subtitle">德昌电机全系列产品 · 原厂正品保障</p>
+                        <a href="#contact" class="banner-btn">立即咨询</a>
+                    </div>
+                </div>
+                <div class="banner-gold-bg">
+                    <div class="banner-product-grid">
+                        <div class="banner-product-item"><img src="images/motor-1.jpg" alt=""></div>
+                        <div class="banner-product-item"><img src="images/motor-2.jpg" alt=""></div>
+                        <div class="banner-product-item"><img src="images/motor-3.jpg" alt=""></div>
+                        <div class="banner-product-item"><img src="images/motor-4.jpg" alt=""></div>
+                        <div class="banner-product-item"><img src="images/motor-5.jpg" alt=""></div>
+                        <div class="banner-product-item"><img src="images/motor-6.jpg" alt=""></div>
+                        <div class="banner-product-item"><img src="images/motor-7.jpg" alt=""></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -208,6 +311,7 @@
         </div>
         <div class="banner-dots">
             <span class="banner-dot active"></span>
+            <span class="banner-dot"></span>
             <span class="banner-dot"></span>
         </div>
     </section>
