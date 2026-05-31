@@ -994,7 +994,7 @@
 
             border-radius: 50%;
 
-            animation: pulse-rotate 8s ease-in-out infinite;
+            animation: pulse-rotate-centered 8s ease-in-out infinite;
 
         }
 
@@ -1136,7 +1136,7 @@
 
             border-radius: 50%;
 
-            animation: pulse 3s ease-in-out infinite;
+            animation: pulse-centered 3s ease-in-out infinite;
 
         }
 
@@ -1196,7 +1196,7 @@
 
 
 
-        @keyframes pulse-rotate {
+        @keyframes pulse-rotate-centered {
 
             0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
 
@@ -1206,7 +1206,7 @@
 
 
 
-        @keyframes pulse {
+        @keyframes pulse-centered {
 
             0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
 

@@ -440,7 +440,7 @@
             transform: translate(-50%, -50%);
             border: 3px solid rgba(0, 200, 255, 0.12);
             border-radius: 50%;
-            animation: pulse-rotate 8s ease-in-out infinite;
+            animation: pulse-rotate-centered 8s ease-in-out infinite;
         }
 
         .motor-rotor::before {
@@ -503,7 +503,7 @@
             transform: translate(-50%, -50%);
             background: radial-gradient(circle, rgba(0, 168, 255, 0.15) 0%, transparent 70%);
             border-radius: 50%;
-            animation: pulse 3s ease-in-out infinite;
+            animation: pulse-centered 3s ease-in-out infinite;
         }
 
         /* 能量波 */
@@ -527,12 +527,12 @@
             to { transform: rotate(360deg); }
         }
 
-        @keyframes pulse-rotate {
+        @keyframes pulse-rotate-centered {
             0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
             50% { transform: translate(-50%, -50%) rotate(180deg); }
         }
 
-        @keyframes pulse {
+        @keyframes pulse-centered {
             0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
             50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.5; }
         }
@@ -1956,7 +1956,7 @@
     font-weight: 900;
     letter-spacing: 12px;
     color: transparent;
-    -webkit-text-stroke: 2.5px #00ffff;
+    -webkit-text-stroke: 2.5px #00f5ff;
     -webkit-text-fill-color: transparent;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -1970,8 +1970,8 @@
     animation: glow-pulse 2s ease-in-out infinite;
 }
         @keyframes glow-pulse {
-            from { text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff; }
-            to { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #00ffff; }
+            from { text-shadow: 0 0 5px #00f5ff, 0 0 10px #00f5ff, 0 0 20px #00f5ff; }
+            to { text-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 40px #00f5ff, 0 0 60px #00f5ff; }
         }
 
             position: relative;

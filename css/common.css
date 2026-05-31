@@ -23,12 +23,12 @@
     /* 字体 */
     --font-display: "Orbitron", monospace;
     --font-body: "Share Tech Mono", monospace;
-    --font-fallback: "Microsoft YaHei", monospace;
+    --font-fallback: "Microsoft YaHei", sans-serif;
     /* 发光效果 */
     --glow-text: 0 0 8px #00f5ff, 0 0 16px #00f5ff, 0 0 32px #00f5ff;
     --glow-strong: 0 0 12px rgba(0, 245, 255, 1), 0 0 24px rgba(0, 245, 255, 0.5);
     --glow-box: 0 0 15px rgba(0, 245, 255, 0.5);
-    --text-shadow-white: 0 0 8px #00f5ff, 0 0 16px #00f5ff, 0 0 32px #00f5ff, 0 0 64px rgba(0,245,255,0.6);
+    --glow-text-nav: 0 0 8px #00f5ff, 0 0 16px #00f5ff, 0 0 32px #00f5ff, 0 0 64px rgba(0,245,255,0.6);
     /* 尺寸 */
     --nav-height: 80px;
     --sidebar-width: 220px;
@@ -63,12 +63,12 @@ body {
     to { transform: rotate(360deg); }
 }
 
-@keyframes pulse {
+@keyframes pulse-centered {
     0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
     50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.5; }
 }
 
-@keyframes pulse-rotate {
+@keyframes pulse-rotate-centered {
     0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
     50% { transform: translate(-50%, -50%) rotate(180deg); }
 }
@@ -79,6 +79,6 @@ body {
 }
 
 @keyframes glow-pulse {
-    from { text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff; }
-    to { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #00ffff; }
+    from { text-shadow: 0 0 5px #00f5ff, 0 0 10px #00f5ff, 0 0 20px #00f5ff; }
+    to { text-shadow: 0 0 10px #00f5ff, 0 0 20px #00f5ff, 0 0 40px #00f5ff, 0 0 60px #00f5ff; }
 }

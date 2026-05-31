@@ -84,7 +84,7 @@ mkdir -p css js
     --glow-text: 0 0 8px #00f5ff, 0 0 16px #00f5ff, 0 0 32px #00f5ff;
     --glow-strong: 0 0 12px rgba(0, 245, 255, 1), 0 0 24px rgba(0, 245, 255, 0.5);
     --glow-box: 0 0 15px rgba(0, 245, 255, 0.5);
-    --text-shadow-white: 0 0 8px #00f5ff, 0 0 16px #00f5ff, 0 0 32px #00f5ff, 0 0 64px rgba(0,245,255,0.6);
+    --glow-text-nav: 0 0 8px #00f5ff, 0 0 16px #00f5ff, 0 0 32px #00f5ff, 0 0 64px rgba(0,245,255,0.6);
     /* 尺寸 */
     --nav-height: 80px;
     --sidebar-width: 220px;
@@ -217,7 +217,7 @@ git commit -m "feat: add css/common.css — CSS variables, reset, animations"
 .nav-link {
     text-decoration: none;
     color: var(--text-primary);
-    text-shadow: var(--text-shadow-white);
+    text-shadow: var(--glow-text-nav);
     font-weight: 700;
     font-family: var(--font-display);
     transition: all 0.3s;
