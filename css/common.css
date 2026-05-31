@@ -1,0 +1,84 @@
+/* ========== CSS 变量 ========== */
+:root {
+    /* 主色调 */
+    --color-primary: #005d73;
+    --color-primary-light: #007a8a;
+    --color-accent: #00f5ff;
+    --color-highlight: #ff2d78;
+    --color-gold: #d4a84b;
+    /* 背景色 */
+    --bg-primary: #050810;
+    --bg-nav: rgba(5, 8, 20, 0.92);
+    --bg-card: rgba(0, 93, 115, 0.08);
+    --bg-dark: #0a1628;
+    --bg-dark-mid: #0d2137;
+    --bg-dark-light: #0f2944;
+    /* 文字色 */
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-muted: rgba(255, 255, 255, 0.4);
+    --text-sidebar-dark: #1a1a2e;
+    --text-sidebar-body: #666;
+    --text-sidebar-muted: #888;
+    /* 字体 */
+    --font-display: "Orbitron", monospace;
+    --font-body: "Share Tech Mono", monospace;
+    --font-fallback: "Microsoft YaHei", monospace;
+    /* 发光效果 */
+    --glow-text: 0 0 8px #00f5ff, 0 0 16px #00f5ff, 0 0 32px #00f5ff;
+    --glow-strong: 0 0 12px rgba(0, 245, 255, 1), 0 0 24px rgba(0, 245, 255, 0.5);
+    --glow-box: 0 0 15px rgba(0, 245, 255, 0.5);
+    --text-shadow-white: 0 0 8px #00f5ff, 0 0 16px #00f5ff, 0 0 32px #00f5ff, 0 0 64px rgba(0,245,255,0.6);
+    /* 尺寸 */
+    --nav-height: 80px;
+    --sidebar-width: 220px;
+    /* 边框 */
+    --border-accent: 1px solid rgba(0, 245, 255, 0.3);
+}
+
+/* ========== 基础重置 ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body), var(--font-display), var(--font-fallback);
+    line-height: 1.6;
+    color: #e0e0e0;
+    background: var(--bg-primary);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+}
+
+/* ========== 通用动画 ========== */
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+    50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.5; }
+}
+
+@keyframes pulse-rotate {
+    0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+    50% { transform: translate(-50%, -50%) rotate(180deg); }
+}
+
+@keyframes wave {
+    0% { width: 100px; height: 100px; opacity: 0; }
+    100% { width: 500px; height: 500px; opacity: 0; }
+}
+
+@keyframes glow-pulse {
+    from { text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff; }
+    to { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff, 0 0 60px #00ffff; }
+}
