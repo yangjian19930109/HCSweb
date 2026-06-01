@@ -57,7 +57,7 @@ def build():
     os.makedirs(DIST_DIR, exist_ok=True)
 
     # --- 复制静态资源 ---
-    for dirname in ['images', 'data', 'css', 'js']:
+    for dirname in ['images', 'data', 'fonts']:
         src = os.path.join('.', dirname)
         dst = os.path.join(DIST_DIR, dirname)
         if os.path.exists(src):
@@ -82,14 +82,16 @@ def build():
 
         modified = False
 
-        # 1. 替换 CSS 占位符: <!-- #include css:a,b,c -->
+        # 1. 替换 CSS 占位符: <!-- #include css:a,b,c --> → 内联 <style>
         def replace_css(m):
             names = [n.strip() for n in m.group(1).split(',')]
-            links = []
+            styles = []
             for n in names:
                 if n in CSS_MAP:
-                    links.append(f'<link rel="stylesheet" href="css/{CSS_MAP[n]}">')
-            return '\n    '.join(links)
+                    css_content = read_file(os.path.join(CSS_DIR, CSS_MAP[n]))
+                    if css_content:
+                        styles.append(f'<style>\n{css_content}\n</style>')
+            return '\n'.join(styles)
 
         new_content, n_css = re.subn(
             r'<!--\s*#include\s+css:(.+?)\s*-->', replace_css, content
@@ -97,14 +99,16 @@ def build():
         if n_css:
             modified = True
 
-        # 2. 替换 JS 占位符: <!-- #include js:a,b,c -->
+        # 2. 替换 JS 占位符: <!-- #include js:a,b,c --> → 内联 <script>
         def replace_js(m):
             names = [n.strip() for n in m.group(1).split(',')]
             scripts = []
             for n in names:
                 if n in JS_MAP:
-                    scripts.append(f'<script src="js/{JS_MAP[n]}"></script>')
-            return '\n    '.join(scripts)
+                    js_content = read_file(os.path.join(JS_DIR, JS_MAP[n]))
+                    if js_content:
+                        scripts.append(f'<script>\n{js_content}\n</script>')
+            return '\n'.join(scripts)
 
         new_content2, n_js = re.subn(
             r'<!--\s*#include\s+js:(.+?)\s*-->', replace_js, new_content

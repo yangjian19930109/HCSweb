@@ -21,8 +21,8 @@
     --text-sidebar-body: #666;
     --text-sidebar-muted: #888;
     /* 字体 */
-    --font-display: "Orbitron", monospace;
-    --font-body: "Share Tech Mono", monospace;
+    --font-display: "Orbitron", "Microsoft YaHei", sans-serif;
+    --font-body: "Share Tech Mono", "Consolas", "Courier New", monospace;
     --font-fallback: "Microsoft YaHei", sans-serif;
     /* 发光效果 */
     --glow-text: 0 0 8px #00f5ff, 0 0 16px #00f5ff, 0 0 32px #00f5ff;
