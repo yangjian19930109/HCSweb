@@ -12,6 +12,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    max-width: none;
     padding: 15px 20px;
     position: relative;
     height: var(--nav-height);
@@ -21,7 +22,7 @@
 /* ========== Logo ========== */
 .logo {
     position: absolute;
-    left: 20px;
+    left: 60px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -296,7 +297,7 @@
 /* ========== 中等屏幕 768-1500px ========== */
 @media (max-width: 1500px) {
     .logo {
-        left: 10px;
+        left: 30px;
     }
     .logo-text {
         font-size: 28px;
