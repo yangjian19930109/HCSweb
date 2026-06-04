@@ -18,15 +18,21 @@
             <a href="#news" class="nav-link">新闻中心</a>
             <a href="#contact" class="nav-link">联系我们</a>
             <div class="nav-spacer"></div>
-            <div class="nav-search">
-                <input type="text" id="nav-search-input" placeholder="搜索产品型号..." autocomplete="off">
-                <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8"/>
-                    <path d="m21 21-4.35-4.35"/>
-                </svg>
-                <div id="nav-search-results" class="hidden"></div>
-            </div>
         </nav>
+        <div class="nav-search" id="nav-search-box">
+            <input type="text" id="nav-search-input" placeholder="搜索产品型号..." autocomplete="off">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+            </svg>
+            <div id="nav-search-results" class="hidden"></div>
+        </div>
+        <button class="mobile-search-btn" id="mobile-search-btn" aria-label="搜索">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+            </svg>
+        </button>
         <button class="mobile-menu-btn">☰</button>
     </div>
 </header>

@@ -66,8 +66,30 @@
             if (e.key === 'Escape') {
                 results.classList.remove('visible');
                 input.blur();
+                // 移动端同时收起搜索条
+                var box = document.getElementById('nav-search-box');
+                if (box) box.classList.remove('active');
             }
         });
+
+        // 移动端搜索按钮切换
+        var searchBtn = document.getElementById('mobile-search-btn');
+        var searchBox = document.getElementById('nav-search-box');
+        if (searchBtn && searchBox) {
+            searchBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                searchBox.classList.toggle('active');
+                if (searchBox.classList.contains('active')) {
+                    input.focus();
+                }
+            });
+            // 点击页面其他区域关闭
+            document.addEventListener('click', function (e) {
+                if (!e.target.closest('.nav-search') && !e.target.closest('.mobile-search-btn')) {
+                    searchBox.classList.remove('active');
+                }
+            });
+        }
     }
 
     if (document.readyState === 'loading') {
