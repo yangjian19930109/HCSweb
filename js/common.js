@@ -113,6 +113,9 @@
         var sections = document.querySelectorAll('section[id]');
         var navLinks = document.querySelectorAll('.nav-link');
 
+        // 页面无区块，交由 updateNavActive 处理
+        if (sections.length === 0) return;
+
         sections.forEach(function (section) {
             var sectionTop = section.offsetTop - headerHeight - 100;
             var sectionHeight = section.offsetHeight;
@@ -120,12 +123,13 @@
 
             if (scrollTop >= sectionTop && scrollTop < sectionTop + sectionHeight) {
                 navLinks.forEach(function (link) {
-                    var href = link.getAttribute('href');
-                    if (href && href.startsWith('#')) {
-                        link.classList.remove('active');
-                        if (href === '#' + sectionId) {
-                            link.classList.add('active');
-                        }
+                    link.classList.remove('active');
+                    var href = link.getAttribute('href') || '';
+                    if (href === '#' + sectionId) {
+                        link.classList.add('active');
+                    }
+                    if (sectionId === 'products' && href.indexOf('products.html') !== -1) {
+                        link.classList.add('active');
                     }
                 });
             }
