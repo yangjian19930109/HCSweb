@@ -27,7 +27,11 @@
         // 点击导航链接后关闭菜单
         var links = nav.querySelectorAll('.nav-link');
         links.forEach(function (link) {
-            link.addEventListener('click', function () {
+            link.addEventListener('click', function (e) {
+                // 移动端下拉菜单切换：不关闭菜单，交给下面的 dropdown handler 处理
+                if (window.innerWidth <= 768 && link.closest('.nav-dropdown')) {
+                    return;
+                }
                 nav.classList.remove('active');
                 btn.textContent = '☰';
             });

@@ -3,7 +3,14 @@
     "defaultMode": "acceptEdits",
     "allow": [
       "Bash(curl *)",
-      "Bash(mkdir *)"
+      "Bash(mkdir *)",
+      "Bash(cd \"d:/代码/HCSweb\" && python build.py)",
+      "Bash(cd d:/代码/HCSweb && python build.py)",
+      "Bash(cd \"d:/代码/HCSweb\" && export PYTHONIOENCODING=utf-8 && python build.py)",
+      "Bash(cd \"d:/代码/HCSweb/dist\" && python -m http.server *)",
+      "Read",
+      "Glob",
+      "Grep"
     ]
   }
 }
