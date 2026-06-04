@@ -58,7 +58,7 @@
 
 .nav-link {
     text-decoration: none;
-    color: var(--text-primary);
+    color: var(--color-accent);
     text-shadow: var(--glow-text-nav);
     font-weight: 700;
     font-family: var(--font-display);
@@ -73,12 +73,20 @@
     text-transform: uppercase;
 }
 
-.nav-link:hover,
-.nav-link.active {
-    color: var(--color-accent);
+.nav-link:hover {
+    color: var(--text-primary);
     border-bottom-color: var(--color-highlight);
     text-shadow: var(--glow-strong);
     letter-spacing: 3px;
+}
+
+.nav-link.active {
+    color: #fff;
+    border-bottom-color: var(--color-highlight);
+    text-shadow: var(--glow-active);
+    letter-spacing: 3px;
+    font-size: 20px;
+    font-weight: 900;
 }
 
 /* ========== 下拉菜单 ========== */
