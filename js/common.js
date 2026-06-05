@@ -128,6 +128,11 @@
                     if (href === '#' + sectionId) {
                         link.classList.add('active');
                     }
+                    // #home 区块（banner）→ 首页导航链接
+                    if (sectionId === 'home' && (href === 'index.html' || href === '#home')) {
+                        link.classList.add('active');
+                    }
+                    // #products 区块 → 产品中心导航链接
                     if (sectionId === 'products' && href.indexOf('products.html') !== -1) {
                         link.classList.add('active');
                     }
