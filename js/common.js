@@ -6,11 +6,24 @@
     'use strict';
 
     document.addEventListener('DOMContentLoaded', function () {
+        // index.html 刷新时强制回到顶部
+        var currentUrl = window.location.href.split('/').pop().split('?')[0].split('#')[0];
+        if ((currentUrl === 'index.html' || currentUrl === '') && !window._hasNavigated) {
+            if ('scrollRestoration' in history) {
+                history.scrollRestoration = 'manual';
+            }
+            window.scrollTo(0, 0);
+        }
         initMobileMenu();
         initSmoothScroll();
         initNavActive();
         initWechatModal();
         initContactForm();
+    });
+
+    // 标记 hash 导航（非刷新）
+    window.addEventListener('hashchange', function () {
+        window._hasNavigated = true;
     });
 
     /* ========== 移动端菜单 ========== */
@@ -66,6 +79,9 @@
                     var headerHeight = header ? header.offsetHeight : 80;
                     var targetPosition = target.offsetTop - headerHeight;
                     window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                } else {
+                    // 当前页无此锚点，跳转到首页
+                    window.location.href = 'index.html' + targetId;
                 }
             });
         });

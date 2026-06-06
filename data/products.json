@@ -7,7 +7,9 @@
     "desc": "用于Jeep自由光、大指挥官分动箱PTU执行器电机。采用高可靠性设计，满足严苛的汽车工况要求，响应速度快，扭矩输出稳定。",
     "url": "product-1030837.html",
     "images": [
-      "images/products/1030837.png"
+      "images/products/1030837.png",
+      "images/products/1030837-main2.jpg",
+      "images/products/1030837-main3.jpg"
     ],
     "detail": "",
     "detail_images": [
@@ -29,7 +31,9 @@
     "desc": "用于奥迪、宝马、大众、路虎等高端品牌节气门总成电机。采用高精度位置反馈设计，响应速度快，控制精准。",
     "url": "product-1030896.html",
     "images": [
-      "images/products/1030896.png"
+      "images/products/1030896.png",
+      "images/products/1030896-main3.png",
+      "images/products/1030896-main2.png"
     ],
     "detail": "",
     "detail_images": [
@@ -41,7 +45,8 @@
       "安装位置": "节气门总成",
       "产品类型": "12V有刷直流",
       "品质标准": "原厂配套品质"
-    }
+    },
+    "cardImage": ""
   },
   {
     "id": "1031001",

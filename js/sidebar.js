@@ -40,14 +40,12 @@
             });
         });
 
-        // 页面加载时检查 URL hash
-        var hash = window.location.hash.replace('#', '');
-        if (hash) {
+        function switchToTab(hash) {
             var targetPanel = document.getElementById('tab-' + hash);
             var targetItem = document.querySelector('.sidebar-nav-item[data-tab="' + hash + '"]');
-            if (targetItem && targetPanel) {
+            if (targetPanel && tabPanels.length > 0) {
                 sidebarItems.forEach(function (i) { i.classList.remove('active'); });
-                targetItem.classList.add('active');
+                if (targetItem) targetItem.classList.add('active');
                 tabPanels.forEach(function (panel) {
                     panel.classList.remove('active');
                     if (panel.id === 'tab-' + hash) {
@@ -56,6 +54,20 @@
                 });
             }
         }
+
+        // 页面加载时检查 URL hash
+        var hash = window.location.hash.replace('#', '');
+        if (hash) {
+            switchToTab(hash);
+        }
+
+        // 监听 hash 变化（导航下拉、浏览器前进后退等）
+        window.addEventListener('hashchange', function () {
+            var newHash = window.location.hash.replace('#', '');
+            if (newHash) {
+                switchToTab(newHash);
+            }
+        });
     }
 
     if (document.readyState === 'loading') {

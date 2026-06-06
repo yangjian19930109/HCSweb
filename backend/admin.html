@@ -437,8 +437,9 @@ function loadImgGrids(product) {
   (product.detail_images||[]).forEach(function(p){
     detailImgItems.push({src: '/'+p, keepPath: p, file: null});
   });
-  if (product.cardImage) {
-    cardImgData = {src: '/'+product.cardImage, keepPath: product.cardImage, file: null};
+  var cardSrc = product.cardImage || (product.images && product.images[0]) || '';
+  if (cardSrc) {
+    cardImgData = {src: '/'+cardSrc, keepPath: product.cardImage || '', file: null};
   } else {
     cardImgData = null;
   }

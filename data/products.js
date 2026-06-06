@@ -6,7 +6,7 @@ var PRODUCTS_DATA = [
         subCat: "其他马达",
         desc: "用于Jeep自由光、大指挥官分动箱PTU执行器电机。采用高可靠性设计，满足严苛的汽车工况要求，响应速度快，扭矩输出稳定。",
         url: "product-1030837.html",
-        images: ["images/products/1030837.png"],
+        images: ["images/products/1030837.png", "images/products/1030837-main2.jpg", "images/products/1030837-main3.jpg"],
         detail: "",
         productType: "12V有刷直流",
         specs: {"应用领域": "Jeep自由光、大指挥官", "安装位置": "分动箱 PTU 执行器", "产品类型": "12V有刷直流", "品质标准": "原厂配套品质"},
@@ -20,7 +20,7 @@ var PRODUCTS_DATA = [
         subCat: "节气门马达",
         desc: "用于奥迪、宝马、大众、路虎等高端品牌节气门总成电机。采用高精度位置反馈设计，响应速度快，控制精准。",
         url: "product-1030896.html",
-        images: ["images/products/1030896.png"],
+        images: ["images/products/1030896.png", "images/products/1030896-main3.png", "images/products/1030896-main2.png"],
         detail: "",
         productType: "12V有刷直流",
         specs: {"应用领域": "奥迪、宝马、大众、路虎等高端品牌", "安装位置": "节气门总成", "产品类型": "12V有刷直流", "品质标准": "原厂配套品质"},
@@ -42,6 +42,7 @@ var PRODUCTS_DATA = [
         detail_images: ["images/products/1031001_b2777baf.png", "images/products/1031001_0384b847.jpg"]
     },
 ];
+
 
 
 
