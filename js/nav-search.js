@@ -1,6 +1,6 @@
 /**
  * nav-search.js — 导航栏搜索功能
- * 依赖: Fuse.js (CDN), data/products.js (PRODUCTS_DATA + doSearch + initFuse)
+ * 通过后端 API 搜索，不暴露完整产品数据
  */
 (function () {
     'use strict';
@@ -10,40 +10,56 @@
         var results = document.getElementById('nav-search-results');
         if (!input || !results) return;
 
-        // 初始化 Fuse (如果已加载)
-        if (typeof Fuse !== 'undefined' && typeof initFuse === 'function') {
-            initFuse();
-        }
+        var debounceTimer = null;
+        var lastQuery = '';
 
-        // 输入搜索
-        input.addEventListener('input', function () {
-            var q = input.value.trim();
+        function searchAPI(q) {
+            // 清空旧结果
             if (!q) {
                 results.innerHTML = '<div class="ns-hint">输入关键词搜索...</div>';
                 results.classList.add('visible');
                 return;
             }
-            var hits;
-            if (typeof doSearch === 'function') {
-                hits = doSearch(q);
-            } else {
-                hits = (window.PRODUCTS_DATA || []).filter(function (p) {
-                    return p.title.indexOf(q) >= 0 || p.desc.indexOf(q) >= 0;
-                }).slice(0, 10);
-            }
-            if (hits.length === 0) {
-                results.innerHTML = '<div class="ns-empty">未找到相关结果</div>';
-                results.classList.add('visible');
-                return;
-            }
-            results.innerHTML = hits.map(function (item) {
-                var d = item.item || item;
-                return '<a href="' + (d.url || '#') + '" class="ns-item">' +
-                    '<span class="ns-cat">' + (d.subCat || '') + '</span>' +
-                    '<span class="ns-title">' + (d.title || '') + '</span>' +
-                    '<span class="ns-desc">' + (d.desc || '') + '</span></a>';
-            }).join('');
+
+            results.innerHTML = '<div class="ns-hint">搜索中...</div>';
             results.classList.add('visible');
+
+            fetch('/api/search?q=' + encodeURIComponent(q))
+                .then(function (r) { return r.json(); })
+                .then(function (hits) {
+                    // 确保结果对应最新的查询
+                    if (q !== lastQuery) return;
+                    if (!hits || hits.length === 0) {
+                        results.innerHTML = '<div class="ns-empty">未找到相关结果</div>';
+                        results.classList.add('visible');
+                        return;
+                    }
+                    results.innerHTML = hits.map(function (item) {
+                        return '<a href="' + (item.url || '#') + '" class="ns-item">' +
+                            '<span class="ns-cat">' + (item.subCat || '') + '</span>' +
+                            '<span class="ns-title">' + (item.title || '') + '</span>' +
+                            '<span class="ns-desc">' + (item.desc || '') + '</span></a>';
+                    }).join('');
+                    results.classList.add('visible');
+                })
+                .catch(function () {
+                    if (q === lastQuery) {
+                        results.innerHTML = '<div class="ns-empty">搜索失败，请重试</div>';
+                        results.classList.add('visible');
+                    }
+                });
+        }
+
+        // 输入搜索（300ms 防抖）
+        input.addEventListener('input', function () {
+            var q = input.value.trim();
+            lastQuery = q;
+            if (debounceTimer) clearTimeout(debounceTimer);
+            if (!q) {
+                searchAPI('');
+            } else {
+                debounceTimer = setTimeout(function () { searchAPI(q); }, 300);
+            }
         });
 
         // 聚焦时显示提示
@@ -66,7 +82,6 @@
             if (e.key === 'Escape') {
                 results.classList.remove('visible');
                 input.blur();
-                // 移动端同时收起搜索条
                 var box = document.getElementById('nav-search-box');
                 if (box) box.classList.remove('active');
             }
@@ -83,7 +98,6 @@
                     input.focus();
                 }
             });
-            // 点击页面其他区域关闭
             document.addEventListener('click', function (e) {
                 if (!e.target.closest('.nav-search') && !e.target.closest('.mobile-search-btn')) {
                     searchBox.classList.remove('active');

@@ -3,7 +3,9 @@
 """构建脚本：将共享组件注入 HTML 文件，输出到 dist/"""
 import os
 import re
+import json
 import shutil
+import subprocess
 from datetime import datetime
 
 # --- 配置 ---
@@ -11,6 +13,7 @@ INC_DIR = 'inc'
 DIST_DIR = 'dist'
 CSS_DIR = 'css'
 JS_DIR = 'js'
+DATA_DIR = 'data'
 
 # 组件 HTML 文件映射
 COMPONENTS = ['nav', 'sidebar', 'footer']
@@ -42,8 +45,70 @@ def read_file(path):
         return f.read()
 
 
+def load_products():
+    """从 products.json 读取产品列表"""
+    path = os.path.join(DATA_DIR, 'products.json')
+    if not os.path.exists(path):
+        return []
+    with open(path, 'r', encoding='utf-8') as f:
+        return json.load(f)
+
+
+def generate_card(product):
+    """生成单个产品卡片的 HTML"""
+    pid = product.get('id', '')
+    title = product.get('title', '')
+    desc = product.get('desc', '')
+    subcat = product.get('subCat', '')
+    url = product.get('url', '#')
+    images = product.get('images', []) or []
+
+    # 标签取自子分类
+    tag_html = f'<span class="product-card-tag">{subcat}</span>' if subcat else ''
+
+    # 图片
+    if images and images[0]:
+        img_html = f'<img src="{images[0]}" alt="{title}" style="width:100%;height:100%;object-fit:contain;">'
+    else:
+        # 无图片时用子分类首字或默认图标
+        emoji = {
+            '节气门马达': '⚡', '废气阀马达': '💨', '涡轮增压执行器马达': '🌀',
+            '车门锁马达': '🔒', 'EPB马达': '🅿️', '其他马达': '⚙️',
+            '家用电器马达': '🏠', '电动工具马达': '🔧',
+            '微动开关': '🔘',
+        }.get(subcat, '⚙️')
+        img_html = emoji
+
+    # 有独立详情页的用链接包裹
+    if url and url.endswith('.html'):
+        return (
+            f'<a href="{url}" class="product-card-link">'
+            f'<div class="product-card">'
+            f'<div class="product-card-img">{img_html}</div>'
+            f'<div class="product-card-body"><h3>{title}</h3><p>{desc}</p>{tag_html}</div>'
+            f'</div></a>'
+        )
+    else:
+        return (
+            f'<div class="product-card">'
+            f'<div class="product-card-img">{img_html}</div>'
+            f'<div class="product-card-body"><h3>{title}</h3><p>{desc}</p>{tag_html}</div>'
+            f'</div>'
+        )
+
+
+def generate_cards_html(cat_name):
+    """生成指定分类下所有产品卡片的 HTML"""
+    products = load_products()
+    cat_products = [p for p in products if p.get('cat') == cat_name]
+    if not cat_products:
+        return ''
+    return '\n'.join(generate_card(p) for p in cat_products)
+
+
 def build():
     build_time = datetime.now().strftime('v%Y.%m.%d-%H:%M')
+    products = load_products()
 
     # --- 读取 HTML 组件 ---
     components = {}
@@ -124,23 +189,35 @@ def build():
                 new_content = new_content.replace(placeholder, components[name])
                 modified = True
 
-        # 4. 替换版本号占位符
+        # 4. 替换产品卡片占位符: <!-- #include cards:分类名 -->
+        def replace_cards(m):
+            cat_name = m.group(1).strip()
+            return generate_cards_html(cat_name)
+
+        new_content2, n_cards = re.subn(
+            r'<!--\s*#include\s+cards:(.+?)\s*-->', replace_cards, new_content
+        )
+        if n_cards:
+            modified = True
+        new_content = new_content2
+
+        # 5. 替换版本号占位符
         if '{{BUILD_TIME}}' in new_content:
             new_content = new_content.replace('{{BUILD_TIME}}', build_time)
             modified = True
 
-        # 5. 写入 dist/
+        # 6. 写入 dist/
         out_path = os.path.join(DIST_DIR, fname)
         with open(out_path, 'w', encoding='utf-8') as f:
             f.write(new_content)
 
         if modified:
-            print(f"[OK] {fname} -> dist/{fname} (CSSx{n_css}, JSx{n_js})")
+            print(f"[OK] {fname} -> dist/{fname} (CSSx{n_css}, JSx{n_js}, 卡片x{n_cards})")
         else:
             print(f"[SKIP] {fname} (无占位符)")
 
     print(f"\n[SUCCESS] 构建完成 @ {build_time}")
-    print(f"[INFO] 输出目录: {DIST_DIR}/")
+    print(f"[INFO] 输出目录: {DIST_DIR}/  |  产品总数: {len(products)}")
 
 
 if __name__ == '__main__':
