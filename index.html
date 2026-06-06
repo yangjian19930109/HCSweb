@@ -18,7 +18,7 @@
     <!-- #include css:common,nav,footer -->
     <style>
         /* ========== Banner 轮播区域（首页特有）========== */
-        .banner { margin-top: 80px; position: relative; overflow: hidden; display: flex; width: 100%; aspect-ratio: 3 / 1; min-height: 500px; background: #050810; }
+        .banner { margin-top: 80px; position: relative; overflow: hidden; display: flex; width: 100%; aspect-ratio: 3 / 1; min-height: 500px; background: #050810; border-bottom: 1px solid rgba(255, 45, 120, 0.15); box-shadow: 0 0 15px rgba(255, 45, 120, 0.05); }
         .banner-left { flex: 1; background: linear-gradient(135deg, #0a1628 0%, #0d2137 50%, #0f2944 100%); position: relative; display: flex; align-items: center; justify-content: center; }
         .banner-right { width: 45%; background: linear-gradient(135deg, #d4a84b 0%, #c49a3d 100%); display: flex; align-items: center; justify-content: center; padding: 40px; }
         .banner-slider { position: relative; width: 100%; height: 100%; display: flex; }
@@ -67,7 +67,7 @@
         .banner-arrows { position: absolute; top: 50%; transform: translateY(-50%); width: 100%; display: flex; justify-content: space-between; padding: 0 30px; pointer-events: none; z-index: 50; }
         .banner-arrow { width: 50px; height: 50px; background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.4); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s; pointer-events: auto; color: #fff; font-size: 20px; }
         .banner-arrow:hover { background: rgba(255,255,255,0.4); border-color: #fff; }
-        .stats-section { background: rgba(5, 8, 30, 0.95); padding: 60px 0; color: #fff; border-top: 1px solid rgba(0, 245, 255, 0.2); border-bottom: 1px solid rgba(0, 245, 255, 0.2); position: relative; }
+        .stats-section { background: rgba(5, 8, 30, 0.95); padding: 60px 0; color: #fff; position: relative; }
         .stats-section::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 245, 255, 0.02) 2px, rgba(0, 245, 255, 0.02) 4px); pointer-events: none; }
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; text-align: center; }
         .stat-item { padding: 20px; }
@@ -76,21 +76,23 @@
         .section-header { text-align: center; margin-bottom: 50px; }
         .section-title { font-size: 36px; color: #00f5ff; font-weight: 600; margin-bottom: 15px; text-shadow: 0 0 10px rgba(0, 245, 255, 0.6), 0 0 30px rgba(0, 245, 255, 0.3); font-family: "Orbitron", monospace; letter-spacing: 3px; }
         .section-subtitle { font-size: 16px; color: rgba(255,255,255,0.5); }
-        .about-section { padding: 80px 0; background: #050810; }
+        .about-section { padding: 80px 0; background: #050810; border-top: 1px solid rgba(255, 45, 120, 0.15); box-shadow: 0 0 15px rgba(255, 45, 120, 0.05); }
         .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
         .about-text h3 { font-size: 28px; color: #00f5ff; margin-bottom: 20px; font-family: "Orbitron", monospace; text-shadow: 0 0 8px rgba(0, 245, 255, 0.6); }
         .about-text p { font-size: 16px; color: rgba(255,255,255,0.6); line-height: 1.8; margin-bottom: 15px; }
-        .products-section { padding: 60px 0 80px; background: #f5f5f5; text-align: center; }
-        .products-section .section-title { color: #333; font-size: 32px; margin-bottom: 10px; }
-        .products-section .section-subtitle { color: #666; font-size: 18px; margin-bottom: 50px; }
+        .about-image { display: flex; align-items: center; justify-content: center; }
+        .about-image img { max-width: 100%; max-height: 350px; height: auto; }
+        .products-section { padding: 60px 0 80px; background: #080c1a; text-align: center; border-top: 1px solid rgba(255, 45, 120, 0.15); box-shadow: 0 0 15px rgba(255, 45, 120, 0.05); }
+        .products-section .section-title { color: #00f5ff; font-size: 32px; margin-bottom: 10px; }
+        .products-section .section-subtitle { color: rgba(255,255,255,0.5); font-size: 18px; margin-bottom: 50px; }
         .hex-grid { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px 30px; }
         .hex { display: flex; flex-direction: column; align-items: center; }
         .hex-inner { width: 160px; height: 184px; position: relative; }
         .hex-content { width: 100%; height: 100%; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); background: #005d73; display: flex; align-items: center; justify-content: center; transition: all 0.3s; overflow: hidden; }
         .hex:hover .hex-content { background: #007a8a; transform: scale(1.05); }
         .hex-content img { width: 100%; height: 100%; object-fit: cover; }
-        .hex-label { margin-top: 15px; font-size: 14px; color: #333; font-weight: 500; }
-        .news-section { padding: 80px 0; background: #050810; }
+        .hex-label { margin-top: 15px; font-size: 14px; color: rgba(255,255,255,0.8); font-weight: 500; }
+        .news-section { padding: 80px 0; background: #050810; border-top: 1px solid rgba(255, 45, 120, 0.15); box-shadow: 0 0 15px rgba(255, 45, 120, 0.05); }
         .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
         .news-featured { position: relative; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .news-featured-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 30px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; }
@@ -103,7 +105,7 @@
         .news-item-content { flex: 1; }
         .news-item-content h4 { font-size: 16px; color: #00f5ff; margin-bottom: 8px; line-height: 1.4; text-shadow: 0 0 5px rgba(0, 245, 255, 0.4); }
         .news-item-content .date { font-size: 13px; color: #999; }
-        .contact-section { padding: 80px 0; background: #080c1a; color: #fff; border-top: 1px solid rgba(0, 245, 255, 0.2); position: relative; }
+        .contact-section { padding: 80px 0; background: #080c1a; color: #fff; border-top: 1px solid rgba(255, 45, 120, 0.15); box-shadow: 0 0 15px rgba(255, 45, 120, 0.05); position: relative; }
         .contact-section::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 20% 50%, rgba(255, 45, 120, 0.08) 0%, transparent 50%), radial-gradient(ellipse at 80% 50%, rgba(0, 245, 255, 0.08) 0%, transparent 50%); pointer-events: none; }
         .contact-section .section-title { color: #fff; }
         .contact-section .section-subtitle { color: rgba(255,255,255,0.8); }
@@ -321,7 +323,7 @@
             <div class="section-header"><h2 class="section-title">关于我们</h2><p class="section-subtitle">德昌电机授权代理，专业驱动解决方案</p></div>
             <div class="about-content">
                 <div class="about-text"><h3>20年行业深耕</h3><p>华创生电机是德昌电机（JOHNSON ELECTRIC）授权代理商，专注自动化与智能化驱动领域20年。</p><p>我们提供直流电机、交流电机、步进电机、驱动系统等全系列产品。</p></div>
-                <div class="about-image"><img src="images/logo.png" alt="华创生电机" style="max-width:100%;"></div>
+                <div class="about-image"><div style="background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%); height: 350px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 80px;">🏭</div></div>
             </div>
         </div>
     </section>
