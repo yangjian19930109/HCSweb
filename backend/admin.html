@@ -46,15 +46,14 @@ tbody td{padding:9px 14px;font-size:13px;color:#ccc;vertical-align:middle}
 .stat-card{background:#16213e;border-radius:10px;border:1px solid #333;padding:16px 24px;min-width:120px;text-align:center}
 .stat-card .num{font-size:28px;font-weight:700;color:#00f5ff;font-family:monospace}
 .stat-card .lbl{font-size:12px;color:#888;margin-top:4px}
-.img-upload-row{display:flex;gap:16px;margin-top:8px;flex-wrap:wrap}
-.img-upload-item{flex:1;min-width:160px;max-width:220px}
-.img-upload-item label{display:block;font-size:12px;color:#888;margin-bottom:4px}
-.img-upload-item input[type=file]{display:none}
-.img-upload-box{width:100%;aspect-ratio:4/3;background:#1a1a2e;border:2px dashed #333;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;overflow:hidden;position:relative}
-.img-upload-box:hover{border-color:#00f5ff;box-shadow:0 0 10px rgba(0,245,255,0.1)}
-.img-upload-box img{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0}
-.img-upload-box .placeholder{font-size:28px;color:#444;pointer-events:none}
-.img-upload-box .placeholder span{display:block;font-size:10px;margin-top:4px}
+.img-grid{display:flex;gap:12px;flex-wrap:wrap;min-height:80px;padding:8px;background:#1a1a2e;border-radius:8px;border:2px dashed #333}
+.img-grid-item{width:140px;height:105px;border-radius:6px;overflow:hidden;position:relative;cursor:grab;border:2px solid transparent;transition:border-color .2s}
+.img-grid-item:active{cursor:grabbing}
+.img-grid-item img{width:100%;height:100%;object-fit:cover}
+.img-grid-item.drag-over{border-color:#00f5ff;box-shadow:0 0 10px rgba(0,245,255,0.3)}
+.img-grid-item .del-btn{position:absolute;top:3px;right:3px;width:20px;height:20px;background:rgba(255,45,120,0.85);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer;z-index:5;line-height:1}
+.img-grid-item .del-btn:hover{background:#ff2d78}
+.img-grid-item .keep-badge{position:absolute;bottom:3px;left:3px;background:rgba(0,0,0,0.7);color:#0f0;font-size:9px;padding:1px 5px;border-radius:2px}
 </style>
 </head>
 <body>
@@ -92,18 +91,29 @@ tbody td{padding:9px 14px;font-size:13px;color:#ccc;vertical-align:middle}
       </div>
     </div>
     <div class="form-grid">
+      <div>
+        <label>产品类型</label>
+        <select id="fType"><option value="">-- 选择类型 --</option></select>
+      </div>
+    </div>
+    <div class="form-grid">
+      <div class="form-full">
+        <label>规格参数 <span style="font-weight:400;color:#888;font-size:11px">（可选，键值对）</span></label>
+        <div id="specsEditor" style="margin-top:4px"></div>
+        <button class="btn btn-primary btn-sm" onclick="addSpecRow()" style="margin-top:6px">+ 加规格</button>
+      </div>
+    </div>
+    <div class="form-grid">
       <div class="form-full">
         <label>描述 *</label>
         <textarea id="fDesc" placeholder="产品简短描述，用于搜索结果展示"></textarea>
       </div>
     </div>
-    <div class="section-title" style="margin-top:0">商品主图 <span style="font-weight:400;color:#888;font-size:12px">（最多3张）</span></div>
+    <div class="section-title" style="margin-top:0">商品主图 <span style="font-weight:400;color:#888;font-size:12px">（拖拽排序，最多6张）</span></div>
     <div class="form-card">
-      <div class="img-upload-row">
-        <div class="img-upload-item"><label>图片 1</label><input type="file" id="img1" accept="image/*" onchange="previewImage(1)"><div class="img-upload-box" id="box1" onclick="document.getElementById('img1').click()"><div class="placeholder">📷<span>点击上传</span></div></div></div>
-        <div class="img-upload-item"><label>图片 2</label><input type="file" id="img2" accept="image/*" onchange="previewImage(2)"><div class="img-upload-box" id="box2" onclick="document.getElementById('img2').click()"><div class="placeholder">📷<span>点击上传</span></div></div></div>
-        <div class="img-upload-item"><label>图片 3</label><input type="file" id="img3" accept="image/*" onchange="previewImage(3)"><div class="img-upload-box" id="box3" onclick="document.getElementById('img3').click()"><div class="placeholder">📷<span>点击上传</span></div></div></div>
-      </div>
+      <input type="file" id="mainImgInput" accept="image/*" multiple onchange="handleMainImgSelect()" style="display:none">
+      <div class="img-grid" id="mainImgGrid"></div>
+      <button class="btn btn-primary btn-sm" onclick="document.getElementById('mainImgInput').click()" style="margin-top:8px">+ 上传主图</button>
     </div>
     <div class="section-title" style="margin-top:0">商品详情 <span style="font-weight:400;color:#888;font-size:12px">（不参与搜索）</span></div>
     <div class="form-card">
@@ -114,13 +124,9 @@ tbody td{padding:9px 14px;font-size:13px;color:#ccc;vertical-align:middle}
           <div class="hint">支持 HTML 标签，引用图片用 &lt;img src="图片路径"&gt;</div>
         </div>
       </div>
-      <div class="img-upload-row" id="detailImgRow">
-        <div class="img-upload-item"><label>详情图 1</label><input type="file" id="dimg1" accept="image/*" onchange="previewDetailImg(1)"><div class="img-upload-box" id="dbox1" onclick="document.getElementById('dimg1').click()"><div class="placeholder">📷<span>点击上传</span></div></div></div>
-        <div class="img-upload-item"><label>详情图 2</label><input type="file" id="dimg2" accept="image/*" onchange="previewDetailImg(2)"><div class="img-upload-box" id="dbox2" onclick="document.getElementById('dimg2').click()"><div class="placeholder">📷<span>点击上传</span></div></div></div>
-        <div class="img-upload-item"><label>详情图 3</label><input type="file" id="dimg3" accept="image/*" onchange="previewDetailImg(3)"><div class="img-upload-box" id="dbox3" onclick="document.getElementById('dimg3').click()"><div class="placeholder">📷<span>点击上传</span></div></div></div>
-        <div class="img-upload-item"><label>详情图 4</label><input type="file" id="dimg4" accept="image/*" onchange="previewDetailImg(4)"><div class="img-upload-box" id="dbox4" onclick="document.getElementById('dimg4').click()"><div class="placeholder">📷<span>点击上传</span></div></div></div>
-        <div class="img-upload-item"><label>详情图 5</label><input type="file" id="dimg5" accept="image/*" onchange="previewDetailImg(5)"><div class="img-upload-box" id="dbox5" onclick="document.getElementById('dimg5').click()"><div class="placeholder">📷<span>点击上传</span></div></div></div>
-      </div>
+      <input type="file" id="detailImgInput" accept="image/*" multiple onchange="handleDetailImgSelect()" style="display:none">
+      <div class="img-grid" id="detailImgGrid"></div>
+      <button class="btn btn-primary btn-sm" onclick="document.getElementById('detailImgInput').click()" style="margin-top:8px">+ 上传详情图</button>
       <div class="hint" style="margin-top:4px">详情图片上传后，在详情内容中用 &lt;img src="images/products/文件名"&gt; 引用</div>
     </div>
     <div class="btn-row">
@@ -135,6 +141,17 @@ tbody td{padding:9px 14px;font-size:13px;color:#ccc;vertical-align:middle}
     <table>
       <thead><tr><th style="width:36px"><input type="checkbox" id="selectAll" onchange="toggleSelectAll()" title="全选"></th><th>ID</th><th>名称</th><th>分类</th><th>子分类</th><th>描述</th><th style="width:120px">操作</th></tr></thead>
       <tbody id="productList"></tbody>
+    </table>
+  </div>
+
+  <div class="section-title">分类管理 <button class="btn btn-primary btn-sm" onclick="saveCategories()" style="margin-left:12px">保存分类</button></div>
+  <div class="form-card" id="catMgr"></div>
+
+  <div class="section-title">操作日志 <span style="font-weight:400;color:#888;font-size:13px" id="auditCount"></span></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th style="width:140px">时间</th><th style="width:80px">动作</th><th style="width:100px">产品ID</th><th>摘要</th></tr></thead>
+      <tbody id="auditList"></tbody>
     </table>
   </div>
 </div>
@@ -163,7 +180,10 @@ async function loadAll() {
       sel.innerHTML += '<option value="'+c.name+'">'+c.name+'</option>';
       subCatMap[c.name] = c.subCategories || [];
     });
-    document.getElementById('fCat').onchange = updateSubCats;
+    document.getElementById('fCat').onchange = function(){ updateSubCats(); autoUpdateSpecs(); };
+    document.getElementById('fSubCat').onchange = autoUpdateSpecs;
+    document.getElementById('fType').onchange = autoUpdateSpecs;
+    renderCatMgr();
   } catch(e) { showToast('加载分类失败', 'error'); }
 
   try {
@@ -181,6 +201,22 @@ function updateSubCats() {
   (subCatMap[cat] || []).forEach(function(s){
     sel.innerHTML += '<option value="'+s+'">'+s+'</option>';
   });
+  updateTypeOptions(cat);
+}
+
+function updateTypeOptions(cat) {
+  var sel = document.getElementById('fType');
+  var types = [];
+  var catObj = categories.find(function(c){ return c.name === cat; });
+  if (catObj && catObj.productTypes) {
+    types = catObj.productTypes;
+  }
+  sel.innerHTML = '<option value="">-- 选择类型 --</option>';
+  types.forEach(function(t){
+    sel.innerHTML += '<option value="'+t+'">'+t+'</option>';
+  });
+  sel.style.display = types.length ? '' : 'none';
+  sel.parentElement.querySelector('label').style.display = types.length ? '' : 'none';
 }
 
 function renderTable() {
@@ -224,41 +260,10 @@ function editProduct(id) {
   document.getElementById('fSubCat').value = p.subCat || '';
   document.getElementById('fDesc').value = p.desc || '';
   document.getElementById('fDetail').value = p.detail || '';
-  // 显示已有图片
-  var imgs = p.images || [];
-  for (var i=1;i<=3;i++) {
-    document.getElementById('img'+i).value = '';
-    var box = document.getElementById('box'+i);
-    var oldImg = box.querySelector('img');
-    if (oldImg) oldImg.remove();
-    var ph = box.querySelector('.placeholder');
-    if (imgs[i-1]) {
-      if (ph) ph.style.display = 'none';
-      var img = document.createElement('img');
-      img.src = '/' + imgs[i-1];
-      img.setAttribute('data-keep', imgs[i-1]);
-      box.appendChild(img);
-    } else {
-      if (ph) ph.style.display = '';
-    }
-  }
-  var dimgs = p.detail_images || [];
-  for (var i=1;i<=5;i++) {
-    document.getElementById('dimg'+i).value = '';
-    var dbox = document.getElementById('dbox'+i);
-    var oldDimg = dbox.querySelector('img');
-    if (oldDimg) oldDimg.remove();
-    var dph = dbox.querySelector('.placeholder');
-    if (dimgs[i-1]) {
-      if (dph) dph.style.display = 'none';
-      var dimg = document.createElement('img');
-      dimg.src = '/' + dimgs[i-1];
-      dimg.setAttribute('data-keep', dimgs[i-1]);
-      dbox.appendChild(dimg);
-    } else {
-      if (dph) dph.style.display = '';
-    }
-  }
+  updateTypeOptions(p.cat || '');
+  document.getElementById('fType').value = p.productType || '';
+  loadImgGrids(p);
+  setSpecs(p.specs || {});
   document.getElementById('saveBtn').textContent = '更新产品';
   document.getElementById('cancelEditBtn').style.display = 'inline-block';
   window.scrollTo({top: 0, behavior: 'smooth'});
@@ -274,52 +279,116 @@ function clearForm() {
   });
   document.getElementById('fCat').value='';
   document.getElementById('fSubCat').innerHTML='<option value="">-- 选择子分类 --</option>';
+  var fType = document.getElementById('fType');
+  fType.innerHTML = '<option value="">-- 选择类型 --</option>';
+  fType.style.display = 'none';
+  fType.parentElement.querySelector('label').style.display = 'none';
   document.getElementById('saveBtn').textContent = '保存产品';
   document.getElementById('cancelEditBtn').style.display = 'none';
-  for (var i=1;i<=3;i++) {
-    document.getElementById('img'+i).value='';
-    var box = document.getElementById('box'+i);
-    var img = box.querySelector('img');
-    if (img) img.remove();
-    var ph = box.querySelector('.placeholder');
-    if (ph) ph.style.display='';
-  }
-  for (var i=1;i<=5;i++) {
-    document.getElementById('dimg'+i).value='';
-    var dbox = document.getElementById('dbox'+i);
-    var dimg = dbox.querySelector('img');
-    if (dimg) dimg.remove();
-    var dph = dbox.querySelector('.placeholder');
-    if (dph) dph.style.display='';
+  clearImgGrids();
+  specRows = [];
+  renderSpecsEditor();
+}
+
+// ===== 图片网格管理 =====
+var mainImgItems = [];   // {src, keepPath, file}
+var detailImgItems = []; // {src, keepPath, file}
+var dragSrc = null;
+
+function renderImgGrid(gridId, items) {
+  var grid = document.getElementById(gridId);
+  grid.innerHTML = '';
+  items.forEach(function(item, idx){
+    var div = document.createElement('div');
+    div.className = 'img-grid-item';
+    div.draggable = true;
+    div.setAttribute('data-idx', idx);
+    div.ondragstart = function(e){ dragSrc = this; e.dataTransfer.effectAllowed = 'move'; };
+    div.ondragover = function(e){ e.preventDefault(); this.classList.add('drag-over'); };
+    div.ondragleave = function(){ this.classList.remove('drag-over'); };
+    div.ondrop = function(e){
+      e.preventDefault();
+      this.classList.remove('drag-over');
+      var fromIdx = parseInt(dragSrc.getAttribute('data-idx'));
+      var toIdx = parseInt(this.getAttribute('data-idx'));
+      if (fromIdx !== toIdx) {
+        var tmp = items[fromIdx];
+        items.splice(fromIdx, 1);
+        items.splice(toIdx, 0, tmp);
+        renderImgGrid(gridId, items);
+      }
+    };
+    var img = document.createElement('img');
+    img.src = item.src;
+    div.appendChild(img);
+    // 保留标记
+    if (item.keepPath) {
+      var badge = document.createElement('span');
+      badge.className = 'keep-badge';
+      badge.textContent = '✓';
+      div.appendChild(badge);
+    }
+    // 删除按钮
+    var del = document.createElement('span');
+    del.className = 'del-btn';
+    del.textContent = '×';
+    del.onclick = function(e){
+      e.stopPropagation();
+      items.splice(idx, 1);
+      renderImgGrid(gridId, items);
+    };
+    div.appendChild(del);
+    grid.appendChild(div);
+  });
+}
+
+function addFilesToGrid(items, files, maxCount) {
+  var remaining = maxCount - items.length;
+  var toAdd = Math.min(files.length, remaining);
+  for (var i=0; i<toAdd; i++) {
+    var reader = new FileReader();
+    (function(file){
+      reader.onload = function(e){
+        items.push({src: e.target.result, keepPath: null, file: file});
+        renderImgGrid('mainImgGrid', mainImgItems);
+        renderImgGrid('detailImgGrid', detailImgItems);
+      };
+      reader.readAsDataURL(file);
+    })(files[i]);
   }
 }
 
-function previewImage(n) {
-  var file = document.getElementById('img'+n).files[0];
-  var box = document.getElementById('box'+n);
-  previewFileInBox(file, box);
+function handleMainImgSelect() {
+  var files = document.getElementById('mainImgInput').files;
+  addFilesToGrid(mainImgItems, files, 6);
+  document.getElementById('mainImgInput').value = '';
 }
-function previewDetailImg(n) {
-  var file = document.getElementById('dimg'+n).files[0];
-  var box = document.getElementById('dbox'+n);
-  previewFileInBox(file, box);
+function handleDetailImgSelect() {
+  var files = document.getElementById('detailImgInput').files;
+  addFilesToGrid(detailImgItems, files, 10);
+  document.getElementById('detailImgInput').value = '';
 }
-function previewFileInBox(file, box) {
-  var existing = box.querySelector('img');
-  if (existing) existing.remove();
-  var ph = box.querySelector('.placeholder');
-  if (!file) {
-    if (ph) ph.style.display='';
-    return;
-  }
-  if (ph) ph.style.display='none';
-  var reader = new FileReader();
-  reader.onload = function(e) {
-    var img = document.createElement('img');
-    img.src = e.target.result;
-    box.appendChild(img);
-  };
-  reader.readAsDataURL(file);
+
+function clearImgGrids() {
+  mainImgItems = [];
+  detailImgItems = [];
+  document.getElementById('mainImgInput').value = '';
+  document.getElementById('detailImgInput').value = '';
+  renderImgGrid('mainImgGrid', mainImgItems);
+  renderImgGrid('detailImgGrid', detailImgItems);
+}
+
+function loadImgGrids(product) {
+  mainImgItems = [];
+  detailImgItems = [];
+  (product.images||[]).forEach(function(p){
+    mainImgItems.push({src: '/'+p, keepPath: p, file: null});
+  });
+  (product.detail_images||[]).forEach(function(p){
+    detailImgItems.push({src: '/'+p, keepPath: p, file: null});
+  });
+  renderImgGrid('mainImgGrid', mainImgItems);
+  renderImgGrid('detailImgGrid', detailImgItems);
 }
 
 async function saveProduct() {
@@ -333,6 +402,7 @@ async function saveProduct() {
   if (!cat) { showToast('请选择分类', 'error'); return; }
 
   var detail = document.getElementById('fDetail').value.trim();
+  var productType = document.getElementById('fType').value;
   var isEdit = !!editProductId;
 
   var fd = new FormData();
@@ -342,32 +412,41 @@ async function saveProduct() {
   fd.append('subCat', subCat);
   fd.append('desc', desc);
   fd.append('detail', detail);
+  fd.append('productType', productType);
+  fd.append('specs', JSON.stringify(getSpecs()));
 
-  // 保留的旧图片路径
-  if (isEdit) {
-    var keepImgs = [];
-    for (var i=1;i<=3;i++) {
-      var box = document.getElementById('box'+i);
-      var img = box.querySelector('img[data-keep]');
-      if (img) keepImgs.push(img.getAttribute('data-keep'));
+  // 收集图片：保留的旧路径 + 新上传的文件
+  var keepImgs = [];
+  var newImgIdx = 1;
+  for (var i=0; i<mainImgItems.length; i++) {
+    if (mainImgItems[i].keepPath) {
+      keepImgs.push(mainImgItems[i].keepPath);
+    } else if (mainImgItems[i].file) {
+      fd.append('image'+newImgIdx, mainImgItems[i].file);
+      newImgIdx++;
     }
-    fd.append('keep_images', JSON.stringify(keepImgs));
-    var keepDimgs = [];
-    for (var i=1;i<=5;i++) {
-      var dbox = document.getElementById('dbox'+i);
-      var dimg = dbox.querySelector('img[data-keep]');
-      if (dimg) keepDimgs.push(dimg.getAttribute('data-keep'));
-    }
-    fd.append('keep_detail_images', JSON.stringify(keepDimgs));
   }
+  fd.append('keep_images', JSON.stringify(keepImgs));
 
-  for (var i=1;i<=3;i++) {
-    var f = document.getElementById('img'+i).files[0];
-    if (f) fd.append('image'+i, f);
+  var keepDimgs = [];
+  var newDimgIdx = 1;
+  for (var i=0; i<detailImgItems.length; i++) {
+    if (detailImgItems[i].keepPath) {
+      keepDimgs.push(detailImgItems[i].keepPath);
+    } else if (detailImgItems[i].file) {
+      fd.append('detail_'+newDimgIdx, detailImgItems[i].file);
+      newDimgIdx++;
+    }
   }
-  for (var i=1;i<=5;i++) {
-    var df = document.getElementById('dimg'+i).files[0];
-    if (df) fd.append('detail_'+i, df);
+  fd.append('keep_detail_images', JSON.stringify(keepDimgs));
+
+  // 详情文字和图片都为空时警告
+  var hasDetailImgs = detailImgItems.length > 0;
+  if (!detail && !hasDetailImgs) {
+    var hadDetail = isEdit && (products.find(function(p){ return p.id === editProductId; }) || {}).url &&
+                    (products.find(function(p){ return p.id === editProductId; }) || {}).url.endsWith('.html');
+    var msg = hadDetail ? '详情文字和图片均为空，保存后将失去独立详情页，确定保存吗？' : '详情文字和图片均为空，产品不会生成独立详情页，确定保存吗？';
+    if (!confirm(msg)) return;
   }
 
   try {
@@ -386,6 +465,7 @@ async function saveProduct() {
       clearForm();
       document.getElementById('countLabel').textContent = '('+products.length+' 个产品)';
       renderTable();
+      loadAudit();
     } else {
       showToast((d.errors||['未知错误']).join('；'), 'error');
     }
@@ -425,6 +505,7 @@ async function batchDelete() {
       document.getElementById('countLabel').textContent = '('+products.length+' 个产品)';
       document.getElementById('selectAll').checked = false;
       renderTable();
+      loadAudit();
     } else {
       showToast(d.error||'删除失败', 'error');
     }
@@ -443,6 +524,7 @@ async function delProduct(id) {
       products = products.filter(function(p){ return p.id !== id; });
       document.getElementById('countLabel').textContent = '('+products.length+' 个产品)';
       renderTable();
+      loadAudit();
     } else {
       showToast(d.error||'删除失败', 'error');
     }
@@ -451,7 +533,173 @@ async function delProduct(id) {
   }
 }
 
+async function loadAudit() {
+  try {
+    var r = await fetch('/api/audit');
+    var records = await r.json();
+    document.getElementById('auditCount').textContent = '(' + records.length + ' 条)';
+    var tb = document.getElementById('auditList');
+    if (!records.length) {
+      tb.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:#666">暂无操作记录</td></tr>';
+      return;
+    }
+    var actionMap = {'add':'新增','edit':'编辑','delete':'删除','batch-delete':'批量删除'};
+    var html = '';
+    records.forEach(function(r){
+      html += '<tr>'+
+        '<td style="font-size:12px;color:#888">'+esc(r.time)+'</td>'+
+        '<td><span class="cat-badge">'+(actionMap[r.action]||r.action)+'</span></td>'+
+        '<td><span class="model-tag">'+esc(r.productId||'')+'</span></td>'+
+        '<td style="font-size:12px;color:#aaa">'+esc(r.summary||'')+'</td>'+
+      '</tr>';
+    });
+    tb.innerHTML = html;
+  } catch(e) {}
+}
+
+// ===== 分类管理 =====
+function renderCatMgr() {
+  var html = '';
+  categories.forEach(function(c, ci){
+    html += '<div style="margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #1f2a45">';
+    html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">';
+    html += '<span class="cat-badge" style="font-size:14px">'+esc(c.name)+'</span>';
+    html += '<input value="'+esc(c.name)+'" onchange="categories['+ci+'].name=this.value" style="width:200px;padding:4px 8px;font-size:13px">';
+    html += '<button class="btn btn-danger btn-sm" onclick="delCategory('+ci+')">删除分类</button>';
+    html += '</div>';
+    // 子分类
+    html += '<div style="margin-left:16px;margin-bottom:6px"><span style="color:#888;font-size:12px">子分类：</span>';
+    (c.subCategories||[]).forEach(function(s, si){
+      html += '<span style="display:inline-flex;align-items:center;gap:4px;margin:2px 6px;background:#1a1a2e;padding:2px 8px;border-radius:3px;font-size:12px">';
+      html += '<input value="'+esc(s)+'" onchange="categories['+ci+'].subCategories['+si+']=this.value" style="width:120px;padding:2px 6px;font-size:12px;background:transparent;border:none;color:#c084fc">';
+      html += '<span onclick="delSubCat('+ci+','+si+')" style="cursor:pointer;color:#f66">×</span>';
+      html += '</span>';
+    });
+    html += '<button class="btn btn-primary btn-sm" onclick="addSubCat('+ci+')" style="font-size:11px;padding:2px 8px">+子分类</button>';
+    html += '</div>';
+    // 产品类型
+    html += '<div style="margin-left:16px"><span style="color:#888;font-size:12px">产品类型：</span>';
+    (c.productTypes||[]).forEach(function(t, ti){
+      html += '<span style="display:inline-flex;align-items:center;gap:4px;margin:2px 6px;background:#1a1a2e;padding:2px 8px;border-radius:3px;font-size:12px">';
+      html += '<input value="'+esc(t)+'" onchange="categories['+ci+'].productTypes['+ti+']=this.value" style="width:120px;padding:2px 6px;font-size:12px;background:transparent;border:none;color:#00f5ff">';
+      html += '<span onclick="delType('+ci+','+ti+')" style="cursor:pointer;color:#f66">×</span>';
+      html += '</span>';
+    });
+    html += '<button class="btn btn-primary btn-sm" onclick="addType('+ci+')" style="font-size:11px;padding:2px 8px">+类型</button>';
+    html += '</div></div>';
+  });
+  html += '<button class="btn btn-primary" onclick="addCategory()">+ 新增分类</button>';
+  document.getElementById('catMgr').innerHTML = html;
+}
+
+function addCategory() {
+  categories.push({id:'cat-'+Date.now(), name:'新分类', subCategories:[], productTypes:[]});
+  renderCatMgr();
+}
+function delCategory(i) {
+  if (!confirm('确定删除分类 "'+categories[i].name+'" 吗？')) return;
+  categories.splice(i,1);
+  renderCatMgr();
+}
+function addSubCat(ci) {
+  categories[ci].subCategories.push('新子分类');
+  renderCatMgr();
+}
+function delSubCat(ci, si) {
+  categories[ci].subCategories.splice(si,1);
+  renderCatMgr();
+}
+function addType(ci) {
+  categories[ci].productTypes.push('新类型');
+  renderCatMgr();
+}
+function delType(ci, ti) {
+  categories[ci].productTypes.splice(ti,1);
+  renderCatMgr();
+}
+
+async function saveCategories() {
+  try {
+    var r = await fetch('/api/categories/save', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({categories: categories})
+    });
+    var d = await r.json();
+    if (d.ok) {
+      categories = d.categories;
+      showToast('分类已保存');
+      renderCatMgr();
+      // 更新表单的分类下拉
+      var sel = document.getElementById('fCat');
+      sel.innerHTML = '<option value="">-- 选择分类 --</option>';
+      categories.forEach(function(c){
+        sel.innerHTML += '<option value="'+c.name+'">'+c.name+'</option>';
+        subCatMap[c.name] = c.subCategories || [];
+      });
+    } else {
+      showToast(d.error||'保存失败', 'error');
+    }
+  } catch(e) {
+    showToast('网络错误: '+e.message, 'error');
+  }
+}
+
+// ===== 规格参数编辑 =====
+var specRows = []; // [{key:'', value:''}]
+
+function renderSpecsEditor() {
+  var html = '';
+  specRows.forEach(function(r, i){
+    html += '<div style="display:flex;gap:8px;margin-bottom:6px;align-items:center">';
+    html += '<input value="'+esc(r.key)+'" onchange="specRows['+i+'].key=this.value" placeholder="参数名" style="flex:1;padding:6px 10px;font-size:13px">';
+    html += '<input value="'+esc(r.value)+'" onchange="specRows['+i+'].value=this.value" placeholder="参数值" style="flex:2;padding:6px 10px;font-size:13px">';
+    html += '<span onclick="specRows.splice('+i+',1);renderSpecsEditor()" style="cursor:pointer;color:#f66;font-size:16px">×</span>';
+    html += '</div>';
+  });
+  document.getElementById('specsEditor').innerHTML = html;
+}
+
+function addSpecRow(key, value) {
+  specRows.push({key: key||'', value: value||''});
+  renderSpecsEditor();
+}
+
+function setSpecs(specsObj) {
+  specRows = [];
+  if (specsObj) {
+    Object.keys(specsObj).forEach(function(k){
+      specRows.push({key: k, value: specsObj[k]});
+    });
+  }
+  renderSpecsEditor();
+}
+
+function getSpecs() {
+  var obj = {};
+  specRows.forEach(function(r){
+    if (r.key.trim()) obj[r.key.trim()] = r.value;
+  });
+  return obj;
+}
+
+function autoUpdateSpecs() {
+  var cat = document.getElementById('fCat').value;
+  var subCat = document.getElementById('fSubCat').value;
+  var pType = document.getElementById('fType').value;
+  // 自动设置/更新对应规格
+  var specs = getSpecs();
+  if (pType) specs['产品类型'] = pType;
+  setSpecs(specs);
+}
+
+function refreshAll() {
+  loadAll();
+  loadAudit();
+}
+
 loadAll();
+loadAudit();
 </script>
 </body>
 </html>

@@ -21,6 +21,8 @@ PRODUCTS_JSON = os.path.join(DATA_DIR, 'products.json')
 PRODUCTS_JS = os.path.join(DATA_DIR, 'products.js')
 MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5MB
 ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.webp'}
+AUDIT_JSON = os.path.join(DATA_DIR, 'audit.json')
+MAX_AUDIT_ENTRIES = 500
 
 # SMTP 配置（通过环境变量设置）
 SMTP_HOST = os.environ.get('SMTP_HOST', '')
@@ -48,18 +50,47 @@ MIME = {
     '.eot': 'application/vnd.ms-fontobject',
 }
 
-# 产品分类定义
-CATEGORIES = [
-    {"id": "car-motor", "name": "车用马达"},
-    {"id": "appliance", "name": "家用电器及电动工具马达"},
-    {"id": "switch", "name": "微动开关"},
-]
+CATEGORIES_JSON = os.path.join(DATA_DIR, 'categories.json')
 
-SUBCATEGORIES = {
-    "车用马达": ["节气门马达", "废气阀马达", "涡轮增压执行器马达", "车门锁马达", "EPB马达", "其他马达"],
-    "家用电器及电动工具马达": ["家用电器马达", "电动工具马达"],
-    "微动开关": ["微动开关"],
-}
+def load_categories_config():
+    """从配置文件加载分类数据"""
+    if os.path.exists(CATEGORIES_JSON):
+        try:
+            with open(CATEGORIES_JSON, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except (json.JSONDecodeError, IOError):
+            pass
+    return None
+
+def get_categories():
+    """获取分类列表"""
+    cfg = load_categories_config()
+    if cfg:
+        return cfg.get('categories', [])
+    # 回退硬编码
+    return [
+        {"id": "car-motor", "name": "车用马达", "subCategories": ["节气门马达", "废气阀马达", "涡轮增压执行器马达", "车门锁马达", "EPB马达", "其他马达"], "productTypes": ["12V有刷直流", "24V有刷直流", "无刷直流"]},
+        {"id": "appliance", "name": "家用电器及电动工具马达", "subCategories": ["家用电器马达", "电动工具马达"], "productTypes": []},
+        {"id": "switch", "name": "微动开关", "subCategories": ["微动开关"], "productTypes": []},
+    ]
+
+def save_categories_config(categories):
+    """保存分类配置"""
+    cfg = {'categories': categories}
+    os.makedirs(DATA_DIR, exist_ok=True)
+    with open(CATEGORIES_JSON, 'w', encoding='utf-8') as f:
+        json.dump(cfg, f, ensure_ascii=False, indent=2)
+
+# 兼容旧代码：延迟加载
+CATEGORIES = []
+SUBCATEGORIES = {}
+
+def _refresh_categories():
+    global CATEGORIES, SUBCATEGORIES
+    CATEGORIES = [{"id": c["id"], "name": c["name"]} for c in get_categories()]
+    SUBCATEGORIES = {}
+    for c in get_categories():
+        SUBCATEGORIES[c["name"]] = c.get("subCategories", [])
 
 # 分类 → Tab 锚点映射
 CAT_TAB_MAP = {
@@ -69,9 +100,11 @@ CAT_TAB_MAP = {
 }
 
 
-def generate_url(pid, detail):
-    """根据是否有详情自动生成产品链接"""
-    if detail and detail.strip():
+def generate_url(pid, detail, detail_images=None):
+    """根据是否有详情内容或详情图自动生成产品链接"""
+    has_detail = detail and detail.strip()
+    has_images = detail_images and len(detail_images) > 0
+    if has_detail or has_images:
         return f"product-{pid}.html"
     return "products.html#tab-motor"
 
@@ -152,6 +185,10 @@ def regenerate_js(products):
         lines.append(f'        images: {img_str},')
         detail = p.get('detail', '') or ''
         lines.append(f'        detail: {json.dumps(detail, ensure_ascii=False)},')
+        ptype = p.get('productType', '') or ''
+        lines.append(f'        productType: {json.dumps(ptype, ensure_ascii=False)},')
+        specs = p.get('specs', {}) or {}
+        lines.append(f'        specs: {json.dumps(specs, ensure_ascii=False)},')
         dimgs = p.get('detail_images', []) or []
         lines.append(f'        detail_images: {json.dumps(dimgs, ensure_ascii=False)}')
         lines.append('    },')
@@ -166,6 +203,29 @@ def regenerate_js(products):
     with open(os.path.join(dist_data, 'products.json'), 'w', encoding='utf-8') as f:
         json.dump(products, f, ensure_ascii=False, indent=2)
 
+
+def log_audit(action, product_id, title, summary=''):
+    """记录操作审计日志"""
+    os.makedirs(DATA_DIR, exist_ok=True)
+    records = []
+    if os.path.exists(AUDIT_JSON):
+        try:
+            with open(AUDIT_JSON, 'r', encoding='utf-8') as f:
+                records = json.load(f)
+        except (json.JSONDecodeError, IOError):
+            records = []
+    records.append({
+        'time': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+        'action': action,
+        'productId': product_id,
+        'title': title,
+        'summary': summary,
+    })
+    # 保留最近 N 条
+    if len(records) > MAX_AUDIT_ENTRIES:
+        records = records[-MAX_AUDIT_ENTRIES:]
+    with open(AUDIT_JSON, 'w', encoding='utf-8') as f:
+        json.dump(records, f, ensure_ascii=False, indent=2)
 
 def auto_build():
     """自动运行 build.py 重建静态页面"""
@@ -334,7 +394,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             q_lower = q.lower()
             products = load_products()
             hits = [
-                {k: p[k] for k in ('id', 'title', 'cat', 'subCat', 'desc', 'url', 'images') if k in p}
+                {k: p[k] for k in ('id', 'title', 'cat', 'subCat', 'desc', 'url', 'images', 'productType') if k in p}
                 for p in products
                 if q_lower in p.get('title', '').lower()
                 or q_lower in p.get('desc', '').lower()
@@ -343,12 +403,21 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._json_response(200, hits)
             return
 
-        # API: 分类列表
+        # API: 操作日志
+        if self.path == '/api/audit':
+            records = []
+            if os.path.exists(AUDIT_JSON):
+                try:
+                    with open(AUDIT_JSON, 'r', encoding='utf-8') as f:
+                        records = json.load(f)
+                except (json.JSONDecodeError, IOError):
+                    records = []
+            self._json_response(200, list(reversed(records[-100:])))
+            return
+
+        # API: 分类列表（完整数据，含 productTypes）
         if self.path == '/api/categories':
-            cats = CATEGORIES.copy()
-            for c in cats:
-                c['subCategories'] = SUBCATEGORIES.get(c['name'], [])
-            self._json_response(200, cats)
+            self._json_response(200, get_categories())
             return
 
         # 否则走静态文件
@@ -363,6 +432,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_add_product()
         elif self.path == '/api/products/batch-delete':
             self._handle_batch_delete()
+        elif self.path == '/api/categories/save':
+            self._handle_save_categories()
         else:
             self.send_response(404)
             self.end_headers()
@@ -394,7 +465,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             if len(products) == before:
                 self._json_response(404, {'error': '产品不存在'})
                 return
+            deleted_product = next((p for p in load_products() if p.get('id') == pid), None)
             save_products(products)
+            log_audit('delete', pid, deleted_product.get('title', '') if deleted_product else '', '删除产品')
             self._json_response(200, {'ok': True})
             return
         self.send_response(404)
@@ -484,6 +557,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 subCat = fields.get('subCat', '').strip()
                 desc = fields.get('desc', '').strip()
                 detail = fields.get('detail', '').strip()
+                productType = fields.get('productType', '').strip()
                 image_paths = []
                 detail_image_paths = []
             else:
@@ -496,6 +570,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 subCat = (data.get('subCat') or '').strip()
                 desc = (data.get('desc') or '').strip()
                 detail = (data.get('detail') or '').strip()
+                productType = (data.get('productType') or '').strip()
                 files = []
                 image_paths = (data.get('images') or [])[:3]
                 detail_image_paths = (data.get('detail_images') or [])
@@ -532,7 +607,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     if len(image_paths) < 3:
                         image_paths.append(path)
 
-            url = generate_url(pid, detail)
+            url = generate_url(pid, detail, detail_image_paths)
 
             product = {
                 'id': pid,
@@ -544,11 +619,32 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 'images': image_paths,
                 'detail': detail,
                 'detail_images': detail_image_paths,
+                'productType': productType,
+                'specs': json.loads(fields.get('specs', '{}')) if 'specs' in fields else {},
             }
             products.append(product)
             save_products(products)
+            log_audit('add', pid, title, f'新增产品，{len(image_paths)}张主图，{len(detail_image_paths)}张详情图')
             print(f'[OK] 新增产品: {pid} - {title} (图片: {len(image_paths)}张)')
             self._json_response(200, {'ok': True, 'product': product})
+        except (json.JSONDecodeError, ValueError):
+            self._json_response(400, {'ok': False, 'errors': ['数据格式错误']})
+        except Exception as e:
+            print(f'[ERROR] {e}')
+            self._json_response(500, {'ok': False, 'errors': ['服务器内部错误']})
+
+    def _handle_save_categories(self):
+        try:
+            content_length = int(self.headers.get('Content-Length', 0))
+            body = self.rfile.read(content_length).decode('utf-8')
+            data = json.loads(body)
+            categories = data.get('categories', [])
+            if not isinstance(categories, list):
+                self._json_response(400, {'error': '无效的分类数据'})
+                return
+            save_categories_config(categories)
+            _refresh_categories()
+            self._json_response(200, {'ok': True, 'categories': get_categories()})
         except (json.JSONDecodeError, ValueError):
             self._json_response(400, {'ok': False, 'errors': ['数据格式错误']})
         except Exception as e:
@@ -569,6 +665,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             products = [p for p in products if p.get('id') not in ids]
             deleted = before - len(products)
             save_products(products)
+            log_audit('batch-delete', ', '.join(ids), '', f'批量删除 {deleted} 个产品')
             print(f'[OK] 批量删除: {deleted} 个产品 (IDs: {ids})')
             self._json_response(200, {'ok': True, 'deleted': deleted})
         except (json.JSONDecodeError, ValueError):
@@ -596,6 +693,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 subCat = fields.get('subCat', '').strip()
                 desc = fields.get('desc', '').strip()
                 detail = fields.get('detail', '').strip()
+                productType = fields.get('productType', '').strip()
                 keep_images = json.loads(fields.get('keep_images', '[]'))
                 keep_detail_images = json.loads(fields.get('keep_detail_images', '[]'))
             else:
@@ -606,6 +704,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 subCat = (data.get('subCat') or '').strip()
                 desc = (data.get('desc') or '').strip()
                 detail = (data.get('detail') or '').strip()
+                productType = (data.get('productType') or '').strip()
                 files = []
                 keep_images = (data.get('keep_images') or [])
                 keep_detail_images = (data.get('keep_detail_images') or [])
@@ -648,7 +747,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     if len(image_paths) < 3:
                         image_paths.append(path)
 
-            url = generate_url(pid, detail)
+            url = generate_url(pid, detail, detail_image_paths)
 
             products[idx] = {
                 'id': pid,
@@ -660,8 +759,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 'images': image_paths,
                 'detail': detail,
                 'detail_images': detail_image_paths,
+                'productType': productType,
+                'specs': json.loads(fields.get('specs', '{}')) if 'specs' in fields else product.get('specs', {}),
             }
             save_products(products)
+            log_audit('edit', pid, title, f'更新产品，{len(image_paths)}张主图，{len(detail_image_paths)}张详情图')
             print(f'[OK] 更新产品: {pid} - {title} (图片: {len(image_paths)}张)')
             self._json_response(200, {'ok': True, 'product': products[idx]})
         except (json.JSONDecodeError, ValueError):
@@ -685,6 +787,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 # ─── 启动 ──────────────────────────────────────────────────
 
 if __name__ == '__main__':
+    _refresh_categories()
     # 如果 products.js 不存在，从 JSON 生成
     if not os.path.exists(PRODUCTS_JS):
         products = load_products()

@@ -1,0 +1,38 @@
+{
+  "categories": [
+    {
+      "id": "car-motor",
+      "name": "车用马达",
+      "subCategories": [
+        "节气门马达",
+        "废气阀马达",
+        "涡轮增压执行器马达",
+        "车门锁马达",
+        "EPB马达",
+        "其他马达"
+      ],
+      "productTypes": [
+        "12V有刷直流",
+        "24V有刷直流",
+        "无刷直流"
+      ]
+    },
+    {
+      "id": "appliance",
+      "name": "家用电器及电动工具马达",
+      "subCategories": [
+        "家用电器马达",
+        "电动工具马达"
+      ],
+      "productTypes": []
+    },
+    {
+      "id": "switch",
+      "name": "微动开关",
+      "subCategories": [
+        "微动开关"
+      ],
+      "productTypes": []
+    }
+  ]
+}
