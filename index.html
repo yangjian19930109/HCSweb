@@ -123,7 +123,7 @@
         .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #00f5ff; box-shadow: 0 0 10px rgba(0, 245, 255, 0.3); }
         .form-group textarea { min-height: 120px; resize: vertical; }
         .submit-btn { width: 100%; padding: 15px; background: #00f5ff; color: #050810; border: none; border-radius: 4px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; font-family: "Share Tech Mono", monospace; text-transform: uppercase; letter-spacing: 2px; }
-        .submit-btn:hover { background: #fff; box-shadow: 0 0 20px rgba(0, 245, 255, 0.5); }
+        .submit-btn:hover { background: #ff2d78; color: #fff; box-shadow: 0 0 20px rgba(255, 45, 120, 0.8), 0 0 40px rgba(255, 45, 120, 0.4); }
         @media (max-width: 1024px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) {
             .banner { flex-direction: column; height: 100svh;  }
@@ -359,17 +359,18 @@
             <div class="contact-grid">
                 <div class="contact-info">
                     <h3>联系方式</h3>
-                    <div class="contact-item"><div class="contact-item-icon">📞</div><div class="contact-item-content"><h4>电话</h4><p>0755-12345678</p></div></div>
-                    <div class="contact-item"><div class="contact-item-icon">📧</div><div class="contact-item-content"><h4>邮箱</h4><p>info@huachuangsheng.com</p></div></div>
-                    <div class="contact-item"><div class="contact-item-icon">📍</div><div class="contact-item-content"><h4>地址</h4><p>深圳市宝安区</p></div></div>
+                    <div class="contact-item"><div class="contact-item-icon">📞</div><div class="contact-item-content"><h4>电话</h4><p>16675528326</p></div></div>
+                    <div class="contact-item"><div class="contact-item-icon">📧</div><div class="contact-item-content"><h4>邮箱</h4><p>yangjian@motorp.cn</p></div></div>
+                    <div class="contact-item"><div class="contact-item-icon">📍</div><div class="contact-item-content"><h4>地址</h4><p>深圳市龙华区大浪街道大浪北路36-16号</p></div></div>
                 </div>
                 <div class="contact-form">
                     <h3>在线咨询</h3>
                     <form id="contactForm">
-                        <div class="form-group"><label>姓名</label><input type="text" required></div>
-                        <div class="form-group"><label>电话</label><input type="tel" required></div>
-                        <div class="form-group"><label>留言</label><textarea required></textarea></div>
+                        <div class="form-group"><label>姓名</label><input type="text" name="name" required></div>
+                        <div class="form-group"><label>电话</label><input type="tel" name="phone" required></div>
+                        <div class="form-group"><label>留言</label><textarea name="message" required></textarea></div>
                         <button type="submit" class="submit-btn">提交咨询</button>
+                        <div id="formMsg" style="margin-top:12px;font-size:14px;display:none;"></div>
                     </form>
                 </div>
             </div>
@@ -456,6 +457,36 @@
             }
             window.addEventListener('scroll', animNums);
             animNums();
+            // 表单提交
+            var cf = document.getElementById('contactForm');
+            var fMsg = document.getElementById('formMsg');
+            if (cf) {
+                cf.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    var btn = cf.querySelector('.submit-btn');
+                    var orig = btn.textContent;
+                    btn.textContent = '提交中...'; btn.disabled = true;
+                    fMsg.style.display = 'none';
+                    fetch('/api/contact', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            name: cf.querySelector('[name="name"]').value.trim(),
+                            phone: cf.querySelector('[name="phone"]').value.trim(),
+                            message: cf.querySelector('[name="message"]').value.trim()
+                        })
+                    }).then(function(r){return r.json();}).then(function(d){
+                        btn.textContent = orig; btn.disabled = false;
+                        fMsg.style.display = 'block';
+                        if(d.ok){fMsg.style.color='#00f5ff';fMsg.textContent=d.msg;cf.reset();}
+                        else{fMsg.style.color='#ff2d78';fMsg.textContent=(d.errors||[]).join('；');}
+                    }).catch(function(){
+                        btn.textContent = orig; btn.disabled = false;
+                        fMsg.style.display = 'block'; fMsg.style.color = '#ff2d78';
+                        fMsg.textContent = '网络错误，请稍后重试';
+                    });
+                });
+            }
         });
     </script>
 </body>
