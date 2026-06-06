@@ -6,7 +6,7 @@ var PRODUCTS_DATA = [
         subCat: "其他马达",
         desc: "用于Jeep自由光、大指挥官分动箱PTU执行器电机",
         url: "product-1030837.html",
-        images: [],
+        images: ["images/products/1030837.png"],
         detail: "",
         detail_images: []
     },
@@ -17,62 +17,7 @@ var PRODUCTS_DATA = [
         subCat: "节气门马达",
         desc: "12V有刷直流节气门马达，用于Jeep自由光、大指挥官",
         url: "product-1030896.html",
-        images: [],
-        detail: "",
-        detail_images: []
-    },
-    {
-        id: "throttle-001",
-        title: "节气门马达",
-        cat: "车用马达",
-        subCat: "节气门马达",
-        desc: "电子节气门控制，高精度位置反馈，响应快速",
-        url: "products.html#tab-motor",
-        images: [],
-        detail: "",
-        detail_images: []
-    },
-    {
-        id: "waste-valve-001",
-        title: "废气阀马达",
-        cat: "车用马达",
-        subCat: "废气阀马达",
-        desc: "废气再循环系统用，耐用高温环境，精确控制",
-        url: "products.html#tab-motor",
-        images: [],
-        detail: "",
-        detail_images: []
-    },
-    {
-        id: "turbo-001",
-        title: "涡轮增压执行器马达",
-        cat: "车用马达",
-        subCat: "涡轮增压执行器马达",
-        desc: "可变几何涡轮增压器用，双向动作，55mm行程",
-        url: "products.html#tab-motor",
-        images: [],
-        detail: "",
-        detail_images: []
-    },
-    {
-        id: "door-lock-001",
-        title: "车门锁马达",
-        cat: "车用马达",
-        subCat: "车门锁马达",
-        desc: "汽车中央门锁执行器，低功耗静音",
-        url: "products.html#tab-motor",
-        images: [],
-        detail: "",
-        detail_images: []
-    },
-    {
-        id: "epb-001",
-        title: "EPB马达",
-        cat: "车用马达",
-        subCat: "EPB马达",
-        desc: "电子驻车制动系统专用，高可靠性",
-        url: "products.html#tab-motor",
-        images: [],
+        images: ["images/products/1030896.png"],
         detail: "",
         detail_images: []
     },
@@ -148,12 +93,13 @@ var PRODUCTS_DATA = [
         cat: "车用马达",
         subCat: "涡轮增压执行器马达",
         desc: "涡轮增压执行器电机，用于大通，长城等品牌车涡轮增压器，供给海拉等知名总成商，高温耐受，精确行程控制",
-        url: "products.html#tab-motor",
+        url: "product-1031001.html",
         images: ["images/products/1031001_79babaa5.png"],
-        detail: "",
+        detail: "涡轮增压执行器电机，用于大通、长城等品牌车涡轮增压器，供给海拉等知名总成商。高温耐受，精确行程控制。",
         detail_images: ["images/products/1031001_9715449c.png"]
     },
 ];
+
 
 
 

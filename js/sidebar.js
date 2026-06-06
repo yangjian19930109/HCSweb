@@ -31,10 +31,12 @@
                             panel.classList.add('active');
                         }
                     });
+                    // 更新 URL hash
+                    history.replaceState(null, '', '#' + tabId);
+                } else {
+                    // 非产品中心页（子类目页/详情页），跳转到产品中心对应 tab
+                    window.location.href = 'products.html#tab-' + tabId;
                 }
-
-                // 更新 URL hash
-                history.replaceState(null, '', '#' + tabId);
             });
         });
 
