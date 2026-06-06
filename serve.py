@@ -361,10 +361,25 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self._handle_contact()
         elif self.path == '/api/products':
             self._handle_add_product()
+        elif self.path == '/api/products/batch-delete':
+            self._handle_batch_delete()
         else:
             self.send_response(404)
             self.end_headers()
             self.wfile.write(b'Not Found')
+
+    # ─── PUT ────────────────────────────────────────────
+
+    def do_PUT(self):
+        # /api/products/{id}
+        m = re.match(r'^/api/products/(.+)$', self.path)
+        if m:
+            pid = m.group(1)
+            self._handle_update_product(pid)
+            return
+        self.send_response(404)
+        self.end_headers()
+        self.wfile.write(b'Not Found')
 
     # ─── DELETE ──────────────────────────────────────────
 
@@ -534,6 +549,121 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             save_products(products)
             print(f'[OK] 新增产品: {pid} - {title} (图片: {len(image_paths)}张)')
             self._json_response(200, {'ok': True, 'product': product})
+        except (json.JSONDecodeError, ValueError):
+            self._json_response(400, {'ok': False, 'errors': ['数据格式错误']})
+        except Exception as e:
+            print(f'[ERROR] {e}')
+            self._json_response(500, {'ok': False, 'errors': ['服务器内部错误']})
+
+    def _handle_batch_delete(self):
+        try:
+            content_length = int(self.headers.get('Content-Length', 0))
+            body = self.rfile.read(content_length).decode('utf-8')
+            data = json.loads(body)
+            ids = data.get('ids', [])
+            if not ids or not isinstance(ids, list):
+                self._json_response(400, {'error': '请提供要删除的产品ID列表'})
+                return
+            products = load_products()
+            before = len(products)
+            products = [p for p in products if p.get('id') not in ids]
+            deleted = before - len(products)
+            save_products(products)
+            print(f'[OK] 批量删除: {deleted} 个产品 (IDs: {ids})')
+            self._json_response(200, {'ok': True, 'deleted': deleted})
+        except (json.JSONDecodeError, ValueError):
+            self._json_response(400, {'ok': False, 'errors': ['数据格式错误']})
+        except Exception as e:
+            print(f'[ERROR] {e}')
+            self._json_response(500, {'ok': False, 'errors': ['服务器内部错误']})
+
+    def _handle_update_product(self, pid):
+        try:
+            content_type = self.headers.get('Content-Type', '')
+            content_length = int(self.headers.get('Content-Length', 0))
+
+            if 'multipart/form-data' in content_type:
+                m = re.search(r'boundary=([^\s;]+)', content_type)
+                if not m:
+                    self._json_response(400, {'ok': False, 'errors': ['无效的请求格式']})
+                    return
+                boundary = m.group(1).strip('"')
+                body = self.rfile.read(content_length)
+                fields, files = parse_multipart(body, boundary)
+
+                title = fields.get('title', '').strip()
+                cat = fields.get('cat', '').strip()
+                subCat = fields.get('subCat', '').strip()
+                desc = fields.get('desc', '').strip()
+                detail = fields.get('detail', '').strip()
+                keep_images = json.loads(fields.get('keep_images', '[]'))
+                keep_detail_images = json.loads(fields.get('keep_detail_images', '[]'))
+            else:
+                body = self.rfile.read(content_length).decode('utf-8')
+                data = json.loads(body)
+                title = (data.get('title') or '').strip()
+                cat = (data.get('cat') or '').strip()
+                subCat = (data.get('subCat') or '').strip()
+                desc = (data.get('desc') or '').strip()
+                detail = (data.get('detail') or '').strip()
+                files = []
+                keep_images = (data.get('keep_images') or [])
+                keep_detail_images = (data.get('keep_detail_images') or [])
+
+            products = load_products()
+            idx = next((i for i, p in enumerate(products) if p.get('id') == pid), None)
+            if idx is None:
+                self._json_response(404, {'error': '产品不存在'})
+                return
+
+            product = products[idx]
+
+            errors = []
+            if not title:
+                errors.append('产品名称不能为空')
+            if not cat:
+                errors.append('请选择分类')
+            if not desc:
+                errors.append('描述不能为空')
+
+            if errors:
+                self._json_response(400, {'ok': False, 'errors': errors})
+                return
+
+            # 保留的旧图片
+            image_paths = keep_images[:3] if isinstance(keep_images, list) else []
+            detail_image_paths = keep_detail_images[:5] if isinstance(keep_detail_images, list) else []
+
+            # 处理新上传的图片
+            for f in files:
+                if len(f['data']) > MAX_IMAGE_SIZE:
+                    continue
+                if not f['filename']:
+                    continue
+                path = save_uploaded_image(f['data'], f['filename'], pid)
+                if f['name'].startswith('detail_'):
+                    if len(detail_image_paths) < 5:
+                        detail_image_paths.append(path)
+                else:
+                    if len(image_paths) < 3:
+                        image_paths.append(path)
+
+            url = generate_url(pid, detail)
+
+            products[idx] = {
+                'id': pid,
+                'title': title,
+                'cat': cat,
+                'subCat': subCat,
+                'desc': desc,
+                'url': url,
+                'images': image_paths,
+                'detail': detail,
+                'detail_images': detail_image_paths,
+            }
+            save_products(products)
+            print(f'[OK] 更新产品: {pid} - {title} (图片: {len(image_paths)}张)')
+            self._json_response(200, {'ok': True, 'product': products[idx]})
         except (json.JSONDecodeError, ValueError):
             self._json_response(400, {'ok': False, 'errors': ['数据格式错误']})
         except Exception as e:

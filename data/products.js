@@ -22,83 +22,24 @@ var PRODUCTS_DATA = [
         detail_images: []
     },
     {
-        id: "v4nc-001",
-        title: "V4NC 直流电机",
-        cat: "车用马达",
-        subCat: "EPB马达",
-        desc: "EPB系统专用，体积小、扭矩大、寿命超10万次循环",
-        url: "products.html#tab-motor",
-        images: [],
-        detail: "",
-        detail_images: []
-    },
-    {
-        id: "dc971-001",
-        title: "DC971 无刷电机",
-        cat: "车用马达",
-        subCat: "其他马达",
-        desc: "无刷设计、低功耗、高效率，适合新能源汽车应用",
-        url: "products.html#tab-motor",
-        images: [],
-        detail: "",
-        detail_images: []
-    },
-    {
-        id: "x4-001",
-        title: "X4 齿轮电机",
-        cat: "车用马达",
-        subCat: "其他马达",
-        desc: "集成齿轮减速结构，高输出扭矩，适用汽车座椅调节",
-        url: "products.html#tab-motor",
-        images: [],
-        detail: "",
-        detail_images: []
-    },
-    {
-        id: "appliance-001",
-        title: "家用电器马达系列",
-        cat: "家用电器及电动工具马达",
-        subCat: "家用电器马达",
-        desc: "洗衣机、冰箱、空调等家电用马达",
-        url: "products.html#tab-appliance",
-        images: [],
-        detail: "",
-        detail_images: []
-    },
-    {
-        id: "tool-001",
-        title: "电动工具马达",
-        cat: "家用电器及电动工具马达",
-        subCat: "电动工具马达",
-        desc: "电钻、锯、抛光机等电动工具用高性能马达",
-        url: "products.html#tab-appliance",
-        images: [],
-        detail: "",
-        detail_images: []
-    },
-    {
-        id: "switch-001",
-        title: "微动开关系列",
-        cat: "微动开关",
-        subCat: "微动开关",
-        desc: "精密微动开关，寿命长，触点可靠",
-        url: "products.html#tab-switch",
-        images: [],
-        detail: "",
-        detail_images: []
-    },
-    {
         id: "1031001",
         title: "1031001涡轮增压执行器电机",
         cat: "车用马达",
         subCat: "涡轮增压执行器马达",
         desc: "涡轮增压执行器电机，用于大通，长城等品牌车涡轮增压器，供给海拉等知名总成商，高温耐受，精确行程控制",
         url: "product-1031001.html",
-        images: ["images/products/1031001_79babaa5.png"],
+        images: ["images/products/1031001_740ae642.png", "images/products/1031001_9d80fd19.png", "images/products/1031001_33101c8b.png"],
         detail: "涡轮增压执行器电机，用于大通、长城等品牌车涡轮增压器，供给海拉等知名总成商。高温耐受，精确行程控制。",
-        detail_images: ["images/products/1031001_9715449c.png"]
+        detail_images: ["images/products/1031001_4d235314.png", "images/products/1031001_78613dac.jpg"]
     },
 ];
+
+
+
+
+
+
+
 
 
 

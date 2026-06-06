@@ -87,21 +87,22 @@
             link.classList.remove('active');
             var href = link.getAttribute('href') || '';
 
-            if (hash) {
-                if (href.endsWith(hash) || href === hash) {
+            // 先按页面 URL 匹配（不受 hash 影响）
+            if (currentUrl === 'index.html' || currentUrl === '') {
+                if (href === 'index.html' || href === '#home') {
                     link.classList.add('active');
                 }
-            } else {
-                if (currentUrl === 'index.html' || currentUrl === '') {
-                    if (href === 'index.html' || href === '#home') {
-                        link.classList.add('active');
-                    }
-                } else if (currentUrl.startsWith('product-') || currentUrl.startsWith('other-') ||
-                           currentUrl.startsWith('throttle-') || currentUrl === 'products.html') {
-                    if (href.includes('products.html')) {
-                        link.classList.add('active');
-                    }
+            } else if (currentUrl.startsWith('product-') || currentUrl.startsWith('other-') ||
+                       currentUrl.startsWith('throttle-') || currentUrl.startsWith('turbo-') ||
+                       currentUrl === 'products.html') {
+                if (href.includes('products.html')) {
+                    link.classList.add('active');
                 }
+            }
+
+            // hash 精确匹配（首页区块导航）
+            if (hash && (href.endsWith(hash) || href === hash)) {
+                link.classList.add('active');
             }
         });
     }
