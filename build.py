@@ -66,9 +66,11 @@ def generate_card(product):
     # 标签取自子分类
     tag_html = f'<span class="product-card-tag">{subcat}</span>' if subcat else ''
 
-    # 图片
-    if images and images[0]:
-        img_html = f'<img src="{images[0]}" alt="{title}" style="width:100%;height:100%;object-fit:contain;">'
+    # 图片（优先卡片图）
+    card = product.get('cardImage', '')
+    img_src = card if card else (images[0] if images else '')
+    if img_src:
+        img_html = f'<img src="{img_src}" alt="{title}" style="width:100%;height:100%;object-fit:contain;">'
     else:
         emoji = {
             '节气门马达': '⚡', '废气阀马达': '💨', '涡轮增压执行器马达': '🌀',
@@ -96,13 +98,15 @@ def generate_card(product):
         )
 
 
-def generate_cards_html(cat_name):
-    """生成指定分类下所有产品卡片的 HTML"""
+def generate_cards_html(filter_name):
+    """生成指定分类/子分类下所有产品卡片的 HTML（优先匹配 cat，其次 subCat）"""
     products = load_products()
-    cat_products = [p for p in products if p.get('cat') == cat_name]
-    if not cat_products:
+    filtered = [p for p in products if p.get('cat') == filter_name]
+    if not filtered:
+        filtered = [p for p in products if p.get('subCat') == filter_name]
+    if not filtered:
         return ''
-    return '\n'.join(generate_card(p) for p in cat_products)
+    return '\n'.join(generate_card(p) for p in filtered)
 
 
 def process_includes(content, components, build_time):

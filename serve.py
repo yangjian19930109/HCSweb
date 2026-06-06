@@ -189,6 +189,8 @@ def regenerate_js(products):
         lines.append(f'        productType: {json.dumps(ptype, ensure_ascii=False)},')
         specs = p.get('specs', {}) or {}
         lines.append(f'        specs: {json.dumps(specs, ensure_ascii=False)},')
+        card = p.get('cardImage', '') or ''
+        lines.append(f'        cardImage: {json.dumps(card, ensure_ascii=False)},')
         dimgs = p.get('detail_images', []) or []
         lines.append(f'        detail_images: {json.dumps(dimgs, ensure_ascii=False)}')
         lines.append('    },')
@@ -558,6 +560,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 desc = fields.get('desc', '').strip()
                 detail = fields.get('detail', '').strip()
                 productType = fields.get('productType', '').strip()
+                card_image = fields.get('keep_card_image', '').strip()
                 image_paths = []
                 detail_image_paths = []
             else:
@@ -601,10 +604,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 if not f['filename']:
                     continue
                 path = save_uploaded_image(f['data'], f['filename'], pid)
-                if f['name'].startswith('detail_'):
-                    detail_image_paths.append(path)
-                else:
-                    if len(image_paths) < 3:
+                if f['name'] == 'card_image':
+                    card_image = path
+                elif f['name'].startswith('detail_'):
+                    if len(detail_image_paths) < 10:
+                        detail_image_paths.append(path)
+                elif f['name'].startswith('image'):
+                    if len(image_paths) < 6:
                         image_paths.append(path)
 
             url = generate_url(pid, detail, detail_image_paths)
@@ -621,6 +627,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 'detail_images': detail_image_paths,
                 'productType': productType,
                 'specs': json.loads(fields.get('specs', '{}')) if 'specs' in fields else {},
+                'cardImage': card_image,
             }
             products.append(product)
             save_products(products)
@@ -694,6 +701,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 desc = fields.get('desc', '').strip()
                 detail = fields.get('detail', '').strip()
                 productType = fields.get('productType', '').strip()
+                card_image = fields.get('keep_card_image', '').strip()
                 keep_images = json.loads(fields.get('keep_images', '[]'))
                 keep_detail_images = json.loads(fields.get('keep_detail_images', '[]'))
             else:
@@ -730,8 +738,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 return
 
             # 保留的旧图片
-            image_paths = keep_images[:3] if isinstance(keep_images, list) else []
-            detail_image_paths = keep_detail_images[:5] if isinstance(keep_detail_images, list) else []
+            image_paths = keep_images[:6] if isinstance(keep_images, list) else []
+            detail_image_paths = keep_detail_images[:10] if isinstance(keep_detail_images, list) else []
 
             # 处理新上传的图片
             for f in files:
@@ -740,11 +748,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 if not f['filename']:
                     continue
                 path = save_uploaded_image(f['data'], f['filename'], pid)
-                if f['name'].startswith('detail_'):
-                    if len(detail_image_paths) < 5:
+                if f['name'] == 'card_image':
+                    card_image = path
+                elif f['name'].startswith('detail_'):
+                    if len(detail_image_paths) < 10:
                         detail_image_paths.append(path)
-                else:
-                    if len(image_paths) < 3:
+                elif f['name'].startswith('image'):
+                    if len(image_paths) < 6:
                         image_paths.append(path)
 
             url = generate_url(pid, detail, detail_image_paths)
@@ -761,6 +771,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 'detail_images': detail_image_paths,
                 'productType': productType,
                 'specs': json.loads(fields.get('specs', '{}')) if 'specs' in fields else product.get('specs', {}),
+                'cardImage': card_image if card_image else product.get('cardImage', ''),
             }
             save_products(products)
             log_audit('edit', pid, title, f'更新产品，{len(image_paths)}张主图，{len(detail_image_paths)}张详情图')

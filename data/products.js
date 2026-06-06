@@ -10,6 +10,7 @@ var PRODUCTS_DATA = [
         detail: "",
         productType: "12V有刷直流",
         specs: {"应用领域": "Jeep自由光、大指挥官", "安装位置": "分动箱 PTU 执行器", "产品类型": "12V有刷直流", "品质标准": "原厂配套品质"},
+        cardImage: "",
         detail_images: ["images/products/1030837-chart.png"]
     },
     {
@@ -23,6 +24,7 @@ var PRODUCTS_DATA = [
         detail: "",
         productType: "12V有刷直流",
         specs: {"应用领域": "奥迪、宝马、大众、路虎等高端品牌", "安装位置": "节气门总成", "产品类型": "12V有刷直流", "品质标准": "原厂配套品质"},
+        cardImage: "",
         detail_images: ["images/products/1030896-chart.png"]
     },
     {
@@ -36,9 +38,13 @@ var PRODUCTS_DATA = [
         detail: "",
         productType: "12V有刷直流",
         specs: {"应用领域": "大通、长城等品牌车涡轮增压器", "安装位置": "涡轮增压器执行器", "产品类型": "12V有刷直流", "品质标准": "原厂配套品质"},
+        cardImage: "images/products/1031001_50e06d6b.png",
         detail_images: ["images/products/1031001_b2777baf.png", "images/products/1031001_0384b847.jpg"]
     },
 ];
+
+
+
 
 
 

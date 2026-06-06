@@ -111,9 +111,20 @@ tbody td{padding:9px 14px;font-size:13px;color:#ccc;vertical-align:middle}
     </div>
     <div class="section-title" style="margin-top:0">商品主图 <span style="font-weight:400;color:#888;font-size:12px">（拖拽排序，最多6张）</span></div>
     <div class="form-card">
-      <input type="file" id="mainImgInput" accept="image/*" multiple onchange="handleMainImgSelect()" style="display:none">
-      <div class="img-grid" id="mainImgGrid"></div>
-      <button class="btn btn-primary btn-sm" onclick="document.getElementById('mainImgInput').click()" style="margin-top:8px">+ 上传主图</button>
+      <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap">
+        <div style="flex:1;min-width:300px">
+          <input type="file" id="mainImgInput" accept="image/*" multiple onchange="handleMainImgSelect()" style="display:none">
+          <div class="img-grid" id="mainImgGrid"></div>
+          <button class="btn btn-primary btn-sm" onclick="document.getElementById('mainImgInput').click()" style="margin-top:8px">+ 上传主图</button>
+        </div>
+        <div style="width:180px">
+          <label style="display:block;font-size:12px;color:#888;margin-bottom:4px">卡片封面图</label>
+          <input type="file" id="cardImgInput" accept="image/*" onchange="handleCardImgSelect()" style="display:none">
+          <div id="cardImgBox" onclick="document.getElementById('cardImgInput').click()" style="width:100%;aspect-ratio:1/1;background:#1a1a2e;border:2px dashed #333;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;transition:border-color .2s">
+            <div id="cardImgPlaceholder" style="font-size:24px;color:#444;text-align:center">📷<span style="display:block;font-size:10px;margin-top:4px">卡片封面</span></div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="section-title" style="margin-top:0">商品详情 <span style="font-weight:400;color:#888;font-size:12px">（不参与搜索）</span></div>
     <div class="form-card">
@@ -293,6 +304,7 @@ function clearForm() {
 // ===== 图片网格管理 =====
 var mainImgItems = [];   // {src, keepPath, file}
 var detailImgItems = []; // {src, keepPath, file}
+var cardImgData = null;  // {src, keepPath, file}
 var dragSrc = null;
 
 function renderImgGrid(gridId, items) {
@@ -369,13 +381,51 @@ function handleDetailImgSelect() {
   document.getElementById('detailImgInput').value = '';
 }
 
+function handleCardImgSelect() {
+  var file = document.getElementById('cardImgInput').files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    cardImgData = {src: e.target.result, keepPath: null, file: file};
+    renderCardImg();
+  };
+  reader.readAsDataURL(file);
+  document.getElementById('cardImgInput').value = '';
+}
+
+function renderCardImg() {
+  var box = document.getElementById('cardImgBox');
+  var oldImg = box.querySelector('img');
+  if (oldImg) oldImg.remove();
+  var oldDel = box.querySelector('.del-btn');
+  if (oldDel) oldDel.remove();
+  var ph = document.getElementById('cardImgPlaceholder');
+  if (cardImgData && cardImgData.src) {
+    if (ph) ph.style.display = 'none';
+    var img = document.createElement('img');
+    img.src = cardImgData.src;
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0';
+    box.appendChild(img);
+    var del = document.createElement('span');
+    del.className = 'del-btn';
+    del.textContent = '×';
+    del.onclick = function(e){ e.stopPropagation(); cardImgData = null; renderCardImg(); };
+    box.appendChild(del);
+  } else {
+    if (ph) ph.style.display = '';
+  }
+}
+
 function clearImgGrids() {
   mainImgItems = [];
   detailImgItems = [];
+  cardImgData = null;
   document.getElementById('mainImgInput').value = '';
   document.getElementById('detailImgInput').value = '';
+  document.getElementById('cardImgInput').value = '';
   renderImgGrid('mainImgGrid', mainImgItems);
   renderImgGrid('detailImgGrid', detailImgItems);
+  renderCardImg();
 }
 
 function loadImgGrids(product) {
@@ -387,8 +437,14 @@ function loadImgGrids(product) {
   (product.detail_images||[]).forEach(function(p){
     detailImgItems.push({src: '/'+p, keepPath: p, file: null});
   });
+  if (product.cardImage) {
+    cardImgData = {src: '/'+product.cardImage, keepPath: product.cardImage, file: null};
+  } else {
+    cardImgData = null;
+  }
   renderImgGrid('mainImgGrid', mainImgItems);
   renderImgGrid('detailImgGrid', detailImgItems);
+  renderCardImg();
 }
 
 async function saveProduct() {
@@ -439,6 +495,15 @@ async function saveProduct() {
     }
   }
   fd.append('keep_detail_images', JSON.stringify(keepDimgs));
+
+  // 卡片图片
+  if (cardImgData) {
+    if (cardImgData.keepPath) {
+      fd.append('keep_card_image', cardImgData.keepPath);
+    } else if (cardImgData.file) {
+      fd.append('card_image', cardImgData.file);
+    }
+  }
 
   // 详情文字和图片都为空时警告
   var hasDetailImgs = detailImgItems.length > 0;
