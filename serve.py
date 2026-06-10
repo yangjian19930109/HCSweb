@@ -804,17 +804,17 @@ if __name__ == '__main__':
         products = load_products()
         if products:
             regenerate_js(products)
-            print(f'✅ 从 products.json 生成 products.js（{len(products)} 个产品）')
+            print(f'[OK] Generated products.js from products.json ({len(products)} products)')
 
     os.chdir(DIR)
     server = http.server.HTTPServer(('0.0.0.0', PORT), Handler)
-    print(f'✅ 服务器已启动: http://0.0.0.0:{PORT}/')
-    print(f'   管理后台: http://0.0.0.0:{PORT}/admin')
-    print(f'   API: POST /api/contact | GET/POST/DELETE /api/products')
+    print(f'[OK] Server started: http://0.0.0.0:{PORT}/')
+    print(f'     Admin panel: http://0.0.0.0:{PORT}/admin')
+    print(f'     API: POST /api/contact | GET/POST/DELETE /api/products')
     if SMTP_HOST:
-        print(f'   SMTP: {SMTP_HOST}:{SMTP_PORT} → {SMTP_TO}')
+        print(f'     SMTP: {SMTP_HOST}:{SMTP_PORT} -> {SMTP_TO}')
     else:
-        print(f'   ⚠️  SMTP 未配置，表单提交仅保存到本地')
+        print(f'     [!] SMTP not configured, form submissions saved locally only')
     try:
         server.serve_forever()
     except KeyboardInterrupt:

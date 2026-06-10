@@ -7,3 +7,4 @@
 - [端口冲突排查经验](port-conflict-server-lessons.md) — 多进程占8080端口致serve.py不生效，curl验证dist构建输出
 - [异常状态先问不猜](unexpected-state-ask-dont-assume.md) — 发现数据/状态异常时弹窗确认，不要自行假设为bug并动手修复
 - [待办清单](upcoming-tasks.md) — 客户访问记录、管理安全、多用户登录日志、全站字号、部署
+- [编码乱码修复](encoding-garbled-fix.md) — Windows GBK编码导致Python中文/emoji输出乱码，PYTHONIOENCODING=utf-8解决

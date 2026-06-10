@@ -3,6 +3,11 @@
 """构建脚本：将共享组件注入 HTML 文件，输出到 dist/"""
 import os
 import re
+import sys
+
+# 修复 Windows GBK 终端编码乱码
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 import json
 import shutil
 import subprocess
