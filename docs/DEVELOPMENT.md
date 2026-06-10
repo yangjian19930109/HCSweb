@@ -50,7 +50,8 @@ HCSweb/
 │   ├── common.js                 #   移动菜单、平滑滚动、导航 active、微信弹窗、联系表单
 │   ├── nav-search.js             #   Fuse.js 搜索（CDN 加载）
 │   ├── sidebar.js                #   侧边栏 Tab 切换 + URL hash 同步
-│   └── product-detail.js         #   产品图片浏览（主图/缩略图切换）
+│   ├── product-detail.js         #   产品图片浏览（主图/缩略图切换）
+│   └── track.js                  #   ★ 广告追踪（百度统计 + 来源解析 + 转化事件）
 │
 ├── data/                         # 数据文件
 │   ├── products.json             #   ★ 产品数据源（手动编辑或用管理后台）
@@ -63,6 +64,13 @@ HCSweb/
 │   ├── logo.png / logo.jpg       #   网站 Logo
 │   ├── banner-bg.jpg             #   Banner 背景图
 │   └── products/                 #   产品图片（命名规则: {productId}_{8位uuid}.ext）
+│
+├── landing/                      # ★ SEM 落地页（无导航/侧边栏，单出口→转化）
+│   ├── micro-switch.html         #   微动开关（主力）
+│   ├── throttle-motor.html       #   节气门马达
+│   ├── egr-motor.html            #   废气阀马达
+│   ├── epb-motor.html            #   EPB马达
+│   └── turbo-motor.html          #   涡轮增压马达
 │
 ├── fonts/                        # 自托管字体（Google Fonts 国内不可用）
 │   ├── fonts.css                 #   @font-face 声明
@@ -86,10 +94,13 @@ HCSweb/
 │       └── products.py           #   产品 CRUD API（pymysql + raw SQL）
 │
 └── docs/                         # 文档
+    ├── DEVELOPMENT.md            #   本文件：开发指南
     ├── claude-memory/            #   Claude Code 记忆文件（开发经验碎片）
     └── superpowers/              #   设计文档和 specs
         ├── plans/                #   实施计划
-        └── specs/                #   设计规范（SEM 营销、竞品追踪等）
+        └── specs/                #   设计规范
+            ├── 2026-06-07-sem-marketing-system-design.md       # SEM 营销方案
+            └── 2026-06-07-competitor-ranking-tracker.md       # 竞品排名追踪
 ```
 
 ---
@@ -227,6 +238,40 @@ curl -s http://localhost:8080/ | grep "include"  # 验证：不应出现 <!-- #i
 
 侧边栏点击 Tab → 切换 `product-tab-panel` + 更新 URL hash → `hashchange` 事件驱动
 
+### 4.7 线索数据模型（leads 表）
+
+落地页表单提交存入 MySQL `motor_website.leads` 表，`track.js` 自动注入广告来源字段：
+
+```sql
+CREATE TABLE leads (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name        VARCHAR(100) NOT NULL,   -- 客户姓名
+    phone       VARCHAR(20)  NOT NULL,   -- 联系电话
+    company     VARCHAR(200) DEFAULT '', -- 公司名称
+    message     TEXT,                    -- 需求描述
+
+    -- 广告追踪（track.js 自动注入）
+    ad_platform  VARCHAR(20)  DEFAULT '',  -- baidu / bing
+    ad_keyword   VARCHAR(200) DEFAULT '',  -- 搜索关键词
+    ad_plan      VARCHAR(100) DEFAULT '',  -- 广告计划
+    ad_bd_vid    VARCHAR(100) DEFAULT '',  -- 百度点击ID
+    landing_page VARCHAR(200) DEFAULT '',  -- 来源落地页
+
+    -- 跟进
+    status      VARCHAR(20) DEFAULT 'new',  -- new/contacted/qualified/closed
+    note        TEXT,                       -- 销售跟进备注
+    created_at  DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### 4.8 追踪系统架构（track.js）
+
+- **广告来源解析**：URL 参数 `?bd_vid=xxx&keyword=xxx`（百度）或 `?utm_source=bing&utm_campaign=xxx`（Bing）写入 localStorage
+- **自动事件**：页面加载(`ad_landing`)、滚动深度(50%/75%/100%)、停留时长(30s/60s/120s)
+- **点击事件**：`data-track` 属性驱动，零侵入（`tel_click`、`cta_click`、`form_submit`、`exit_link`）
+- **表单注入**：提交时自动追加广告来源隐藏字段
+- **平台扩展**：后期加 Bing/Google 追踪只需在 `send()` 函数加一行代码
+
 ---
 
 ## 五、已完成的重点工作
@@ -282,6 +327,25 @@ curl -s http://localhost:8080/ | grep "include"  # 验证：不应出现 <!-- #i
 - Windows GBK → `PYTHONIOENCODING=utf-8` 解决中文/emoji 乱码
 - Python App Execution Alias 拦截 `python` 命令 → 删除 `WindowsApps` 下的快捷方式
 - 多进程端口冲突 → `netstat` + `taskkill` 排查
+- **系统级 UTF-8**：注册表 ACP 改为 65001，重启后 cmd/PowerShell/Git Bash 统一 UTF-8
+
+### 5.10 SEM 营销方案设计（2026-06-07~08）
+
+完成了完整的广告投流方案设计和竞品分析：
+
+**竞品分析**：
+- **永佳承（深圳）**：8 个 B2B 平台矩阵（医药网库、世环通、黄页88、中国制造网、供应商网、爱企查、1688、爱普搜汽车），纯自然 SEO，无付费广告。Bing SEO 强但百度弱。
+- **博泰克（苏州）**：代理 13 个品牌，有英文站。"Saia Burgess"系关键词强。百度几乎无存在感，无付费广告。
+- 两个竞品共通的死穴：无 HTTPS（部分）、无追踪代码、无专用落地页。
+
+**方案产出**：
+- [SEM 营销系统设计方案](superpowers/specs/2026-06-07-sem-marketing-system-design.md)（11 章）
+- [竞品排名追踪基线](superpowers/specs/2026-06-07-competitor-ranking-tracker.md)（Bing 8 词 + 百度 7 词）
+
+**关键决策**：
+- 百度 50% + Bing 50% 双引擎，控制变量对比效果
+- 微动开关主力 + 车用马达辅推 + 品牌防守
+- 在线客服：试投期百度商桥（免费），放量期备选美洽/自建
 
 ---
 
@@ -311,6 +375,12 @@ curl -s http://localhost:8080/ | grep "include"  # 验证：不应出现 <!-- #i
 4. 验证 dist/ 文件确认 build.py 是否生效
 5. URL 加 `?v=N` 绕过缓存
 6. `pkill -f "http.server"` 重启服务器
+
+### 6.6 Windows cmd 中文乱码
+- **根因**：cmd.exe 默认 GBK（代码页 936），Git Bash 用 UTF-8，转换时乱码
+- **根治**：`控制面板 → 区域 → 管理 → 更改系统区域设置 → 勾选 "Beta: 使用 Unicode UTF-8" → 重启`
+- **注册表**：`HKLM\SYSTEM\CurrentControlSet\Control\Nls\CodePage\ACP` = `65001`
+- **临时方案**：`cmd.exe /c "chcp 65001 >nul && <命令>"`
 
 ---
 
@@ -356,9 +426,15 @@ curl -s http://localhost:8080/ | grep "include"  # 验证：不应出现 <!-- #i
 
 ### 🟡 P1 — 上线后
 6. SEO 优化（TDK、sitemap、结构化数据、alt 标签）
-7. SEM 营销（Bing/百度）
-8. 访问统计接入
+7. SEM 营销系统实施（见 [方案文档](superpowers/specs/2026-06-07-sem-marketing-system-design.md)）：
+   - track.js 追踪系统开发
+   - 5 个落地页（landing/micro-switch.html 等）
+   - /api/lead 后端 + leads 表
+   - 百度统计 + 百度商桥接入
+   - 百度 SEM + Bing Ads 开户投放
+8. 百度爱采购 + B2B 平台矩阵入驻
 9. 在线询价系统
+10. 竞品排名月度跟踪（见 [竞品追踪](superpowers/specs/2026-06-07-competitor-ranking-tracker.md)）：永佳承（B2B×8）、博泰克（英文品牌词）
 
 ### 🟢 P2 — 功能增强
 10. 产品对比功能
@@ -386,4 +462,4 @@ curl -s http://localhost:8080/ | grep "include"  # 验证：不应出现 <!-- #i
 
 ---
 
-> 最后更新：2026-06-10
+> 最后更新：2026-06-09
