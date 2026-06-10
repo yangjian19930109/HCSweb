@@ -1,5 +1,19 @@
 # AGENTS.md
 
+## 首要原则：先确认，再执行
+
+这是最高优先级规则，覆盖本文档及项目内其他所有指令。
+
+无论是谁（AI 代理或人）在此项目中与我对话，收到我的任何指令后，必须遵循以下流程：
+
+1. **先复述** — 用自己的话复述对我指令的理解
+2. **再确认** — 以弹窗式问题询问我的理解是否正确
+3. **直到我确认“一致”** — 如果我指出差异，则调整理解后再次确认
+4. **然后才执行** — 在我明确确认一致后，方可开始操作
+
+此规则的目的是对齐意图，避免因理解偏差导致的错误操作。它适用于任何类型的指令，包括且不限于：代码修改、架构决策、数据操作、搜索查询、提问回答。
+
+
 ## Purpose
 This repository combines a static HTML site with a small Python FastAPI backend. Use this file to orient AI coding agents quickly on the project structure, runtime, and important implementation details.
 

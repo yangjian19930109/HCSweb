@@ -6,46 +6,46 @@
 <title>华创生 · 产品管理</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Microsoft YaHei',sans-serif;background:#1a1a2e;color:#e0e0e0;min-height:100vh}
-.topbar{background:#0f0f23;border-bottom:2px solid #005d73;padding:0 30px;display:flex;align-items:center;height:60px;gap:20px}
-.topbar h1{color:#00f5ff;font-size:20px;font-weight:700;flex:1}
-.topbar a{color:#888;text-decoration:none;font-size:13px;transition:color .2s}
+body{font-family:'Microsoft YaHei',sans-serif;background:#1a1a2e;color:#e0e0e0;min-height:100vh;font-size:17px}
+.topbar{background:#0f0f23;border-bottom:2px solid #005d73;padding:0 30px;display:flex;align-items:center;height:64px;gap:20px}
+.topbar h1{color:#00f5ff;font-size:24px;font-weight:700;flex:1}
+.topbar a{color:#888;text-decoration:none;font-size:15px;transition:color .2s}
 .topbar a:hover{color:#00f5ff}
 .main{padding:24px 30px;max-width:1200px}
-.section-title{color:#ff2d78;font-size:15px;font-weight:700;margin:24px 0 12px;border-left:3px solid #ff2d78;padding-left:10px}
+.section-title{color:#ff2d78;font-size:18px;font-weight:700;margin:24px 0 12px;border-left:3px solid #ff2d78;padding-left:10px}
 .section-title:first-child{margin-top:0}
 .form-card{background:#16213e;border-radius:12px;border:1px solid #333;padding:20px 24px;margin-bottom:20px}
 .form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
 .form-grid.col2{grid-template-columns:repeat(2,1fr)}
 .form-full{grid-column:1/-1}
-.form-card label{display:block;font-size:12px;color:#888;margin-bottom:4px}
-.form-card input,.form-card select,.form-card textarea{width:100%;padding:9px 12px;background:#1a1a2e;border:1px solid #333;border-radius:6px;color:#e0e0e0;font-size:14px;font-family:inherit}
+.form-card label{display:block;font-size:14px;color:#888;margin-bottom:4px}
+.form-card input,.form-card select,.form-card textarea{width:100%;padding:10px 12px;background:#1a1a2e;border:1px solid #333;border-radius:6px;color:#e0e0e0;font-size:16px;font-family:inherit}
 .form-card input:focus,.form-card select:focus,.form-card textarea:focus{outline:none;border-color:#00f5ff;box-shadow:0 0 8px rgba(0,245,255,0.15)}
 .form-card textarea{resize:vertical;min-height:60px}
-.form-card .hint{font-size:11px;color:#666;margin-top:2px}
+.form-card .hint{font-size:13px;color:#666;margin-top:2px}
 .btn-row{display:flex;gap:10px;margin-top:8px}
-.btn{padding:9px 22px;border:none;border-radius:6px;cursor:pointer;font-size:14px;font-family:inherit;font-weight:600;transition:all .2s}
+.btn{padding:10px 24px;border:none;border-radius:6px;cursor:pointer;font-size:16px;font-family:inherit;font-weight:600;transition:all .2s}
 .btn-primary{background:#005d73;color:#fff}.btn-primary:hover{background:#007a99}
 .btn-success{background:#ff2d78;color:#fff}.btn-success:hover{background:#ff5080;box-shadow:0 0 15px rgba(255,45,120,0.4)}
 .btn-danger{background:#8b1a1a;color:#fff}.btn-danger:hover{background:#b02020}
-.btn-sm{padding:5px 12px;font-size:12px}
+.btn-sm{padding:7px 16px;font-size:14px}
 .table-wrap{background:#16213e;border-radius:12px;border:1px solid #333;overflow:hidden}
 table{width:100%;border-collapse:collapse}
 thead tr{background:#0f3460}
-thead th{text-align:left;padding:10px 14px;font-size:12px;color:#00f5ff;font-weight:600;border-bottom:2px solid #005d73}
+thead th{text-align:left;padding:12px 14px;font-size:14px;color:#00f5ff;font-weight:600;border-bottom:2px solid #005d73}
 tbody tr{border-bottom:1px solid #1f2a45;transition:background .2s}
 tbody tr:hover{background:#1f2a45}
-tbody td{padding:9px 14px;font-size:13px;color:#ccc;vertical-align:middle}
-.cat-badge{display:inline-block;padding:2px 8px;background:#005d73;color:#00f5ff;border-radius:3px;font-size:11px;margin-right:4px}
-.subcat-badge{display:inline-block;padding:2px 8px;background:#3a1a5e;color:#c084fc;border-radius:3px;font-size:11px}
-.model-tag{font-family:monospace;background:#1a1a2e;padding:2px 6px;border-radius:3px;color:#00f5ff;font-size:12px}
-.toast{position:fixed;bottom:30px;right:30px;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;z-index:1000;opacity:0;transition:opacity .3s;pointer-events:none}
+tbody td{padding:10px 14px;font-size:15px;color:#ccc;vertical-align:middle}
+.cat-badge{display:inline-block;padding:3px 10px;background:#005d73;color:#00f5ff;border-radius:3px;font-size:13px;margin-right:4px}
+.subcat-badge{display:inline-block;padding:3px 10px;background:#3a1a5e;color:#c084fc;border-radius:3px;font-size:13px}
+.model-tag{font-family:monospace;background:#1a1a2e;padding:3px 8px;border-radius:3px;color:#00f5ff;font-size:14px}
+.toast{position:fixed;bottom:30px;right:30px;padding:12px 24px;border-radius:8px;font-size:16px;font-weight:600;z-index:1000;opacity:0;transition:opacity .3s;pointer-events:none}
 .toast-success{background:#1a6b4a;color:#fff}.toast-error{background:#8b1a1a;color:#fff}
 .toast.show{opacity:1}
 .stats{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap}
 .stat-card{background:#16213e;border-radius:10px;border:1px solid #333;padding:16px 24px;min-width:120px;text-align:center}
-.stat-card .num{font-size:28px;font-weight:700;color:#00f5ff;font-family:monospace}
-.stat-card .lbl{font-size:12px;color:#888;margin-top:4px}
+.stat-card .num{font-size:34px;font-weight:700;color:#00f5ff;font-family:monospace}
+.stat-card .lbl{font-size:14px;color:#888;margin-top:4px}
 .img-grid{display:flex;gap:12px;flex-wrap:wrap;min-height:80px;padding:8px;background:#1a1a2e;border-radius:8px;border:2px dashed #333}
 .img-grid-item{width:140px;height:105px;border-radius:6px;overflow:hidden;position:relative;cursor:grab;border:2px solid transparent;transition:border-color .2s}
 .img-grid-item:active{cursor:grabbing}
@@ -148,6 +148,12 @@ tbody td{padding:9px 14px;font-size:13px;color:#ccc;vertical-align:middle}
   </div>
 
   <div class="section-title">产品列表 <span style="font-weight:400;color:#888;font-size:13px" id="countLabel"></span><button class="btn btn-danger btn-sm" id="batchDelBtn" onclick="batchDelete()" style="display:none;margin-left:12px">批量删除</button></div>
+  <div style="display:flex;gap:12px;margin-bottom:12px">
+    <select id="filterCat" onchange="renderTable()" style="padding:6px 12px;background:#1a1a2e;border:1px solid #333;border-radius:6px;color:#e0e0e0;font-size:13px;width:200px">
+      <option value="">全部分类</option>
+    </select>
+    <input id="filterSearch" type="text" oninput="renderTable()" placeholder="搜索产品ID或标题..." style="padding:6px 12px;background:#1a1a2e;border:1px solid #333;border-radius:6px;color:#e0e0e0;font-size:13px;flex:1;max-width:300px">
+  </div>
   <div class="table-wrap">
     <table>
       <thead><tr><th style="width:36px"><input type="checkbox" id="selectAll" onchange="toggleSelectAll()" title="全选"></th><th>ID</th><th>名称</th><th>分类</th><th>子分类</th><th>描述</th><th style="width:120px">操作</th></tr></thead>
@@ -194,6 +200,12 @@ async function loadAll() {
     document.getElementById('fCat').onchange = function(){ updateSubCats(); autoUpdateSpecs(); };
     document.getElementById('fSubCat').onchange = autoUpdateSpecs;
     document.getElementById('fType').onchange = autoUpdateSpecs;
+    // 填充分类筛选下拉
+    var filterCat = document.getElementById('filterCat');
+    filterCat.innerHTML = '<option value="">全部分类</option>';
+    categories.forEach(function(c){
+      filterCat.innerHTML += '<option value="'+c.name+'">'+c.name+'</option>';
+    });
     renderCatMgr();
   } catch(e) { showToast('加载分类失败', 'error'); }
 
@@ -232,12 +244,27 @@ function updateTypeOptions(cat) {
 
 function renderTable() {
   var tb = document.getElementById('productList');
-  if (!products.length) {
-    tb.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:30px;color:#666">暂无产品</td></tr>';
+  var catFilter = document.getElementById('filterCat').value;
+  var searchFilter = document.getElementById('filterSearch').value.trim().toLowerCase();
+
+  var filtered = products.filter(function(p){
+    if (catFilter && p.cat !== catFilter) return false;
+    if (searchFilter) {
+      var id = (p.id||'').toLowerCase();
+      var title = (p.title||'').toLowerCase();
+      if (id.indexOf(searchFilter) === -1 && title.indexOf(searchFilter) === -1) return false;
+    }
+    return true;
+  });
+
+  document.getElementById('countLabel').textContent = '('+filtered.length+'/'+products.length+' 个产品)';
+
+  if (!filtered.length) {
+    tb.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:30px;color:#666">无匹配产品</td></tr>';
     return;
   }
   var html = '';
-  products.forEach(function(p){
+  filtered.forEach(function(p){
     html += '<tr>'+
       '<td><input type="checkbox" class="row-check" value="'+esc(p.id)+'" onchange="updateBatchBtn()"></td>'+
       '<td><span class="model-tag">'+esc(p.id)+'</span></td>'+
@@ -696,6 +723,12 @@ async function saveCategories() {
       categories = d.categories;
       showToast('分类已保存');
       renderCatMgr();
+      // 更新分类筛选下拉
+      var fCat = document.getElementById('filterCat');
+      fCat.innerHTML = '<option value="">全部分类</option>';
+      categories.forEach(function(c){
+        fCat.innerHTML += '<option value="'+c.name+'">'+c.name+'</option>';
+      });
       // 更新表单的分类下拉
       var sel = document.getElementById('fCat');
       sel.innerHTML = '<option value="">-- 选择分类 --</option>';

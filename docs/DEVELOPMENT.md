@@ -418,7 +418,7 @@ CREATE TABLE leads (
 ## 八、待办事项
 
 ### 🔴 P0 — 上线前
-1. 网站部署（服务器/域名）
+1. 网站部署（见 [第十章·部署方案](#十部署方案)）：确认服务器 → 环境安装 → 代码部署 → Nginx 配置 → 上线
 2. 全站字号加大（客户群体偏年长）
 3. 移动端适配优化
 4. 404/错误页面
@@ -448,7 +448,250 @@ CREATE TABLE leads (
 
 ---
 
-## 九、如何更新本文档
+## 十、部署方案
+
+> **当前状态**：域名 `hcsmotor.cn` 已解析到阿里云轻量应用服务器，HTTPS 已配置。原万网智能建站模板需要替换为 HCSweb 项目代码。
+> **目标**：将 HCSweb 项目部署上线，包含静态站点 + FastAPI 后端 + MySQL。
+
+### 10.1 服务器选型
+
+**推荐：阿里云轻量应用服务器（2核2G，¥612/年）**
+
+| 组件 | 方案 |
+|------|------|
+| 系统镜像 | Ubuntu 22.04 / 24.04 |
+| 应用镜像 | 可选 "Node.js / Python" 预装镜像 |
+| Web 服务器 | Nginx（静态文件 + 反向代理） |
+| 应用服务 | FastAPI（uvicorn，systemd 守护） |
+| 数据库 | MySQL 8.0（同机安装） |
+| SSL | Let's Encrypt（certbot 自动续期） |
+
+> 不选虚拟主机：跑不了 Python。不选 ECS：过度配置，轻量服务器够用。
+
+### 10.2 环境安装
+
+```bash
+# 1. 更新系统
+sudo apt update && sudo apt upgrade -y
+
+# 2. 安装 Nginx
+sudo apt install nginx -y
+sudo systemctl enable nginx
+sudo systemctl start nginx
+
+# 3. 安装 Python 3
+sudo apt install python3 python3-pip -y
+
+# 4. 安装 MySQL 8.0
+sudo apt install mysql-server -y
+sudo systemctl enable mysql
+sudo systemctl start mysql
+
+# 5. 初始化 MySQL
+sudo mysql_secure_installation
+# 按提示设置 root 密码，移除匿名用户，禁止远程 root
+
+# 6. 创建数据库
+sudo mysql -u root -p << EOF
+CREATE DATABASE IF NOT EXISTS motor_website DEFAULT CHARACTER SET utf8mb4;
+CREATE USER IF NOT EXISTS 'motor'@'localhost' IDENTIFIED BY '<你的密码>';
+GRANT ALL PRIVILEGES ON motor_website.* TO 'motor'@'localhost';
+FLUSH PRIVILEGES;
+EOF
+
+# 7. 安装 Python 依赖
+sudo pip3 install fastapi uvicorn pymysql
+# 或使用 requirements.txt（待创建）
+
+# 8. 安装 certbot（SSL 证书）
+sudo apt install certbot python3-certbot-nginx -y
+```
+
+### 10.3 部署代码
+
+```bash
+# 1. 克隆项目
+cd /var/www
+sudo git clone https://github.com/yangjian19930109/HCSweb.git hcsmotor
+sudo chown -R $USER:$USER /var/www/hcsmotor
+
+# 2. 配置后端数据库连接
+# 编辑 backend/config.py，修改 MySQL 密码为实际密码
+
+# 3. 构建静态文件
+cd /var/www/hcsmotor
+PYTHONIOENCODING=utf-8 python3 build.py
+
+# 4. 创建上传目录
+mkdir -p /var/www/hcsmotor/backend/uploads
+chmod 755 /var/www/hcsmotor/backend/uploads
+```
+
+### 10.4 Nginx 配置
+
+```nginx
+# /etc/nginx/sites-available/hcsmotor
+server {
+    listen 80;
+    server_name hcsmotor.cn www.hcsmotor.cn;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name hcsmotor.cn www.hcsmotor.cn;
+
+    # SSL（certbot 自动生成）
+    ssl_certificate     /etc/letsencrypt/live/hcsmotor.cn/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/hcsmotor.cn/privkey.pem;
+
+    # 静态文件（dist/ 目录）
+    root /var/www/hcsmotor/dist;
+    index index.html;
+
+    # API 反代到 FastAPI
+    location /api/ {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    # 管理后台反代
+    location /admin {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+    }
+
+    # 上传文件
+    location /uploads/ {
+        alias /var/www/hcsmotor/backend/uploads/;
+    }
+
+    # 静态文件缓存
+    location ~* \.(jpg|jpeg|png|gif|ico|css|js|woff2?|ttf|svg)$ {
+        expires 30d;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # SPA fallback（404 → index.html）
+    location / {
+        try_files $uri $uri/ $uri.html /index.html;
+    }
+}
+```
+
+启用配置：
+
+```bash
+sudo ln -sf /etc/nginx/sites-available/hcsmotor /etc/nginx/sites-enabled/
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo nginx -t && sudo systemctl reload nginx
+
+# SSL 证书申请
+sudo certbot --nginx -d hcsmotor.cn -d www.hcsmotor.cn
+```
+
+### 10.5 FastAPI 服务管理
+
+```ini
+# /etc/systemd/system/motor-api.service
+[Unit]
+Description=Motor Website API
+After=network.target mysql.service
+
+[Service]
+User=www-data
+WorkingDirectory=/var/www/hcsmotor
+ExecStart=/usr/bin/python3 -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
+Restart=always
+RestartSec=5
+Environment=PYTHONIOENCODING=utf-8
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable motor-api
+sudo systemctl start motor-api
+```
+
+### 10.6 数据库表初始化
+
+```sql
+-- 产品分类表
+CREATE TABLE IF NOT EXISTS categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    slug VARCHAR(100) NOT NULL,
+    sort_order INT DEFAULT 0
+);
+
+-- 产品表
+CREATE TABLE IF NOT EXISTS products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category_id INT,
+    model VARCHAR(100),
+    name VARCHAR(200),
+    description TEXT,
+    specs TEXT,
+    image_url VARCHAR(500),
+    file_url VARCHAR(500),
+    featured BOOLEAN DEFAULT FALSE,
+    sort_order INT DEFAULT 0,
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+-- 线索表（上线后创建，暂不必须）
+-- CREATE TABLE leads (...)
+```
+
+### 10.7 部署检查清单
+
+| 检查项 | 命令 / 方法 |
+|--------|-----------|
+| Nginx 状态 | `sudo systemctl status nginx` |
+| FastAPI 状态 | `sudo systemctl status motor-api` |
+| MySQL 状态 | `sudo systemctl status mysql` |
+| 静态文件 | `curl -I https://hcsmotor.cn/` → HTTP 200 |
+| API 接口 | `curl https://hcsmotor.cn/api/health` → `{"status":"ok"}` |
+| 管理后台 | `curl -I https://hcsmotor.cn/admin` → HTTP 200 |
+| SSL 证书 | `sudo certbot certificates` |
+| 端口 | `sudo netstat -tlnp \| grep -E ':(80\|443\|8000\|3306)'` |
+| 构建 | `cd /var/www/hcsmotor && PYTHONIOENCODING=utf-8 python3 build.py` |
+
+### 10.8 更新部署流程
+
+每次代码更新后：
+
+```bash
+# 本地
+git add -A && git commit -m "描述" && git push
+
+# 服务器
+cd /var/www/hcsmotor
+git pull
+PYTHONIOENCODING=utf-8 python3 build.py    # 重新构建 dist/
+sudo systemctl restart motor-api           # 重启 API（如有更新）
+# 静态文件不需要重启，Nginx 直接服务
+```
+
+### 10.9 常见问题
+
+**Q: 轻量服务器能跑 Python + MySQL 吗？**
+A: 能。2核2G 跑 FastAPI + MySQL + Nginx 足够，内存有富余。
+
+**Q: 现有万网智能建站怎么办？**
+A: 替换。Nginx 配置指向 HCSweb 的 `dist/` 目录后，原模板就不再生效。
+
+**Q: 服务器已经在跑万网模板，Nginx 配置会冲突吗？**
+A: 需要确认当前服务器环境。如果是轻量服务器 + 已有的 Nginx，直接追加配置。如果是万网托管平台（无 SSH），则需要新购轻量服务器。
+
+---
+
+## 十一、如何更新本文档
 
 每次完成有效的开发工作或踩坑后，把关键信息追加到对应章节：
 
@@ -462,4 +705,4 @@ CREATE TABLE leads (
 
 ---
 
-> 最后更新：2026-06-09
+> 最后更新：2026-06-10
