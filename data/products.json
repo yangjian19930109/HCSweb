@@ -21,7 +21,8 @@
       "安装位置": "分动箱 PTU 执行器",
       "产品类型": "12V有刷直流",
       "品质标准": "原厂配套品质"
-    }
+    },
+    "cardImage": "images/products/1030837_b5b4a97d.png"
   },
   {
     "id": "1030896",
@@ -73,5 +74,28 @@
       "品质标准": "原厂配套品质"
     },
     "cardImage": "images/products/1031001_card.png"
+  },
+  {
+    "id": "1061418",
+    "title": "1061418EPB执行器MGU电机",
+    "cat": "车用马达",
+    "subCat": "EPB马达",
+    "desc": "用于奥迪、宝马、大众、路虎等高端品牌节气门总成电机。采用高精度铜斜齿大扭矩设计，响应速度快，控制精准。",
+    "url": "product-1061418.html",
+    "images": [
+      "images/products/1061418_f979050c.png",
+      "images/products/1061418_76c943c4.png",
+      "images/products/1061418_0b86438a.png"
+    ],
+    "detail": "",
+    "detail_images": [
+      "images/products/1061418_df1b2e26.jpg",
+      "images/products/1061418_3b8ddddc.jpg"
+    ],
+    "productType": "12V有刷直流",
+    "specs": {
+      "产品类型": "12V有刷直流"
+    },
+    "cardImage": "images/products/1061418_391cc48b.png"
   }
 ]

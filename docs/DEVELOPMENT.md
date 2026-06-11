@@ -347,6 +347,55 @@ CREATE TABLE leads (
 - 微动开关主力 + 车用马达辅推 + 品牌防守
 - 在线客服：试投期百度商桥（免费），放量期备选美洽/自建
 
+### 5.11 产品数据防泄漏（2026-06-11）
+
+审计发现产品数据在三个载体中暴露：
+
+| 载体 | 路径 | 泄露方式 |
+|------|------|----------|
+| `products.json` | `dist/data/products.json` | serve.py 的 `regenerate_js()` 写入，浏览器直接访问 |
+| `products.js` | `data/products.js`（git 跟踪） | 含完整 `var PRODUCTS_DATA = [...]`，仓库历史永久泄露 |
+| `/api/products` | HTTP 端点 | 无认证，脚本可批量抓取（后续加 Basic Auth） |
+
+**修复**：
+- 删除 `regenerate_js()` 函数（搜索已切到 `/api/search` API，此函数已死）
+- `git rm` + `.gitignore` 移除 `products.js`
+- `rm -rf dist/data/` 清除残留静态文件
+- `/api/products` 端点认证留给 P2-3（管理后台安全加固）
+
+**连带发现**：`regenerate_js()` 只把 `products.json` 写入 `dist/data/`，从未把 `products.js` 写入 `dist/`。如果 Fuse.js 搜索还在用，早就坏了——幸好已切到 API 方案。
+
+详情：[防泄漏实施方案](IMPLEMENTATION-DATA-LEAK.md)
+
+### 5.12 图片拖拽排序 + 卡片图裁剪（2026-06-11）
+
+**拖拽排序修复**（3 个 bug + 1 个 Chromium 缺陷）：
+
+| Bug | 现象 | 根因 | 修复 |
+|-----|------|------|------|
+| 跨网格污染 | 上传详情图刷新主网格 | `addFilesToGrid()` 硬编码 `mainImgGrid` | 改为调用侧传 `gridId` 参数 |
+| 跨网格拖放 | 主图拖到详情网格破坏数组 | `ondrop` 无校验 | 加 `parentElement` 同网格检查 |
+| 部分图片拖不动 | 产品间表现不一致 | **双层根因**：① `<img>` 原生拖拽拦截 `<div>` dragstart ② Chromium 对 `naturalWidth ≥ 2686px` 的图片预览生成失败 | `img.draggable = false` + `setDragImage(1×1透明GIF)` |
+| 移动端不可用 | 无触摸事件 | `touchstart/move/end` 未实现 | 追加触摸拖拽逻辑 |
+
+**根因追查教训**：最初的"原生拖拽拦截"假设解释不了为什么小图可拖、大图不可拖。Playwright 测试发现分界线：≤1872px 可拖，≥2686px 不可拖。根因不止一个，是两层叠加。
+
+**卡片图裁剪**：`object-fit: contain` → `cover`，`css/products.css` + `build.py` 各改 1 行。
+
+详情：[IMAGE-IMPROVEMENT-PLAN.md](IMAGE-IMPROVEMENT-PLAN.md)
+
+### 5.13 卡片图上传自动标准化（2026-06-11）
+
+**问题**：`object-fit: cover` 后各产品卡片图填充程度不一致——1030896 刚好，1030837/1061418 太满。
+
+**根因**：不同产品上传的卡片图比例各异（1.67~2.20），`cover` 对非匹配比例的图片裁剪过狠。
+
+**方案**：上传时浏览器端 Canvas 自动处理——保持原比例 + 四周 15% 留白 + 白色背景。处理后效果等价于"给图片加了个相框"，任意比例上传后视觉统一。
+
+**关键决策**：画布保持原图比例（非正方形）。理由是参照标准 1030896 本身是 2.20:1 横图——若强制正方形，参照标准会被自己否定。
+
+详情：[卡片图片统一标准方案](卡片图片统一标准方案.md)
+
 ---
 
 ## 六、踩过的坑和关键教训
@@ -382,6 +431,30 @@ CREATE TABLE leads (
 - **注册表**：`HKLM\SYSTEM\CurrentControlSet\Control\Nls\CodePage\ACP` = `65001`
 - **临时方案**：`cmd.exe /c "chcp 65001 >nul && <命令>"`
 
+### 6.7 双载体数据泄露（2026-06-11 发现）
+
+- **发现**：产品数据在两个载体中同时暴露：
+  - `dist/data/products.json` — serve.py 写入，浏览器直接访问
+  - `data/products.js` — git 跟踪，含 `var PRODUCTS_DATA = [...]`
+- **根因**：搜索从 Fuse.js 改为 `/api/search` API 后，`products.js` 变成死代码，但 `regenerate_js()` 仍在维护它，且文件仍在 git 中
+- **教训**：改数据访问方式时，要同时清理旧的数据载体。两处泄露（JSON + JS）都在原计划中被遗漏
+- **修复**：删除 `regenerate_js()`、`git rm` products.js、`dist/data/` 不再写入产品 JSON
+
+### 6.8 拖拽不一致的根因不是单层的（2026-06-11 发现）
+
+- **现象**：同一管理后台的图片网格，部分图片可拖拽、部分不可。产品间表现不一致
+- **最初判定**：`<img>` 原生拖拽拦截了 `<div>` 的 dragstart
+- **不成立的原因**：如果仅此一个原因，小图也应该被拦截——但小图能拖
+- **Playwright 测试揭示**：`naturalWidth ≤ 1872px` 的图可拖，`≥ 2686px` 的图不可拖。分界线与 `naturalWidth` 强相关
+- **真正根因**：**双层叠加**——① `<img>` 原生拖拽（影响所有图）② Chromium 对大分辨率图片的拖拽预览生成失败（影响大图，静默取消 drag）
+- **教训**：表现不一致 ≠ 根因只有一个。当一个假设解释不了所有现象时，用自动化测试（Playwright）批量检查 DOM 属性差异，而不是凭一条猜测反复试。`naturalWidth` 这个属性肉眼看不到，但测试能读到
+
+### 6.9 浏览器端处理比服务端依赖更轻量（2026-06-11 卡片图方案）
+
+- **选择**：Card 图标准化用 Canvas（浏览器端），不走 Python PIL/Pillow（服务端）
+- **理由**：Canvas 不需要安装任何依赖，用户浏览器就是运行环境。引入 PIL 意味着每台新电脑都要 `pip install Pillow`，部署服务器也要装
+- **教训**：能用浏览器原生 API 解决的问题，不要引入服务端依赖。`<canvas>` + `toBlob()` + `new File()` 这条链路覆盖了图片裁剪/缩放/格式转换的全部需求
+
 ---
 
 ## 七、开发约定
@@ -412,6 +485,43 @@ CREATE TABLE leads (
 ### 7.6 开发前确认
 - 收到任务 → 先复述理解 → 单选项弹窗"开始干活" → 用户回车 → 执行
 - CSS 修改后自动 `python build.py`，不询问
+
+
+
+### 7.7 文件编辑安全标准
+
+**背景**：`.git` 目录被沙箱施加了 DENY 写权限，`git add`/`git commit` 不可用。因此用备份机制替代 git 的版本恢复能力。
+
+**规则**：
+
+1. **每次编辑前**必须备份原始文件，不论改动大小：
+   ```powershell
+   Copy-Item docs/IMPROVEMENT-PLAN.md "docs/IMPROVEMENT-PLAN.md.bak.$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+   ```
+
+2. 在备份文件上执行修改，不在原文件上直接动刀：
+   ```powershell
+   Copy-Item target.md target.md.working
+   # 在 target.md.working 上做所有修改
+   # 验证通过后：
+   Move-Item -Force target.md.working target.md
+   ```
+
+3. 修改完成后验证关键结构（标题、条目编号）：
+   ```powershell
+   Get-Content target.md | Select-String "^### P0-"   # 确认所有 P0 项都在
+   ```
+
+4. 验证通过后合并覆盖原文件，保留最近 3 个备份，删掉更早的。
+
+**不当操作示例**（2026-06-11 教训）：
+```powershell
+# ❌ 坏 — 在原文上直接做范围删除，匹配到错误位置，不可恢复
+$lines = Get-Content file.md
+$start = (Select-String "**验收标准**：" file.md)[0].LineNumber  # 匹配了第一个，不是目标
+# ... 删除 $start 到 "**预估**：30 分钟" — 删掉了整个 P0-P1 段
+Set-Content file.md $lines  # 直接覆盖，无法恢复
+```
 
 ---
 
@@ -705,4 +815,4 @@ A: 需要确认当前服务器环境。如果是轻量服务器 + 已有的 Ngin
 
 ---
 
-> 最后更新：2026-06-10
+> 最后更新：2026-06-11

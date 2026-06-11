@@ -49,7 +49,7 @@ tbody td{padding:10px 14px;font-size:15px;color:#ccc;vertical-align:middle}
 .img-grid{display:flex;gap:12px;flex-wrap:wrap;min-height:80px;padding:8px;background:#1a1a2e;border-radius:8px;border:2px dashed #333}
 .img-grid-item{width:140px;height:105px;border-radius:6px;overflow:hidden;position:relative;cursor:grab;border:2px solid transparent;transition:border-color .2s}
 .img-grid-item:active{cursor:grabbing}
-.img-grid-item img{width:100%;height:100%;object-fit:cover}
+.img-grid-item img{width:100%;height:100%;object-fit:cover;user-drag:none;-webkit-user-drag:none}
 .img-grid-item.drag-over{border-color:#00f5ff;box-shadow:0 0 10px rgba(0,245,255,0.3)}
 .img-grid-item .del-btn{position:absolute;top:3px;right:3px;width:20px;height:20px;background:rgba(255,45,120,0.85);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer;z-index:5;line-height:1}
 .img-grid-item .del-btn:hover{background:#ff2d78}
@@ -334,20 +334,33 @@ var detailImgItems = []; // {src, keepPath, file}
 var cardImgData = null;  // {src, keepPath, file}
 var dragSrc = null;
 
+// WARNING: This function does full DOM rebuild (innerHTML = '').
+// All event handlers are refreshed every call. If changing to partial
+// update, ensure del.onclick closures are re-bound with correct idx.
 function renderImgGrid(gridId, items) {
   var grid = document.getElementById(gridId);
   grid.innerHTML = '';
+  var touchStartX = 0, touchStartY = 0, touchItem = null;
   items.forEach(function(item, idx){
     var div = document.createElement('div');
     div.className = 'img-grid-item';
     div.draggable = true;
     div.setAttribute('data-idx', idx);
-    div.ondragstart = function(e){ dragSrc = this; e.dataTransfer.effectAllowed = 'move'; };
+    // 桌面端拖拽
+    div.ondragstart = function(e){
+      dragSrc = this;
+      e.dataTransfer.effectAllowed = 'move';
+      var d = new Image();
+      d.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+      e.dataTransfer.setDragImage(d, 0, 0);
+    };
     div.ondragover = function(e){ e.preventDefault(); this.classList.add('drag-over'); };
     div.ondragleave = function(){ this.classList.remove('drag-over'); };
     div.ondrop = function(e){
       e.preventDefault();
       this.classList.remove('drag-over');
+      // 禁止跨网格拖放
+      if (!dragSrc || dragSrc.parentElement !== this.parentElement) return;
       var fromIdx = parseInt(dragSrc.getAttribute('data-idx'));
       var toIdx = parseInt(this.getAttribute('data-idx'));
       if (fromIdx !== toIdx) {
@@ -357,8 +370,40 @@ function renderImgGrid(gridId, items) {
         renderImgGrid(gridId, items);
       }
     };
+    // 移动端触摸拖拽
+    div.addEventListener('touchstart', function(e){
+      touchItem = this;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      this.style.opacity = '0.6';
+    }, {passive: true});
+    div.addEventListener('touchmove', function(e){
+      if (touchItem === this) e.preventDefault();
+    }, {passive: false});
+    div.addEventListener('touchend', function(e){
+      this.style.opacity = '1';
+      if (!touchItem) return;
+      var endX = e.changedTouches[0].clientX;
+      var endY = e.changedTouches[0].clientY;
+      var dx = endX - touchStartX;
+      var dy = endY - touchStartY;
+      if (Math.abs(dx) < 30 && Math.abs(dy) < 30) { touchItem = null; return; }
+      var targetEl = document.elementFromPoint(endX, endY);
+      var targetItem = targetEl ? targetEl.closest('.img-grid-item') : null;
+      if (!targetItem || targetItem === touchItem || targetItem.parentElement !== touchItem.parentElement) {
+        touchItem = null; return;
+      }
+      var fromIdx = parseInt(touchItem.getAttribute('data-idx'));
+      var toIdx = parseInt(targetItem.getAttribute('data-idx'));
+      var tmp = items[fromIdx];
+      items.splice(fromIdx, 1);
+      items.splice(toIdx, 0, tmp);
+      renderImgGrid(gridId, items);
+      touchItem = null;
+    });
     var img = document.createElement('img');
     img.src = item.src;
+    img.draggable = false;  // 禁止原生图片拖拽，让 div 的 HTML5 拖拽接管
     div.appendChild(img);
     // 保留标记
     if (item.keepPath) {
@@ -381,7 +426,7 @@ function renderImgGrid(gridId, items) {
   });
 }
 
-function addFilesToGrid(items, files, maxCount) {
+function addFilesToGrid(items, files, maxCount, gridId) {
   var remaining = maxCount - items.length;
   var toAdd = Math.min(files.length, remaining);
   for (var i=0; i<toAdd; i++) {
@@ -389,8 +434,7 @@ function addFilesToGrid(items, files, maxCount) {
     (function(file){
       reader.onload = function(e){
         items.push({src: e.target.result, keepPath: null, file: file});
-        renderImgGrid('mainImgGrid', mainImgItems);
-        renderImgGrid('detailImgGrid', detailImgItems);
+        renderImgGrid(gridId, items);
       };
       reader.readAsDataURL(file);
     })(files[i]);
@@ -399,12 +443,12 @@ function addFilesToGrid(items, files, maxCount) {
 
 function handleMainImgSelect() {
   var files = document.getElementById('mainImgInput').files;
-  addFilesToGrid(mainImgItems, files, 6);
+  addFilesToGrid(mainImgItems, files, 6, 'mainImgGrid');
   document.getElementById('mainImgInput').value = '';
 }
 function handleDetailImgSelect() {
   var files = document.getElementById('detailImgInput').files;
-  addFilesToGrid(detailImgItems, files, 10);
+  addFilesToGrid(detailImgItems, files, 10, 'detailImgGrid');
   document.getElementById('detailImgInput').value = '';
 }
 
@@ -413,8 +457,30 @@ function handleCardImgSelect() {
   if (!file) return;
   var reader = new FileReader();
   reader.onload = function(e) {
-    cardImgData = {src: e.target.result, keepPath: null, file: file};
-    renderCardImg();
+    var img = new Image();
+    img.onload = function() {
+      // 保持原图比例，四周留 15% 边距（基于短边）
+      var padding = Math.round(Math.min(img.naturalWidth, img.naturalHeight) * 0.15);
+      var canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth + padding * 2;
+      canvas.height = img.naturalHeight + padding * 2;
+      var ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, padding, padding, img.naturalWidth, img.naturalHeight);
+      canvas.toBlob(function(blob) {
+        var newName = 'card_' + file.name.replace(/\.[^.]+$/, '.png');
+        if (!newName.endsWith('.png')) newName += '.png';
+        var processedFile = new File([blob], newName, {type: 'image/png'});
+        var r = new FileReader();
+        r.onload = function(e2) {
+          cardImgData = {src: e2.target.result, keepPath: null, file: processedFile};
+          renderCardImg();
+        };
+        r.readAsDataURL(processedFile);
+      }, 'image/png');
+    };
+    img.src = e.target.result;
   };
   reader.readAsDataURL(file);
   document.getElementById('cardImgInput').value = '';

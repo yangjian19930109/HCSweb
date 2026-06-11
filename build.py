@@ -75,7 +75,7 @@ def generate_card(product):
     card = product.get('cardImage', '')
     img_src = card if card else (images[0] if images else '')
     if img_src:
-        img_html = f'<img src="{img_src}" alt="{title}" style="width:100%;height:100%;object-fit:contain;">'
+        img_html = f'<img src="{img_src}" alt="{title}" style="width:100%;height:100%;object-fit:cover;">'
     else:
         emoji = {
             '节气门马达': '⚡', '废气阀马达': '💨', '涡轮增压执行器马达': '🌀',
