@@ -367,6 +367,23 @@ CREATE TABLE leads (
 
 详情：[防泄漏实施方案](IMPLEMENTATION-DATA-LEAK.md)
 
+### 5.12 图片拖拽排序 + 卡片图裁剪（2026-06-11）
+
+**拖拽排序修复**（3 个 bug + 1 个 Chromium 缺陷）：
+
+| Bug | 现象 | 根因 | 修复 |
+|-----|------|------|------|
+| 跨网格污染 | 上传详情图刷新主网格 | `addFilesToGrid()` 硬编码 `mainImgGrid` | 改为调用侧传 `gridId` 参数 |
+| 跨网格拖放 | 主图拖到详情网格破坏数组 | `ondrop` 无校验 | 加 `parentElement` 同网格检查 |
+| 部分图片拖不动 | 产品间表现不一致 | **双层根因**：① `<img>` 原生拖拽拦截 `<div>` dragstart ② Chromium 对 `naturalWidth ≥ 2686px` 的图片预览生成失败 | `img.draggable = false` + `setDragImage(1×1透明GIF)` |
+| 移动端不可用 | 无触摸事件 | `touchstart/move/end` 未实现 | 追加触摸拖拽逻辑 |
+
+**根因追查教训**：最初的"原生拖拽拦截"假设解释不了为什么小图可拖、大图不可拖。Playwright 测试发现分界线：≤1872px 可拖，≥2686px 不可拖。根因不止一个，是两层叠加。
+
+**卡片图裁剪**：`object-fit: contain` → `cover`，`css/products.css` + `build.py` 各改 1 行。
+
+详情：[IMAGE-IMPROVEMENT-PLAN.md](IMAGE-IMPROVEMENT-PLAN.md) / [图片拖拽不一致修复方案](图片拖拽不一致修复方案.md)
+
 ---
 
 ## 六、踩过的坑和关键教训
@@ -410,6 +427,15 @@ CREATE TABLE leads (
 - **根因**：搜索从 Fuse.js 改为 `/api/search` API 后，`products.js` 变成死代码，但 `regenerate_js()` 仍在维护它，且文件仍在 git 中
 - **教训**：改数据访问方式时，要同时清理旧的数据载体。两处泄露（JSON + JS）都在原计划中被遗漏
 - **修复**：删除 `regenerate_js()`、`git rm` products.js、`dist/data/` 不再写入产品 JSON
+
+### 6.8 拖拽不一致的根因不是单层的（2026-06-11 发现）
+
+- **现象**：同一管理后台的图片网格，部分图片可拖拽、部分不可。产品间表现不一致
+- **最初判定**：`<img>` 原生拖拽拦截了 `<div>` 的 dragstart
+- **不成立的原因**：如果仅此一个原因，小图也应该被拦截——但小图能拖
+- **Playwright 测试揭示**：`naturalWidth ≤ 1872px` 的图可拖，`≥ 2686px` 的图不可拖。分界线与 `naturalWidth` 强相关
+- **真正根因**：**双层叠加**——① `<img>` 原生拖拽（影响所有图）② Chromium 对大分辨率图片的拖拽预览生成失败（影响大图，静默取消 drag）
+- **教训**：表现不一致 ≠ 根因只有一个。当一个假设解释不了所有现象时，用自动化测试（Playwright）批量检查 DOM 属性差异，而不是凭一条猜测反复试。`naturalWidth` 这个属性肉眼看不到，但测试能读到
 
 ---
 
