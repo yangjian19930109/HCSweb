@@ -347,6 +347,26 @@ CREATE TABLE leads (
 - 微动开关主力 + 车用马达辅推 + 品牌防守
 - 在线客服：试投期百度商桥（免费），放量期备选美洽/自建
 
+### 5.11 产品数据防泄漏（2026-06-11）
+
+审计发现产品数据在三个载体中暴露：
+
+| 载体 | 路径 | 泄露方式 |
+|------|------|----------|
+| `products.json` | `dist/data/products.json` | serve.py 的 `regenerate_js()` 写入，浏览器直接访问 |
+| `products.js` | `data/products.js`（git 跟踪） | 含完整 `var PRODUCTS_DATA = [...]`，仓库历史永久泄露 |
+| `/api/products` | HTTP 端点 | 无认证，脚本可批量抓取（后续加 Basic Auth） |
+
+**修复**：
+- 删除 `regenerate_js()` 函数（搜索已切到 `/api/search` API，此函数已死）
+- `git rm` + `.gitignore` 移除 `products.js`
+- `rm -rf dist/data/` 清除残留静态文件
+- `/api/products` 端点认证留给 P2-3（管理后台安全加固）
+
+**连带发现**：`regenerate_js()` 只把 `products.json` 写入 `dist/data/`，从未把 `products.js` 写入 `dist/`。如果 Fuse.js 搜索还在用，早就坏了——幸好已切到 API 方案。
+
+详情：[防泄漏实施方案](IMPLEMENTATION-DATA-LEAK.md)
+
 ---
 
 ## 六、踩过的坑和关键教训
@@ -382,6 +402,15 @@ CREATE TABLE leads (
 - **注册表**：`HKLM\SYSTEM\CurrentControlSet\Control\Nls\CodePage\ACP` = `65001`
 - **临时方案**：`cmd.exe /c "chcp 65001 >nul && <命令>"`
 
+### 6.7 双载体数据泄露（2026-06-11 发现）
+
+- **发现**：产品数据在两个载体中同时暴露：
+  - `dist/data/products.json` — serve.py 写入，浏览器直接访问
+  - `data/products.js` — git 跟踪，含 `var PRODUCTS_DATA = [...]`
+- **根因**：搜索从 Fuse.js 改为 `/api/search` API 后，`products.js` 变成死代码，但 `regenerate_js()` 仍在维护它，且文件仍在 git 中
+- **教训**：改数据访问方式时，要同时清理旧的数据载体。两处泄露（JSON + JS）都在原计划中被遗漏
+- **修复**：删除 `regenerate_js()`、`git rm` products.js、`dist/data/` 不再写入产品 JSON
+
 ---
 
 ## 七、开发约定
@@ -412,6 +441,43 @@ CREATE TABLE leads (
 ### 7.6 开发前确认
 - 收到任务 → 先复述理解 → 单选项弹窗"开始干活" → 用户回车 → 执行
 - CSS 修改后自动 `python build.py`，不询问
+
+
+
+### 7.7 文件编辑安全标准
+
+**背景**：`.git` 目录被沙箱施加了 DENY 写权限，`git add`/`git commit` 不可用。因此用备份机制替代 git 的版本恢复能力。
+
+**规则**：
+
+1. **每次编辑前**必须备份原始文件，不论改动大小：
+   ```powershell
+   Copy-Item docs/IMPROVEMENT-PLAN.md "docs/IMPROVEMENT-PLAN.md.bak.$(Get-Date -Format 'yyyyMMdd-HHmmss')"
+   ```
+
+2. 在备份文件上执行修改，不在原文件上直接动刀：
+   ```powershell
+   Copy-Item target.md target.md.working
+   # 在 target.md.working 上做所有修改
+   # 验证通过后：
+   Move-Item -Force target.md.working target.md
+   ```
+
+3. 修改完成后验证关键结构（标题、条目编号）：
+   ```powershell
+   Get-Content target.md | Select-String "^### P0-"   # 确认所有 P0 项都在
+   ```
+
+4. 验证通过后合并覆盖原文件，保留最近 3 个备份，删掉更早的。
+
+**不当操作示例**（2026-06-11 教训）：
+```powershell
+# ❌ 坏 — 在原文上直接做范围删除，匹配到错误位置，不可恢复
+$lines = Get-Content file.md
+$start = (Select-String "**验收标准**：" file.md)[0].LineNumber  # 匹配了第一个，不是目标
+# ... 删除 $start 到 "**预估**：30 分钟" — 删掉了整个 P0-P1 段
+Set-Content file.md $lines  # 直接覆盖，无法恢复
+```
 
 ---
 
@@ -462,4 +528,4 @@ CREATE TABLE leads (
 
 ---
 
-> 最后更新：2026-06-09
+> 最后更新：2026-06-11

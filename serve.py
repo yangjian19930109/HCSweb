@@ -18,7 +18,6 @@ DATA_DIR = os.path.join(BASE_DIR, 'data')
 ADMIN_DIR = os.path.join(BASE_DIR, 'backend')
 IMAGES_DIR = os.path.join(BASE_DIR, 'images', 'products')
 PRODUCTS_JSON = os.path.join(DATA_DIR, 'products.json')
-PRODUCTS_JS = os.path.join(DATA_DIR, 'products.js')
 MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5MB
 ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.webp'}
 AUDIT_JSON = os.path.join(DATA_DIR, 'audit.json')
@@ -120,90 +119,12 @@ def load_products():
 
 
 def save_products(products):
-    """保存产品到 products.json，重新生成 JS，自动构建"""
+    """保存产品到 products.json，自动构建"""
     os.makedirs(DATA_DIR, exist_ok=True)
     with open(PRODUCTS_JSON, 'w', encoding='utf-8') as f:
         json.dump(products, f, ensure_ascii=False, indent=2)
-    regenerate_js(products)
     # 自动重建静态页面
     auto_build()
-
-
-def regenerate_js(products):
-    """根据产品数据重新生成 products.js（保留尾部搜索函数）"""
-    # 读取现有 products.js，提取尾部（搜索函数部分）
-    tail = ''
-    if os.path.exists(PRODUCTS_JS):
-        with open(PRODUCTS_JS, 'r', encoding='utf-8') as f:
-            content = f.read()
-        # 找到 PRODUCTS_DATA 数组结束的 ];
-        idx = content.index('var PRODUCTS_DATA = [')
-        # 找到匹配的 ];
-        depth = 0
-        in_str = False
-        sc = None
-        i = idx
-        while i < len(content):
-            c = content[i]
-            if in_str:
-                if c == '\\' and i + 1 < len(content):
-                    i += 1
-                elif c == sc:
-                    in_str = False
-            else:
-                if c in ('"', "'"):
-                    in_str = True
-                    sc = c
-                elif c == '[':
-                    depth += 1
-                elif c == ']':
-                    depth -= 1
-                    if depth == 0:
-                        # 找到 ];
-                        j = i + 1
-                        while j < len(content) and content[j] in ' \t':
-                            j += 1
-                        if j < len(content) and content[j] == ';':
-                            tail = content[j + 1:]
-                        else:
-                            tail = content[i + 1:]
-                        break
-            i += 1
-
-    # 生成产品数组
-    lines = ['var PRODUCTS_DATA = [']
-    for p in products:
-        lines.append('    {')
-        lines.append(f'        id: "{p["id"]}",')
-        lines.append(f'        title: "{p["title"]}",')
-        lines.append(f'        cat: "{p["cat"]}",')
-        lines.append(f'        subCat: "{p["subCat"]}",')
-        lines.append(f'        desc: "{p["desc"]}",')
-        lines.append(f'        url: "{p["url"]}",')
-        imgs = p.get('images', []) or []
-        img_str = json.dumps(imgs, ensure_ascii=False)
-        lines.append(f'        images: {img_str},')
-        detail = p.get('detail', '') or ''
-        lines.append(f'        detail: {json.dumps(detail, ensure_ascii=False)},')
-        ptype = p.get('productType', '') or ''
-        lines.append(f'        productType: {json.dumps(ptype, ensure_ascii=False)},')
-        specs = p.get('specs', {}) or {}
-        lines.append(f'        specs: {json.dumps(specs, ensure_ascii=False)},')
-        card = p.get('cardImage', '') or ''
-        lines.append(f'        cardImage: {json.dumps(card, ensure_ascii=False)},')
-        dimgs = p.get('detail_images', []) or []
-        lines.append(f'        detail_images: {json.dumps(dimgs, ensure_ascii=False)}')
-        lines.append('    },')
-    lines.append('];')
-
-    new_js = '\n'.join(lines) + '\n' + tail
-    with open(PRODUCTS_JS, 'w', encoding='utf-8') as f:
-        f.write(new_js)
-    # 同时更新 dist
-    dist_data = os.path.join(DIR, 'data')
-    os.makedirs(dist_data, exist_ok=True)
-    with open(os.path.join(dist_data, 'products.json'), 'w', encoding='utf-8') as f:
-        json.dump(products, f, ensure_ascii=False, indent=2)
 
 
 def log_audit(action, product_id, title, summary=''):
@@ -799,12 +720,6 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
 if __name__ == '__main__':
     _refresh_categories()
-    # 如果 products.js 不存在，从 JSON 生成
-    if not os.path.exists(PRODUCTS_JS):
-        products = load_products()
-        if products:
-            regenerate_js(products)
-            print(f'[OK] Generated products.js from products.json ({len(products)} products)')
 
     os.chdir(DIR)
     server = http.server.HTTPServer(('0.0.0.0', PORT), Handler)

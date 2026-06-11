@@ -124,5 +124,26 @@
     "productId": "1030896",
     "title": "1030896 节气门电机",
     "summary": "更新产品，3张主图，1张详情图"
+  },
+  {
+    "time": "2026-06-11 15:47:22",
+    "action": "add",
+    "productId": "1061418",
+    "title": "1061418EPB执行器MGU电机",
+    "summary": "新增产品，3张主图，2张详情图"
+  },
+  {
+    "time": "2026-06-11 15:49:20",
+    "action": "delete",
+    "productId": "1061418",
+    "title": "1061418EPB执行器MGU电机",
+    "summary": "删除产品"
+  },
+  {
+    "time": "2026-06-11 15:56:28",
+    "action": "add",
+    "productId": "1061418",
+    "title": "1061418EPB执行器MGU电机",
+    "summary": "新增产品，3张主图，2张详情图"
   }
 ]
