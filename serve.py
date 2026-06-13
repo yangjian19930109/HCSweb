@@ -8,6 +8,7 @@ import re
 import smtplib
 import subprocess
 import uuid
+import threading
 from email.mime.text import MIMEText
 from datetime import datetime
 
@@ -123,8 +124,8 @@ def save_products(products):
     os.makedirs(DATA_DIR, exist_ok=True)
     with open(PRODUCTS_JSON, 'w', encoding='utf-8') as f:
         json.dump(products, f, ensure_ascii=False, indent=2)
-    # 自动重建静态页面
-    auto_build()
+    # 自动重建静态页面（后台线程，不阻塞请求响应）
+    threading.Thread(target=auto_build, daemon=True).start()
 
 
 def log_audit(action, product_id, title, summary=''):
