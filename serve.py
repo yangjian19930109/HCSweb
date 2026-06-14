@@ -204,7 +204,7 @@ def save_uploaded_image(file_data, orig_filename, product_id):
     if ext not in ALLOWED_EXTENSIONS:
         ext = '.jpg'
     safe_name = f"{product_id}_{uuid.uuid4().hex[:8]}{ext}"
-    rel_path = f"images/products/{safe_name}"
+    rel_path = f"images/products/{product_id}/{safe_name}"
 
     # 保存到项目目录
     proj_path = os.path.join(BASE_DIR, rel_path)
