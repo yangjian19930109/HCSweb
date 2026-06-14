@@ -459,15 +459,44 @@ function handleCardImgSelect() {
   reader.onload = function(e) {
     var img = new Image();
     img.onload = function() {
-      // 保持原图比例，四周留 15% 边距（基于短边）
-      var padding = Math.round(Math.min(img.naturalWidth, img.naturalHeight) * 0.15);
+      // Step 1: 绘制到临时 canvas 获取像素数据
+      var tmpCanvas = document.createElement('canvas');
+      tmpCanvas.width = img.naturalWidth;
+      tmpCanvas.height = img.naturalHeight;
+      var tmpCtx = tmpCanvas.getContext('2d');
+      tmpCtx.drawImage(img, 0, 0);
+      var imageData = tmpCtx.getImageData(0, 0, tmpCanvas.width, tmpCanvas.height);
+      var data = imageData.data;
+      var w = tmpCanvas.width, h = tmpCanvas.height;
+
+      // Step 2: 采样扫描非透明像素边界
+      var stride = Math.max(1, Math.floor(Math.min(w, h) / 400));
+      var rmin = h, rmax = 0, cmin = w, cmax = 0;
+      for (var y = 0; y < h; y += stride) {
+        for (var x = 0; x < w; x += stride) {
+          if (data[(y * w + x) * 4 + 3] > 0) {
+            if (y < rmin) rmin = y;
+            if (y > rmax) rmax = y;
+            if (x < cmin) cmin = x;
+            if (x > cmax) cmax = x;
+          }
+        }
+      }
+
+      // Step 3: 计算正方形边长（留 10% 边距）
+      var contentW = cmax - cmin + 1;
+      var contentH = rmax - rmin + 1;
+      var margin = Math.round(Math.max(contentW, contentH) * 0.10);
+      var side = Math.max(contentW, contentH) + margin * 2;
+
+      // Step 4: 提取内容居中绘制到正方形透明画布（不裁剪，无偏移）
       var canvas = document.createElement('canvas');
-      canvas.width = img.naturalWidth + padding * 2;
-      canvas.height = img.naturalHeight + padding * 2;
+      canvas.width = side;
+      canvas.height = side;
       var ctx = canvas.getContext('2d');
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, padding, padding, img.naturalWidth, img.naturalHeight);
+      var dx = Math.round((side - contentW) / 2);
+      var dy = Math.round((side - contentH) / 2);
+      ctx.drawImage(tmpCanvas, cmin, rmin, contentW, contentH, dx, dy, contentW, contentH);
       canvas.toBlob(function(blob) {
         var newName = 'card_' + file.name.replace(/\.[^.]+$/, '.png');
         if (!newName.endsWith('.png')) newName += '.png';
@@ -479,8 +508,7 @@ function handleCardImgSelect() {
         };
         r.readAsDataURL(processedFile);
       }, 'image/png');
-    };
-    img.src = e.target.result;
+    };    img.src = e.target.result;
   };
   reader.readAsDataURL(file);
   document.getElementById('cardImgInput').value = '';

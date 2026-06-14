@@ -42,6 +42,59 @@
 - **删除重复记忆**：`commit-permission-rule.md`、`commit-without-confirm.md`（内容重复）
 - **memory 精简**：保留 4 个用户偏好文件
 
+### 06-14：卡片图 Canvas 处理三轮迭代 + 最终方案
+
+**背景**：CSS 图片区占比从 42% 调大到 71.9%，同时 1061418 新上传卡片图出现三个问题：背景不透明变纯白、电机过度放大、主体显示不全。
+
+**第一轮 — 定位原罪**（`handleCardImgSelect()` 旧代码两处破坏）：
+
+| 操作 | 代码 | 后果 |
+|------|------|------|
+| 白底填充 | `ctx.fillStyle='#ffffff'; fillRect(0,0,w,h)` | PNG 透明通道全毁，alpha 变 255 |
+| 15% 留白 | `padding = min(w,h)*0.15; canvas 放大 + drawImage 居中` | 电机在画面中占比缩小 |
+
+**像素证据**：旧卡片图四角 `(0,0,0,0)` 透明，新上传四角 `(255,255,255,255)` 不透明白。
+
+**第二轮 — 去掉破坏 + 自动裁边**：
+- 去掉白底填充和 15% 留白
+- 新增采样扫描透明边界（stride = min(w,h)/400）
+- 裁掉透明留白后输出正方形（10% 边距）
+
+**第三轮 — centering bug**：裁剪方案用 `cropX/cropY` + `Math.min(cropY, h-side)` 边界钳制，当源图电机偏下时，钳制将正方形贴底 → 电机偏下。1031001 实测：上留白 64%，下留白 0%。
+
+**终版 — 提取内容 + 居中绘制**：
+```javascript
+// 不再裁剪，改为提取内容区域居中绘制到新画布
+var dx = Math.round((side - contentW) / 2);
+var dy = Math.round((side - contentH) / 2);
+ctx.drawImage(tmpCanvas, cmin, rmin, contentW, contentH, dx, dy, contentW, contentH);
+```
+无论源图内容在什么位置，输出始终完美居中。
+
+**经验教训**：
+
+| # | 教训 | 详情 |
+|---|------|------|
+| 1 | 裁剪+钳制边界方案在边缘情况必偏 | 内容偏上/下/左/右时，`Math.min(crop, w-side)` 会把正方形推向对侧。提取+居中绘制不受源图内容位置影响 |
+| 2 | 浏览器缓存 JS 导致"修复无效"假象 | 服务器读磁盘最新文件，但浏览器缓存旧 JS。多进程残留 + 无 Cache-Control 头加剧此问题。解决：硬刷新 + 杀掉旧进程 |
+| 3 | 源图选错导致"反复修复同一问题" | 用户反复上传已被旧代码损坏的白底图，Canvas 正确保留了它。视觉上"没修好"是因为源图本身就是坏的 |
+| 4 | Canvas 透明保留 = 不 fillRect 即可 | Canvas 初始全透明 `(0,0,0,0)`，drawImage 保留 alpha。`toBlob('image/png')` 输出带 alpha 的 PNG。不需要任何额外操作 |
+
+**处理流水线终态**：
+```
+用户选择卡片图
+  → 绘制到临时 Canvas，采样扫描非透明边界
+  → 提取内容区 (cmin, rmin, contentW, contentH)
+  → 计算正方形边长 = max(contentW, contentH) + 10% 边距
+  → 居中绘制到新透明 Canvas
+  → toBlob('image/png') 输出
+```
+
+### 06-14：未引用图片清理
+
+- 18 个文件未被 `products.json` 引用，移至 `images/unused/`，共 ~20 MB
+- dist 同步清理（build.py 重拷 images/）
+
 ### 06-13：图片资源瘦身
 
 - **总览**：`images/` + `dist/images/` 各 78 MB，共 ~156 MB
@@ -232,6 +285,21 @@
 - **选择**：Card 图标准化用 Canvas（浏览器端），不走 Python PIL/Pillow（服务端）
 - **教训**：能用浏览器原生 API 解决的问题，不要引入服务端依赖。`<canvas>` + `toBlob()` + `new File()` 这条链路覆盖了图片裁剪/缩放/格式转换的全部需求
 
+### 坑 10：Canvas fillRect 会杀死 PNG 透明度（2026-06-14）
+- **现象**：上传透明 PNG，结果背景变成纯白
+- **根因**：`ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,w,h)` 把整个画布涂成不透明白，再 `drawImage` 时透明区已被覆盖
+- **教训**：Canvas 初始状态全透明 `(0,0,0,0)`，不需要任何填充。`toBlob('image/png')` 天然保留 alpha 通道。如果源图有透明背景，不要 fillRect
+
+### 坑 11：裁剪 + 边界钳制在边缘情况必然偏位（2026-06-14）
+- **现象**：自动裁边后电机偏下，上留白 64%、下留白 0%
+- **根因**：`cropY = Math.min(centerY - side/2, h - side)` 在内容靠近源图边缘时把正方形推向对侧
+- **教训**：提取内容区域 + 居中绘制到新画布（`drawImage(src, sx, sy, sw, sh, dx, dy, dw, dh)`）不受源图内容位置影响，比裁剪方案稳健
+
+### 坑 12：浏览器缓存 JS 导致"修复无效"假象（2026-06-14）
+- **现象**：改了 `admin.html`，上传仍走旧逻辑
+- **根因**：① 浏览器缓存旧 JS（无 Cache-Control 头）② 多个 Python 进程残留监听 8080（Windows SO_REUSEADDR），请求可能路由到旧进程
+- **教训**：改前端 JS 后，先 `taskkill` 杀光旧进程，重启服务，再硬刷新页面（Ctrl+F5）
+
 ---
 
-> 最后更新：2026-06-13
+> 最后更新：2026-06-14

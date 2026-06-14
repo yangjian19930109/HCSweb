@@ -199,6 +199,13 @@ curl -s http://localhost:8080/ | grep "include"  # 验证：不应出现 <!-- #i
 }
 ```
 
+**cardImage 卡片图说明**：
+- 管理后台上传时 `handleCardImgSelect()` 自动处理
+- 流程：采样扫描透明边界 → 提取内容区 → 居中绘制到正方形透明 Canvas → 输出 PNG
+- 参数：以 max(内容宽, 内容高) × 1.10 为边长，内容居中
+- 目的：不同产品卡片图的电机视觉大小趋近一致，不需要手动裁图
+- **注意**：Canvas 初始全透明，不要 fillRect，否则透明背景全毁（见坑 10）
+
 **url 自动生成规则**（`serve.py` 中 `generate_url()`）：
 - 有 `detail` 文字 OR 有 `detail_images` → `product-{id}.html`
 - 都没有 → `products.html#tab-motor`
@@ -308,9 +315,14 @@ CREATE TABLE leads (
 - 收到任务 → 先复述理解 → 单选项弹窗"开始干活" → 用户回车 → 执行
 - CSS 修改后自动 `python build.py`，不询问
 
+### 7.7 修改 admin.html 后
+- `admin.html` 直接由 serve.py 从磁盘读取，不需要 build
+- 但浏览器可能缓存旧 JS（无 Cache-Control 头）→ 必须 Ctrl+F5 硬刷新
+- 多进程残留会导致请求路由到旧进程 → 改完后 `taskkill /F /PID <pid>` 杀光旧进程，重启 serve.py
 
 
-### 7.7 文件编辑安全标准
+
+### 7.8 文件编辑安全标准
 
 **背景**：`.git` 目录被沙箱施加了 DENY 写权限，`git add`/`git commit` 不可用。因此用备份机制替代 git 的版本恢复能力。
 
@@ -636,4 +648,4 @@ A: 需要确认当前服务器环境。如果是轻量服务器 + 已有的 Ngin
 
 ---
 
-> 最后更新：2026-06-11
+> 最后更新：2026-06-14

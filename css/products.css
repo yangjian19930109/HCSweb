@@ -191,7 +191,7 @@
 }
 
 .product-card-img {
-    flex: 0 0 42%;
+    flex: 0 0 71.9%;
     min-height: 0;
     background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
     display: flex;
@@ -223,7 +223,7 @@
 }
 
 .product-card-body {
-    flex: 0 0 58%;
+    flex: 0 0 28.1%;
     min-height: 0;
     overflow: hidden;
     padding: 18px;
