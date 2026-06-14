@@ -7,13 +7,13 @@
     "desc": "用于Jeep自由光、大指挥官分动箱PTU执行器电机。采用高可靠性设计，满足严苛的汽车工况要求，响应速度快，扭矩输出稳定。",
     "url": "product-1030837.html",
     "images": [
-      "images/products/1030837/1030837_main1.png",
-      "images/products/1030837/1030837_main2.jpg",
-      "images/products/1030837/1030837_main3.jpg"
+      "images/products/车用马达/其他马达/1030837/1030837_main1.png",
+      "images/products/车用马达/其他马达/1030837/1030837_main2.jpg",
+      "images/products/车用马达/其他马达/1030837/1030837_main3.jpg"
     ],
     "detail": "",
     "detail_images": [
-      "images/products/1030837/1030837_detail1.png"
+      "images/products/车用马达/其他马达/1030837/1030837_detail1.png"
     ],
     "productType": "12V有刷直流",
     "specs": {
@@ -22,7 +22,7 @@
       "产品类型": "12V有刷直流",
       "品质标准": "原厂配套品质"
     },
-    "cardImage": "images/products/1030837/1030837_card.png"
+    "cardImage": "images/products/车用马达/其他马达/1030837/1030837_card.png"
   },
   {
     "id": "1030896",
@@ -32,13 +32,13 @@
     "desc": "用于奥迪、宝马、大众、路虎等高端品牌节气门总成电机。采用高精度位置反馈设计，响应速度快，控制精准。",
     "url": "product-1030896.html",
     "images": [
-      "images/products/1030896/1030896_main1.png",
-      "images/products/1030896/1030896_main2.png",
-      "images/products/1030896/1030896_main3.png"
+      "images/products/车用马达/节气门马达/1030896/1030896_main1.png",
+      "images/products/车用马达/节气门马达/1030896/1030896_main2.png",
+      "images/products/车用马达/节气门马达/1030896/1030896_main3.png"
     ],
     "detail": "",
     "detail_images": [
-      "images/products/1030896/1030896_detail1.png"
+      "images/products/车用马达/节气门马达/1030896/1030896_detail1.png"
     ],
     "productType": "12V有刷直流",
     "specs": {
@@ -47,7 +47,7 @@
       "产品类型": "12V有刷直流",
       "品质标准": "原厂配套品质"
     },
-    "cardImage": "images/products/1030896/1030896_card.png"
+    "cardImage": "images/products/车用马达/节气门马达/1030896/1030896_card.png"
   },
   {
     "id": "1031001",
@@ -57,14 +57,14 @@
     "desc": "涡轮增压执行器电机，用于大通、长城等品牌车涡轮增压器，供给海拉等知名总成商。高温耐受，精确行程控制。",
     "url": "product-1031001.html",
     "images": [
-      "images/products/1031001/1031001_main1.png",
-      "images/products/1031001/1031001_main2.png",
-      "images/products/1031001/1031001_main3.png"
+      "images/products/车用马达/涡轮增压执行器马达/1031001/1031001_main1.png",
+      "images/products/车用马达/涡轮增压执行器马达/1031001/1031001_main2.png",
+      "images/products/车用马达/涡轮增压执行器马达/1031001/1031001_main3.png"
     ],
     "detail": "",
     "detail_images": [
-      "images/products/1031001/1031001_detail1.png",
-      "images/products/1031001/1031001_detail2.jpg"
+      "images/products/车用马达/涡轮增压执行器马达/1031001/1031001_detail1.png",
+      "images/products/车用马达/涡轮增压执行器马达/1031001/1031001_detail2.jpg"
     ],
     "productType": "12V有刷直流",
     "specs": {
@@ -73,7 +73,7 @@
       "产品类型": "12V有刷直流",
       "品质标准": "原厂配套品质"
     },
-    "cardImage": "images/products/1031001/1031001_card.png"
+    "cardImage": "images/products/车用马达/涡轮增压执行器马达/1031001/1031001_card.png"
   },
   {
     "id": "1061418",
@@ -83,19 +83,19 @@
     "desc": "用于奥迪、宝马、大众、路虎等高端品牌EPB执行器MGU电机电机。采用高精度铜斜齿大扭矩设计，响应速度快，控制精准。",
     "url": "product-1061418.html",
     "images": [
-      "images/products/1061418/1061418_main1.png",
-      "images/products/1061418/1061418_main2.png",
-      "images/products/1061418/1061418_main3.png"
+      "images/products/车用马达/EPB马达/1061418/1061418_main1.png",
+      "images/products/车用马达/EPB马达/1061418/1061418_main2.png",
+      "images/products/车用马达/EPB马达/1061418/1061418_main3.png"
     ],
     "detail": "",
     "detail_images": [
-      "images/products/1061418/1061418_detail1.jpg",
-      "images/products/1061418/1061418_detail2.jpg"
+      "images/products/车用马达/EPB马达/1061418/1061418_detail1.jpg",
+      "images/products/车用马达/EPB马达/1061418/1061418_detail2.jpg"
     ],
     "productType": "12V有刷直流",
     "specs": {
       "产品类型": "12V有刷直流"
     },
-    "cardImage": "images/products/1061418/1061418_card.png"
+    "cardImage": "images/products/车用马达/EPB马达/1061418/1061418_card.png"
   }
 ]

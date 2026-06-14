@@ -198,8 +198,8 @@ def parse_multipart(body, boundary):
     return fields, files
 
 
-def save_uploaded_image(file_data, orig_filename, product_id, suffix=None):
-    """保存上传的图片到 images/products/{pid}/，返回相对路径。
+def save_uploaded_image(file_data, orig_filename, product_id, suffix=None, cat=None, subCat=None):
+    """保存上传的图片到 images/products/{cat}/{subCat}/{pid}/，返回相对路径。
 
     如果 suffix 指定，文件名 = {pid}_{suffix}.{ext}
     否则回退 UUID 命名 = {pid}_{8位uuid}.{ext}
@@ -211,7 +211,10 @@ def save_uploaded_image(file_data, orig_filename, product_id, suffix=None):
         safe_name = f"{product_id}_{suffix}{ext}"
     else:
         safe_name = f"{product_id}_{uuid.uuid4().hex[:8]}{ext}"
-    rel_path = f"images/products/{product_id}/{safe_name}"
+    if cat and subCat:
+        rel_path = f"images/products/{cat}/{subCat}/{product_id}/{safe_name}"
+    else:
+        rel_path = f"images/products/{product_id}/{safe_name}"
 
     # 保存到项目目录
     proj_path = os.path.join(BASE_DIR, rel_path)
@@ -541,7 +544,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     suffix = f'main{len(image_paths)+1}'
                 else:
                     suffix = None
-                path = save_uploaded_image(f['data'], f['filename'], pid, suffix)
+                path = save_uploaded_image(f['data'], f['filename'], pid, suffix, cat, subCat)
                 if f['name'] == 'card_image':
                     card_image = path
                 elif f['name'].startswith('detail_'):
@@ -694,7 +697,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     suffix = f'main{len(image_paths)+1}'
                 else:
                     suffix = None
-                path = save_uploaded_image(f['data'], f['filename'], pid, suffix)
+                path = save_uploaded_image(f['data'], f['filename'], pid, suffix, cat, subCat)
                 if f['name'] == 'card_image':
                     card_image = path
                 elif f['name'].startswith('detail_'):

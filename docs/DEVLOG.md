@@ -95,15 +95,15 @@ ctx.drawImage(tmpCanvas, cmin, rmin, contentW, contentH, dx, dy, contentW, conte
 - 18 个文件未被 `products.json` 引用，移至 `images/unused/`，共 ~20 MB
 - dist 同步清理（build.py 重拷 images/）
 
-### 6月14日：图片归类整理 — 分目录 + 统一命名
+### 6月14日：图片归类整理 — 三级分类目录 + 统一命名
 
-- **分目录**：`images/products/` 下每个产品独立子目录（`1030837/`、`1030896/` 等），共 22 个文件归入 4 个目录
+- **目录结构**：`images/products/{一级分类}/{二级分类}/{产品ID}/`
+  - 全部分类预先建好目录（3 大类 9 子类），空目录 `.gitkeep` 占位
+  - 现有 4 个产品归入 `车用马达/` 下的对应子类
 - **统一命名**：`{产品ID}_{位置}.{扩展名}`
-  - `card` → 卡片图（如 `1031001_card.png`）
-  - `main1/2/3` → 主图（如 `1031001_main1.png`）
-  - `detail1/2` → 详情图（如 `1031001_detail1.png`）
-- **serve.py 适配**：`save_uploaded_image()` 新增 `suffix` 参数，上传时根据字段名自动生成规范文件名。同名覆盖，不会积压旧图
-- **build.py**：无需修改，`shutil.copytree` 递归复制整个 `images/` 目录，子目录结构自动同步到 dist
+  - `card` → 卡片图 / `main1/2/3` → 主图 / `detail1/2` → 详情图
+- **serve.py 适配**：`save_uploaded_image()` 新增 `suffix` + `cat` + `subCat` 参数，上传自动归入对应三级目录并使用规范文件名。同名覆盖不积压
+- **build.py**：无需修改，`shutil.copytree` 递归复制，子目录结构自动同步
 
 ### 6月13日：图片资源瘦身
 
