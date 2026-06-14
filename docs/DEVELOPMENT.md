@@ -1,7 +1,7 @@
 # DEVELOPMENT.md — 华创生电机官网开发文档
 
 > **用途**：换电脑后用 Claude Code 打开项目时，读取本文档即可无缝衔接开发。
-> **维护规则**：每次完成有效开发或踩坑后，把关键发现更新到对应章节。本文档是活的，不是一次性的。
+> **维护规则**：架构变化和约定更新到本文档。开发工作记录和踩坑追加到 [DEVLOG.md](DEVLOG.md)。本文档是活的，不是一次性的。
 
 ---
 
@@ -12,9 +12,10 @@
 - **类型**：静态 HTML 网站 + 轻量后端
 - **前端**：原生 HTML/CSS/JS，无框架，赛博朋克暗色主题（Orbitron + Share Tech Mono 字体）
 - **构建**：Python `build.py` 将共享组件（nav/sidebar/footer）内联注入 HTML，CSS/JS 也内联化，输出到 `dist/`
-- **开发服务器**：`serve.py`（Python HTTP 服务器，含表单/产品/分类/搜索 API）
-- **后端 API**：FastAPI（`backend/main.py`，含产品 CRUD、MySQL 数据库）
-- **部署目标**：静态站点（`dist/` 目录）+ 可选 FastAPI 后端
+- **开发服务器**：`serve.py`（Python HTTP 服务器，含表单/产品/分类/搜索 API，JSON 文件存储）
+- **后端 API（保留参考）**：FastAPI（`backend/main.py`，含产品 CRUD、MySQL 数据库），**当前暂不使用**
+- **部署目标**：静态站点（`dist/` 目录）+ serve.py 后端（Nginx 反代）
+- **历史记录**：已完成的开发工作和踩坑见 [DEVLOG.md](DEVLOG.md)
 
 ---
 
@@ -274,190 +275,11 @@ CREATE TABLE leads (
 
 ---
 
-## 五、已完成的重点工作
-
-### 5.1 组件化重构（2026-05-31）
-- CSS 从 7 个 HTML 内联重复 → 6 个独立 CSS 文件
-- JS 从内联重复 → 4 个独立 JS 文件（IIFE）
-- HTML 共享部分（nav/sidebar/footer）→ `inc/*.html`
-- `build.py` 增强支持占位符替换和产品卡片动态生成
-- **踩坑**：banner HTML 结构必须精确嵌套（`banner-content` 在 `banner-dark-bg` 内部），委托 subagent 容易搞错层级
-
-### 5.2 CSS/JS 内联化（构建优化）
-- 从 `<link>`/`<script src>` 改为直接内联到 `<style>`/`<script>` 标签
-- HTTP 请求减少 70%+
-- 构建后不需复制 css/js 目录到 dist
-
-### 5.3 字体自托管
-- Google Fonts（Orbitron + Share Tech Mono）国内不可用
-- 下载 TTF → `fonts/` → `@font-face` → `build.py` 复制到 `dist/fonts/`
-- CSS 字体回退链：`"Orbitron", "Microsoft YaHei", sans-serif` 和 `"Share Tech Mono", "Consolas", "Courier New", monospace`
-- 共 6 个文件 ~130KB
-
-### 5.4 Banner 六边形产品网格
-- CSS container queries 自适应正方形容器
-- 正六边形公式：`clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)`
-- w/h = 2/√3 ≈ 1.155，蜂窝步长：水平 0.75w，垂直 0.5h
-- **核心坑**：缝隙 = 两倍单边缩量。基础尺寸 = 贴合尺寸 × (1 - (scale-1)/2)
-- 移动端和桌面端用同一套百分比，container query 自动适配
-
-### 5.5 Banner 3-Slide 轮播系统
-- 3 个 slide 各有不同的动画主题（齿轮/磁感线SVG/能量波）
-- JS 手动轮播 + 悬停暂停 + 触摸滑动
-- **Slide 2 磁感线修复**：SVG 不能放在 `width:0; height:0` 容器内
-
-### 5.6 导航下划线滚动监听
-- **核心教训**：先查 HTML 结构再写匹配逻辑（`section#home` 存在但导航无 `href="#home"`）
-- 不要用 fallback 掩盖问题，找到根因再改
-- 精确匹配优先，特殊情况显式处理
-
-### 5.7 管理后台（serve.py 内置）
-- `/admin` — 产品 CRUD + 图片多选拖拽上传 + 分类编辑 + 审计日志
-- `POST /api/contact` — 表单提交 + SMTP 邮件通知
-- `POST /api/categories/save` — 分类配置持久化
-- 自动 build：产品数据变更后自动运行 `build.py`
-- 操作审计：自动记录增/删/改到 `audit.json`（保留最近 500 条）
-
-### 5.8 产品详情页模板化
-- `product-detail-template.html` + `{{占位符}}` → build.py 批量生成
-- 支持：主图切换、缩略图导航、规格参数表、详情图展示
-- 卡片图 `cardImage` 优先于 `images[0]`，无图时用 emoji 占位
-
-### 5.9 编码和环境修复
-- Windows GBK → `PYTHONIOENCODING=utf-8` 解决中文/emoji 乱码
-- Python App Execution Alias 拦截 `python` 命令 → 删除 `WindowsApps` 下的快捷方式
-- 多进程端口冲突 → `netstat` + `taskkill` 排查
-- **系统级 UTF-8**：注册表 ACP 改为 65001，重启后 cmd/PowerShell/Git Bash 统一 UTF-8
-
-### 5.10 SEM 营销方案设计（2026-06-07~08）
-
-完成了完整的广告投流方案设计和竞品分析：
-
-**竞品分析**：
-- **永佳承（深圳）**：8 个 B2B 平台矩阵（医药网库、世环通、黄页88、中国制造网、供应商网、爱企查、1688、爱普搜汽车），纯自然 SEO，无付费广告。Bing SEO 强但百度弱。
-- **博泰克（苏州）**：代理 13 个品牌，有英文站。"Saia Burgess"系关键词强。百度几乎无存在感，无付费广告。
-- 两个竞品共通的死穴：无 HTTPS（部分）、无追踪代码、无专用落地页。
-
-**方案产出**：
-- [SEM 营销系统设计方案](superpowers/specs/2026-06-07-sem-marketing-system-design.md)（11 章）
-- [竞品排名追踪基线](superpowers/specs/2026-06-07-competitor-ranking-tracker.md)（Bing 8 词 + 百度 7 词）
-
-**关键决策**：
-- 百度 50% + Bing 50% 双引擎，控制变量对比效果
-- 微动开关主力 + 车用马达辅推 + 品牌防守
-- 在线客服：试投期百度商桥（免费），放量期备选美洽/自建
-
-### 5.11 产品数据防泄漏（2026-06-11）
-
-审计发现产品数据在三个载体中暴露：
-
-| 载体 | 路径 | 泄露方式 |
-|------|------|----------|
-| `products.json` | `dist/data/products.json` | serve.py 的 `regenerate_js()` 写入，浏览器直接访问 |
-| `products.js` | `data/products.js`（git 跟踪） | 含完整 `var PRODUCTS_DATA = [...]`，仓库历史永久泄露 |
-| `/api/products` | HTTP 端点 | 无认证，脚本可批量抓取（后续加 Basic Auth） |
-
-**修复**：
-- 删除 `regenerate_js()` 函数（搜索已切到 `/api/search` API，此函数已死）
-- `git rm` + `.gitignore` 移除 `products.js`
-- `rm -rf dist/data/` 清除残留静态文件
-- `/api/products` 端点认证留给 P2-3（管理后台安全加固）
-
-**连带发现**：`regenerate_js()` 只把 `products.json` 写入 `dist/data/`，从未把 `products.js` 写入 `dist/`。如果 Fuse.js 搜索还在用，早就坏了——幸好已切到 API 方案。
-
-详情：[防泄漏实施方案](IMPLEMENTATION-DATA-LEAK.md)
-
-### 5.12 图片拖拽排序 + 卡片图裁剪（2026-06-11）
-
-**拖拽排序修复**（3 个 bug + 1 个 Chromium 缺陷）：
-
-| Bug | 现象 | 根因 | 修复 |
-|-----|------|------|------|
-| 跨网格污染 | 上传详情图刷新主网格 | `addFilesToGrid()` 硬编码 `mainImgGrid` | 改为调用侧传 `gridId` 参数 |
-| 跨网格拖放 | 主图拖到详情网格破坏数组 | `ondrop` 无校验 | 加 `parentElement` 同网格检查 |
-| 部分图片拖不动 | 产品间表现不一致 | **双层根因**：① `<img>` 原生拖拽拦截 `<div>` dragstart ② Chromium 对 `naturalWidth ≥ 2686px` 的图片预览生成失败 | `img.draggable = false` + `setDragImage(1×1透明GIF)` |
-| 移动端不可用 | 无触摸事件 | `touchstart/move/end` 未实现 | 追加触摸拖拽逻辑 |
-
-**根因追查教训**：最初的"原生拖拽拦截"假设解释不了为什么小图可拖、大图不可拖。Playwright 测试发现分界线：≤1872px 可拖，≥2686px 不可拖。根因不止一个，是两层叠加。
-
-**卡片图裁剪**：`object-fit: contain` → `cover`，`css/products.css` + `build.py` 各改 1 行。
-
-详情：[IMAGE-IMPROVEMENT-PLAN.md](IMAGE-IMPROVEMENT-PLAN.md)
-
-### 5.13 卡片图上传自动标准化（2026-06-11）
-
-**问题**：`object-fit: cover` 后各产品卡片图填充程度不一致——1030896 刚好，1030837/1061418 太满。
-
-**根因**：不同产品上传的卡片图比例各异（1.67~2.20），`cover` 对非匹配比例的图片裁剪过狠。
-
-**方案**：上传时浏览器端 Canvas 自动处理——保持原比例 + 四周 15% 留白 + 白色背景。处理后效果等价于"给图片加了个相框"，任意比例上传后视觉统一。
-
-**关键决策**：画布保持原图比例（非正方形）。理由是参照标准 1030896 本身是 2.20:1 横图——若强制正方形，参照标准会被自己否定。
-
-详情：[卡片图片统一标准方案](卡片图片统一标准方案.md)
+> **历史工作记录**：已完成的开发工作和踩坑记录移至 [DEVLOG.md](DEVLOG.md)。ARCHIVE.md 记录已废弃的功能。
 
 ---
 
-## 六、踩过的坑和关键教训
-
-### 6.1 不要假设数据异常
-- 发现 `products.json` 从 9 个变 3 个 → 先问用户，不要自行判定为"数据丢失"并恢复
-- **原则**：看到的"异常"可能是用户有意为之。用 AskUserQuestion 确认后再动手
-
-### 6.2 导航居中不要用绝对定位
-- 屏幕变窄时 logo 和搜索会侵入居中区域
-- 正确方案：保持原始 flex 布局，只在窄屏时缩小间距和字号
-
-### 6.3 从 git 恢复样式
-- 重构时样式被改坏 → `git show <commit>^:index.html` 找回原始版本
-- `sed` 提取可能截断嵌套 `}`，大文件用 `sed -n '/start/,/end/p'` + 上下文验证
-
-### 6.4 Subagent 使用边界
-- 复杂 HTML 结构修改（如 banner 嵌套）不要委托 subagent
-- CSS 定位 bug 亲自改
-- 新文件创建可以委托
-
-### 6.5 调试检查清单
-1. F12 Computed 面板看实际 px 值
-2. element.style 临时测试
-3. Console 查 `window.innerWidth`
-4. 验证 dist/ 文件确认 build.py 是否生效
-5. URL 加 `?v=N` 绕过缓存
-6. `pkill -f "http.server"` 重启服务器
-
-### 6.6 Windows cmd 中文乱码
-- **根因**：cmd.exe 默认 GBK（代码页 936），Git Bash 用 UTF-8，转换时乱码
-- **根治**：`控制面板 → 区域 → 管理 → 更改系统区域设置 → 勾选 "Beta: 使用 Unicode UTF-8" → 重启`
-- **注册表**：`HKLM\SYSTEM\CurrentControlSet\Control\Nls\CodePage\ACP` = `65001`
-- **临时方案**：`cmd.exe /c "chcp 65001 >nul && <命令>"`
-
-### 6.7 双载体数据泄露（2026-06-11 发现）
-
-- **发现**：产品数据在两个载体中同时暴露：
-  - `dist/data/products.json` — serve.py 写入，浏览器直接访问
-  - `data/products.js` — git 跟踪，含 `var PRODUCTS_DATA = [...]`
-- **根因**：搜索从 Fuse.js 改为 `/api/search` API 后，`products.js` 变成死代码，但 `regenerate_js()` 仍在维护它，且文件仍在 git 中
-- **教训**：改数据访问方式时，要同时清理旧的数据载体。两处泄露（JSON + JS）都在原计划中被遗漏
-- **修复**：删除 `regenerate_js()`、`git rm` products.js、`dist/data/` 不再写入产品 JSON
-
-### 6.8 拖拽不一致的根因不是单层的（2026-06-11 发现）
-
-- **现象**：同一管理后台的图片网格，部分图片可拖拽、部分不可。产品间表现不一致
-- **最初判定**：`<img>` 原生拖拽拦截了 `<div>` 的 dragstart
-- **不成立的原因**：如果仅此一个原因，小图也应该被拦截——但小图能拖
-- **Playwright 测试揭示**：`naturalWidth ≤ 1872px` 的图可拖，`≥ 2686px` 的图不可拖。分界线与 `naturalWidth` 强相关
-- **真正根因**：**双层叠加**——① `<img>` 原生拖拽（影响所有图）② Chromium 对大分辨率图片的拖拽预览生成失败（影响大图，静默取消 drag）
-- **教训**：表现不一致 ≠ 根因只有一个。当一个假设解释不了所有现象时，用自动化测试（Playwright）批量检查 DOM 属性差异，而不是凭一条猜测反复试。`naturalWidth` 这个属性肉眼看不到，但测试能读到
-
-### 6.9 浏览器端处理比服务端依赖更轻量（2026-06-11 卡片图方案）
-
-- **选择**：Card 图标准化用 Canvas（浏览器端），不走 Python PIL/Pillow（服务端）
-- **理由**：Canvas 不需要安装任何依赖，用户浏览器就是运行环境。引入 PIL 意味着每台新电脑都要 `pip install Pillow`，部署服务器也要装
-- **教训**：能用浏览器原生 API 解决的问题，不要引入服务端依赖。`<canvas>` + `toBlob()` + `new File()` 这条链路覆盖了图片裁剪/缩放/格式转换的全部需求
-
----
-
-## 七、开发约定
+## 五、开发约定
 
 ### 7.1 编码
 - 所有文件 UTF-8
@@ -525,10 +347,10 @@ Set-Content file.md $lines  # 直接覆盖，无法恢复
 
 ---
 
-## 八、待办事项
+## 六、待办事项
 
 ### 🔴 P0 — 上线前
-1. 网站部署（见 [第十章·部署方案](#十部署方案)）：确认服务器 → 环境安装 → 代码部署 → Nginx 配置 → 上线
+1. 网站部署（见 [第七章·部署方案](#七部署方案)）：确认服务器 → 环境安装 → 代码部署 → Nginx 配置 → 上线
 2. 全站字号加大（客户群体偏年长）
 3. 移动端适配优化
 4. 404/错误页面
@@ -558,7 +380,7 @@ Set-Content file.md $lines  # 直接覆盖，无法恢复
 
 ---
 
-## 十、部署方案
+## 七、部署方案
 
 > **当前状态**：域名 `hcsmotor.cn` 已解析到阿里云轻量应用服务器，HTTPS 已配置。原万网智能建站模板需要替换为 HCSweb 项目代码。
 > **目标**：将 HCSweb 项目部署上线，包含静态站点 + FastAPI 后端 + MySQL。
@@ -801,15 +623,14 @@ A: 需要确认当前服务器环境。如果是轻量服务器 + 已有的 Ngin
 
 ---
 
-## 十一、如何更新本文档
+## 八、如何更新本文档
 
 每次完成有效的开发工作或踩坑后，把关键信息追加到对应章节：
 
-- **新功能** → 添加到第五章"已完成的重点工作"
-- **新坑** → 添加到第六章"踩过的坑和关键教训"
+- **新功能 / 新坑 / 经验教训** → 追加到 [DEVLOG.md](DEVLOG.md)，按日期记录
 - **架构变化** → 更新第四章"核心架构"和第二章"目录结构"
-- **新约定** → 更新第七章"开发约定"
-- **待办变化** → 更新第八章
+- **新约定** → 更新第五章"开发约定"
+- **待办变化** → 更新第六章
 
 原则：让换一台电脑的 Claude Code 读完后，不需要重新踩你已经踩过的坑。
 

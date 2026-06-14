@@ -187,5 +187,40 @@
     "productId": "1030837",
     "title": "1030837 分动箱电机",
     "summary": "更新产品，3张主图，1张详情图"
+  },
+  {
+    "time": "2026-06-13 16:35:19",
+    "action": "add",
+    "productId": "TEST999",
+    "title": "Test",
+    "summary": "新增产品，0张主图，0张详情图"
+  },
+  {
+    "time": "2026-06-13 16:35:21",
+    "action": "delete",
+    "productId": "TEST999",
+    "title": "Test",
+    "summary": "删除产品"
+  },
+  {
+    "time": "2026-06-13 16:36:12",
+    "action": "add",
+    "productId": "PERF001",
+    "title": "PerfTest",
+    "summary": "新增产品，0张主图，0张详情图"
+  },
+  {
+    "time": "2026-06-13 16:36:15",
+    "action": "delete",
+    "productId": "PERF001",
+    "title": "PerfTest",
+    "summary": "删除产品"
+  },
+  {
+    "time": "2026-06-13 16:40:10",
+    "action": "edit",
+    "productId": "1061418",
+    "title": "1061418EPB执行器MGU电机",
+    "summary": "更新产品，3张主图，2张详情图"
   }
 ]
