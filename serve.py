@@ -198,12 +198,19 @@ def parse_multipart(body, boundary):
     return fields, files
 
 
-def save_uploaded_image(file_data, orig_filename, product_id):
-    """保存上传的图片到 images/products/，返回相对路径"""
+def save_uploaded_image(file_data, orig_filename, product_id, suffix=None):
+    """保存上传的图片到 images/products/{pid}/，返回相对路径。
+
+    如果 suffix 指定，文件名 = {pid}_{suffix}.{ext}
+    否则回退 UUID 命名 = {pid}_{8位uuid}.{ext}
+    """
     ext = os.path.splitext(orig_filename)[1].lower()
     if ext not in ALLOWED_EXTENSIONS:
         ext = '.jpg'
-    safe_name = f"{product_id}_{uuid.uuid4().hex[:8]}{ext}"
+    if suffix:
+        safe_name = f"{product_id}_{suffix}{ext}"
+    else:
+        safe_name = f"{product_id}_{uuid.uuid4().hex[:8]}{ext}"
     rel_path = f"images/products/{product_id}/{safe_name}"
 
     # 保存到项目目录
@@ -525,7 +532,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     continue
                 if not f['filename']:
                     continue
-                path = save_uploaded_image(f['data'], f['filename'], pid)
+                # 根据字段名计算命名后缀
+                if f['name'] == 'card_image':
+                    suffix = 'card'
+                elif f['name'].startswith('detail_'):
+                    suffix = f'detail{len(detail_image_paths)+1}'
+                elif f['name'].startswith('image'):
+                    suffix = f'main{len(image_paths)+1}'
+                else:
+                    suffix = None
+                path = save_uploaded_image(f['data'], f['filename'], pid, suffix)
                 if f['name'] == 'card_image':
                     card_image = path
                 elif f['name'].startswith('detail_'):
@@ -669,7 +685,16 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     continue
                 if not f['filename']:
                     continue
-                path = save_uploaded_image(f['data'], f['filename'], pid)
+                # 根据字段名计算命名后缀
+                if f['name'] == 'card_image':
+                    suffix = 'card'
+                elif f['name'].startswith('detail_'):
+                    suffix = f'detail{len(detail_image_paths)+1}'
+                elif f['name'].startswith('image'):
+                    suffix = f'main{len(image_paths)+1}'
+                else:
+                    suffix = None
+                path = save_uploaded_image(f['data'], f['filename'], pid, suffix)
                 if f['name'] == 'card_image':
                     card_image = path
                 elif f['name'].startswith('detail_'):

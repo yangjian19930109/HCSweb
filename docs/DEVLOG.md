@@ -6,15 +6,15 @@
 
 ---
 
-## 2026-06
+## 2026年6月
 
-### 06-13：文档规范化
+### 6月13日：文档规范化
 
 - **拆出 DEVLOG.md**：将 DEVELOPMENT.md 中混杂的开发日志（§5 已完成工作 + §6 踩坑）提取为独立文件
 - **DEVELOPMENT.md 精简**：从 11 章缩减为 8 章，聚焦架构、约定、部署
 - **IMPROVEMENT-PLAN.md 状态更新**：已完成项标记 `[x]`
 
-### 06-13：serve.py 安全审计 + 修复
+### 6月13日：serve.py 安全审计 + 修复
 
 **手写 multipart 解析器审计**：
 
@@ -35,14 +35,14 @@
 - **实测**：构建 ~0.5s（4 产品），timeout 窗口 30s
 - **修复**：`auto_build()` 改为 `threading.Thread(target=auto_build, daemon=True).start()` 后台异步，响应立即返回，构建完成后 dist/ 自动更新
 
-### 06-13：记忆系统整理
+### 6月13日：记忆系统整理
 
 - **待办清单**：从 Claude memory 迁至项目仓库 `docs/TODO.md`（跨设备可见）
 - **项目技术知识**：5 个文件从 memory 迁至 `docs/项目技术知识/`（构建字体、六边形布局、导航调试、端口排查、重构经验）
 - **删除重复记忆**：`commit-permission-rule.md`、`commit-without-confirm.md`（内容重复）
 - **memory 精简**：保留 4 个用户偏好文件
 
-### 06-14：卡片图 Canvas 处理三轮迭代 + 最终方案
+### 6月14日：卡片图 Canvas 处理三轮迭代 + 最终方案
 
 **背景**：CSS 图片区占比从 42% 调大到 71.9%，同时 1061418 新上传卡片图出现三个问题：背景不透明变纯白、电机过度放大、主体显示不全。
 
@@ -90,12 +90,22 @@ ctx.drawImage(tmpCanvas, cmin, rmin, contentW, contentH, dx, dy, contentW, conte
   → toBlob('image/png') 输出
 ```
 
-### 06-14：未引用图片清理
+### 6月14日：未引用图片清理
 
 - 18 个文件未被 `products.json` 引用，移至 `images/unused/`，共 ~20 MB
 - dist 同步清理（build.py 重拷 images/）
 
-### 06-13：图片资源瘦身
+### 6月14日：图片归类整理 — 分目录 + 统一命名
+
+- **分目录**：`images/products/` 下每个产品独立子目录（`1030837/`、`1030896/` 等），共 22 个文件归入 4 个目录
+- **统一命名**：`{产品ID}_{位置}.{扩展名}`
+  - `card` → 卡片图（如 `1031001_card.png`）
+  - `main1/2/3` → 主图（如 `1031001_main1.png`）
+  - `detail1/2` → 详情图（如 `1031001_detail1.png`）
+- **serve.py 适配**：`save_uploaded_image()` 新增 `suffix` 参数，上传时根据字段名自动生成规范文件名。同名覆盖，不会积压旧图
+- **build.py**：无需修改，`shutil.copytree` 递归复制整个 `images/` 目录，子目录结构自动同步到 dist
+
+### 6月13日：图片资源瘦身
 
 - **总览**：`images/` + `dist/images/` 各 78 MB，共 ~156 MB
 - **孤图清理**：23 个文件未被 `products.json` 引用（旧上传残留），删除后释放 43.4 MB × 2 = 87 MB
@@ -108,7 +118,7 @@ ctx.drawImage(tmpCanvas, cmin, rmin, contentW, contentH, dx, dy, contentW, conte
 
 ---
 
-## 2026-06-11
+## 2026年6月11日
 
 ### 产品数据防泄漏
 
@@ -157,7 +167,7 @@ ctx.drawImage(tmpCanvas, cmin, rmin, contentW, contentH, dx, dy, contentW, conte
 
 ---
 
-## 2026-06-07 ~ 08
+## 2026年6月7日 ~ 8日
 
 ### SEM 营销方案设计
 
@@ -179,7 +189,7 @@ ctx.drawImage(tmpCanvas, cmin, rmin, contentW, contentH, dx, dy, contentW, conte
 
 ---
 
-## 2026-05-31
+## 2026年5月31日
 
 ### 组件化重构
 
@@ -302,4 +312,4 @@ ctx.drawImage(tmpCanvas, cmin, rmin, contentW, contentH, dx, dy, contentW, conte
 
 ---
 
-> 最后更新：2026-06-14
+> 最后更新：2026年6月14日

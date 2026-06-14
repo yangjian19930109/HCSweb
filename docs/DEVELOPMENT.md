@@ -1,7 +1,12 @@
 # DEVELOPMENT.md — 华创生电机官网开发文档
 
-> **用途**：换电脑后用 Claude Code 打开项目时，读取本文档即可无缝衔接开发。
-> **维护规则**：架构变化和约定更新到本文档。开发工作记录和踩坑追加到 [DEVLOG.md](DEVLOG.md)。本文档是活的，不是一次性的。
+> **用途**：本文档是项目的唯一真相源。换电脑或换 AI 后，读本文档即可完整理解项目架构、约定和当前状态，无需翻代码或问人。
+>
+> **维护规则**：
+> - 架构变化、新增约定、目录结构调整 → 更新本文档对应章节
+> - 开发过程、踩坑、bug 修复 → 追加到 [DEVLOG.md](DEVLOG.md)，并在本文档踩坑索引中加条目
+> - 每次修改后更新文末日期
+> - 保持精炼：只写需要的，删掉过时的
 
 ---
 
@@ -64,7 +69,11 @@ HCSweb/
 ├── images/                       # 原始图片资源
 │   ├── logo.png / logo.jpg       #   网站 Logo
 │   ├── banner-bg.jpg             #   Banner 背景图
-│   └── products/                 #   产品图片（命名规则: {productId}_{8位uuid}.ext）
+│   └── products/                 #   产品图片（按产品分目录，命名: {productId}_{位置}.ext）
+│       ├── 1030837/               #     card/main1-3/detail1-2
+│       ├── 1030896/
+│       ├── 1031001/
+│       └── 1061418/
 │
 ├── landing/                      # ★ SEM 落地页（无导航/侧边栏，单出口→转化）
 │   ├── micro-switch.html         #   微动开关（主力）
@@ -198,6 +207,18 @@ curl -s http://localhost:8080/ | grep "include"  # 验证：不应出现 <!-- #i
   "cardImage": "images/products/1031001_card.png" // 卡片图（可选，优先于 images[0]）
 }
 ```
+
+**图片命名规范**：
+
+| 位置 | 文件名格式 | 示例 |
+|------|-----------|------|
+| 卡片图 | `{pid}_card.png` | `1031001_card.png` |
+| 主图 1/2/3 | `{pid}_main1.ext` | `1031001_main1.png` |
+| 详情图 1/2/… | `{pid}_detail1.ext` | `1031001_detail1.png` |
+
+- 所有图片按产品分目录：`images/products/{pid}/`
+- 上传时 `serve.py` 根据字段名自动生成规范文件名，同名覆盖不积压
+- `build.py` 递归复制 `images/` → `dist/images/`，子目录结构自动同步
 
 **cardImage 卡片图说明**：
 - 管理后台上传时 `handleCardImgSelect()` 自动处理
